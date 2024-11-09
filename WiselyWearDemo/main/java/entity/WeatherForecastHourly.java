@@ -1,0 +1,5 @@
+package entity;
+
+class WeatherForecastHourly {
+    ;
+}
