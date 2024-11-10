@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 /**
  * The representation of a weather forecast in our program.
  */
-public interface WeatherForecast {
+public interface Weather {
 
     /**
      * Returns the current temperature.

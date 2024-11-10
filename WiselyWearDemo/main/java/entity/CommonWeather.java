@@ -4,10 +4,10 @@ import java.time.LocalDateTime;
 
 
 /**
- * An implementation of the WeatherForecast interface. Stores data about the
+ * An implementation of the Weather interface. Stores data about the
  * current weather forecast.
  */
-public class WeatherForecastCurrent implements WeatherForecast {
+public class CommonWeather implements Weather {
 
     private final int currentTemperature;
     private final int highTemperature;
@@ -15,9 +15,8 @@ public class WeatherForecastCurrent implements WeatherForecast {
     private final String weatherCondition;
     private final LocalDateTime currentTime;
 
-    public WeatherForecastCurrent(int currentTemperature, int highTemperature,
-                                  int lowTemperature, String weatherCondition,
-                                  LocalDateTime) {
+    public CommonWeather(int currentTemperature, int highTemperature,
+                                  int lowTemperature, String weatherCondition) {
         this.currentTemperature = currentTemperature;
         this.highTemperature = highTemperature;
         this.lowTemperature = lowTemperature;
@@ -49,4 +48,5 @@ public class WeatherForecastCurrent implements WeatherForecast {
     public LocalDateTime getTime() {
         return currentTime;
     }
+
 }

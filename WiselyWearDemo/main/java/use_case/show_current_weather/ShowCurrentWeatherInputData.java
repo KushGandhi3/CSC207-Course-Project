@@ -1,7 +1,7 @@
 package use_case.show_current_weather;
 
 /**
- * The Input Data for the Show-Current-WeatherForecast.java Use Case.
+ * The Input Data for the Show-Current-Weather.java Use Case.
  */
 public class ShowCurrentWeatherInputData {
 
