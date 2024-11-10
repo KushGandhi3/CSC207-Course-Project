@@ -14,12 +14,9 @@ public class HourlyController {
 
     /**
      * Executes the Hourly Use Case.
-     * @param location the location for which to fetch the hourly weather forecast
      */
-    public void execute(String location) {
-        final HourlyInputData inputData = new HourlyInputData(location);
-
-        // Execute the use case, which fetches the data for hourly weather.
-        hourlyUseCaseInteractor.execute(inputData);
+    public void execute() {
+        // Execute the use case.
+        hourlyUseCaseInteractor.execute();
     }
 }

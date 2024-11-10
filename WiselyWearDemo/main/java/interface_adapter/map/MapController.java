@@ -14,12 +14,9 @@ public class MapController {
 
     /**
      * Executes the map Use Case.
-     * @param location the location for which to fetch the weather forecast for the map
      */
-    public void execute(String location) {
-        final MapInputData inputData = new MapInputData(location);
-
-        // Execute the use case, which fetches the data for map.
+    public void execute() {
+        // Execute the use case.
         mapUseCaseInteractor.execute(inputData);
     }
 }
