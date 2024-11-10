@@ -1,8 +1,12 @@
 package entity;
 
 
-public class WeatherForecastWeekly implements WeatherForecast {
-    private String date;
+/**
+ * An implementation of the WeatherForecast interface. Stores data about the
+ * weekly weather forecast.
+ */
+public class WeatherForecastWeekly /* implements WeatherForecast */ {
 
-    // TODO: run the use case interactor for the logout use case
+    // TODO: Complete WeatherForecastWeekly
+
 }
