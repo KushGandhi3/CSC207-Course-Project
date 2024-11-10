@@ -1,4 +1,4 @@
-package use_case.show_current_weather;
+package use_case.display_weather;
 
 /**
  * The Input Data for the Show-Current-Weather.java Use Case.

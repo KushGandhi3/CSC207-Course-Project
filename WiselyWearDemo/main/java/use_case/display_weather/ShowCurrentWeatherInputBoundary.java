@@ -1,4 +1,4 @@
-package use_case.show_current_weather;
+package use_case.display_weather;
 
 /**
  * Input Boundary for actions which are related to showing the current
