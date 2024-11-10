@@ -1,18 +1,21 @@
 package use_case.display_home;
 
 /**
- * The Input Data for the Show-Current-Weather.java Use Case.
+ * Output Data for the Display Home Use Case.
  */
-public class ShowCurrentWeatherInputData {
+public class DisplayHomeOutputData {
 
     private final String location;
     private final int temperature;
     private final int highTemperature;
     private final int lowTemperature;
 
-
-    public ShowCurrentWeatherInputData(String location) {
+    public DisplayHomeOutputData(String location, int temperature,
+                                 int highTemperature, int lowTemperature) {
         this.location = location;
+        this.temperature = temperature;
+        this.highTemperature = highTemperature;
+        this.lowTemperature = lowTemperature;
     }
 
     public String getLocation() {
@@ -30,7 +33,5 @@ public class ShowCurrentWeatherInputData {
     public int getLowTemperature() {
         return lowTemperature;
     }
-
-
 
 }

@@ -9,4 +9,6 @@ public interface DisplayHomeInputBoundary {
     /**
      * Executes the display_home use case.
      */
-    void execute(// TODO: Complete execute );
+    void execute(DisplayHomeInputData displayHomeInputData);
+
+}
