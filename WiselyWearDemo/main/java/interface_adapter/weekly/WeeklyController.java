@@ -9,7 +9,7 @@ public class WeeklyController {
     private final WeeklyInputBoundary weeklyUseCaseInteractor;
 
     public WeeklyController(WeeklyInputBoundary weeklyUseCaseInteractor) {
-        this.weeklyUseCaseInteractor = weeklyUseCaseInteractor
+        this.weeklyUseCaseInteractor = weeklyUseCaseInteractor;
     }
 
     /**

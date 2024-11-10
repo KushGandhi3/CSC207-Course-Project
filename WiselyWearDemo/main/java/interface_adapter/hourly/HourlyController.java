@@ -9,7 +9,7 @@ public class HourlyController {
     private final HourlyInputBoundary hourlyUseCaseInteractor;
 
     public HourlyController(HourlyInputBoundary hourlyUseCaseInteractor) {
-        this.hourlyUseCaseInteractor = hourlyUseCaseInteractor
+        this.hourlyUseCaseInteractor = hourlyUseCaseInteractor;
     }
 
     /**
