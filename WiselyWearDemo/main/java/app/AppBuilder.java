@@ -6,8 +6,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import interface_adapter.display_home.DisplayHomeViewModel;
-import view.DisplayHomeView;
+import data_access.*;
+import entity.*;
+import interface_adapter.ViewManagerModel;
+import interface_adapter.display_home.*;
+import use_case.display_home.*;
+import view.*;
 
 /**
  * The AppBuilder class is responsible for putting together the pieces of
@@ -18,17 +22,50 @@ import view.DisplayHomeView;
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
+    private final WeatherFactory weatherFactory = new CommonWeatherFactory();
+    private final ViewManagerModel viewManagerModel = new ViewManagerModel();
+    private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
-    private final DisplayHomeViewModel displayHomeViewModel = new DisplayHomeViewModel();
-    private final DisplayHomeView displayHomeView =
-            new DisplayHomeView(displayHomeViewModel);
+    private final WeatherDataAccessObject weatherDataAccessObject =
+            new WeatherDataAccessObject(weatherFactory);
+
+    private DisplayHomeViewModel displayHomeViewModel;
+    private DisplayHomeView displayHomeView;
+
+    public AppBuilder() {
+        cardPanel.setLayout(cardLayout);
+    }
 
     /**
      * Adds the WeatherHomeView to the app.
      * @return the AppBuilder
      */
     public AppBuilder addWeatherHomeView() {
-        cardPanel.add(displayHomeView, "displayHomeView");
+        displayHomeViewModel = new DisplayHomeViewModel();
+        displayHomeView = new DisplayHomeView(displayHomeViewModel);
+        cardPanel.add(displayHomeView, displayHomeView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the Display Home Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addSignupUseCase() {
+        final DisplayHomeOutputBoundary displayHomeOutputBoundary =
+                new DisplayHomePresenter(displayHomeViewModel,
+                        viewManagerModel);
+        final DisplayHomeInteractor displayHomeInteractor =
+                new DisplayHomeInteractor(
+                weatherDataAccessObject, displayHomeOutputBoundary); // This
+        // should be decoupled to the input interface, but it's okay for the
+        // demo atm
+
+        // No controller necessary for demo
+        /*final DisplayHomeController controller =
+                new DisplayHomeController(displayHomeInteractor);*/
+
+        displayHomeView.setDisplayHomeController(controller);
         return this;
     }
 
