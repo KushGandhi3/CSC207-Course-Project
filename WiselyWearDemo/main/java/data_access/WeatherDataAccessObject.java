@@ -2,21 +2,21 @@ package data_access;
 
 import entity.Weather;
 import entity.WeatherFactory;
-import use_case.display_home.DisplayHomeWeatherDataAccessInterface;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.json.JSONObject;
-
+import use_case.display_home.DisplayHomeWeatherDataAccessInterface;
+import java.io.IOException;
 
 public class WeatherDataAccessObject implements DisplayHomeWeatherDataAccessInterface {
 
-    private static final String API_KEY = ""; // ADD API KEY HERE;
+    private static final int SUCCESS_CODE = 200;
+    private static final String STATUS_CODE_LABEL = "status_code";
+    private static final String TEMPERATURE_LABEL = "temperature";
+    private static final String LOCATION = "TORONTO";
+    private static final String API_KEY = "";
     private static final String API_URL = "https://api.openweathermap.org/data/3.0/onecall";
-    private final String LOCATION = "Toronto";
     private final WeatherFactory weatherFactory;
 
     public WeatherDataAccessObject(WeatherFactory weatherFactory) {
@@ -31,28 +31,27 @@ public class WeatherDataAccessObject implements DisplayHomeWeatherDataAccessInte
      * @param exclude  the data to exclude
      */
     @Override
-    public Weather getWeatherData(double latitude, double longitude, String exclude) throws IOException {
-        String url = API_URL + "?lat=" + latitude + "&lon=" + longitude + "&exclude=" + exclude + "&appid=" + API_KEY;
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        con.setRequestMethod("GET");
+    public Weather getWeatherData(double latitude, double longitude, String exclude){
 
-        int responseCode = con.getResponseCode();
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            BufferedReader rd = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String input;
-            StringBuilder content = new StringBuilder();
-            while ((input = rd.readLine()) != null) {
-                content.append(input);
+        // Make an API call to get the weather data
+        final OkHttpClient client = new OkHttpClient().newBuilder().build();
+        final Request request = new Request.Builder()
+                .url(API_URL + "?lat=" + latitude + "&lon=" + longitude + "&exclude=" + exclude + "&appid=" + API_KEY)
+                .method("GET", null)
+                .build();
+
+        try {
+            final Response response = client.newCall(request).execute();
+            final JSONObject responseBody = new JSONObject(response.body().string());
+
+            if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
+                return weatherFactory.create(responseBody.getDouble(TEMPERATURE_LABEL), LOCATION);
+            } else {
+                throw new RuntimeException("Failed to get weather data");
             }
-            rd.close();
 
-            JSONObject jsonResponse = new JSONObject(content.toString());
-            double temp = jsonResponse.getJSONObject("current").getDouble("temp");
-            return weatherFactory.create(temp, LOCATION);
-        }
-        else {
-            throw new RuntimeException("Failed to get weather data");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
