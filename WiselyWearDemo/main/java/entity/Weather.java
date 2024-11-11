@@ -15,27 +15,9 @@ public interface Weather {
     int getCurrentTemperature();
 
     /**
-     * Returns the highest forecasted temperature in the day.
-     * @return the highest forecasted temperature in the day.
+     * Returns the city location.
+     * @return the city location
      */
-    int getHighTemperature();
-
-    /**
-     * Returns the lowest forecasted temperature in the day.
-     * @return the lowest forecasted temperature in the day.
-     */
-    int getLowTemperature();
-
-    /**
-     * Returns the weather condition (e.g. "Sunny", "Cloudy").
-     * @return the weather condition.
-     */
-    String getWeatherCondition();
-
-    /**
-     * Returns the current time.
-     * @return the current time.
-     */
-    LocalDateTime getTime();
+    String getLocation();
 
 }
