@@ -17,7 +17,7 @@ public class DisplayHomeOutputData {
         return location;
     }
 
-    public int getTemperature() {
+    public double getTemperature() {
         return temperature;
     }
 
