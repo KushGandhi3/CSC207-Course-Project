@@ -12,11 +12,9 @@ public class DisplayHomeInteractor {
 
     private final DisplayHomeWeatherDataAccessInterface displayHomeAccessObject;
     private final DisplayHomeOutputBoundary weatherPresenter;
-    private final WeatherFactory weatherFactory;
 
     public DisplayHomeInteractor(DisplayHomeWeatherDataAccessInterface displayHomeAccessObject,
-                                 DisplayHomeOutputBoundary weatherPresenter,
-                                 WeatherFactory weatherFactory) {
+                                 DisplayHomeOutputBoundary weatherPresenter) {
         this.displayHomeAccessObject = displayHomeAccessObject;
         this.weatherPresenter = weatherPresenter;
     }
@@ -24,6 +22,11 @@ public class DisplayHomeInteractor {
     public void execute() throws IOException {
 
         final Weather weather = displayHomeAccessObject.getWeatherData();
+
+        final DisplayHomeOutputData displayHomeOutputData =
+                new DisplayHomeOutputData(weather.getLocation(),
+                        weather.getCurrentTemperature());
+        weatherPresenter.prepareView(displayHomeOutputData);
     }
 
 }
