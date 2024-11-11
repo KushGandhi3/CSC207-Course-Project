@@ -1,7 +1,6 @@
 package use_case.display_home;
 
 import entity.Weather;
-import entity.WeatherFactory;
 
 import java.io.IOException;
 
