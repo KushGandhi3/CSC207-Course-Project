@@ -12,6 +12,6 @@ public interface DisplayHomeWeatherDataAccessInterface {
     /**
      * Gets the current temperature.
      */
-    Weather getWeatherData(double latitude, double longitude, String exclude) throws IOException;
+    Weather getWeatherData() throws IOException;
 
 }
