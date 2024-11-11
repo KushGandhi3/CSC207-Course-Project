@@ -19,15 +19,18 @@ public class DisplayHomeInteractor implements DisplayHomeInputBoundary {
         this.weatherFactory = weatherFactory;
     }
 
-    @Override // TODO: Complete the execute method
+    @Override
     public void execute(DisplayHomeInputData displayHomeInputData) {
-        final Weather weather =
-                weatherFactory.create(changePasswordInputData.getUsername(),
-                changePasswordInputData.getPassword());
-        userDataAccessObject.changePassword(user);
 
-        final ChangePasswordOutputData changePasswordOutputData = new ChangePasswordOutputData(user.getName(),
-                false);
-        weatherPresenter.prepareSuccessView(changePasswordOutputData);
+        // get the weather data from the API
+        final Weather weather =
+                weatherFactory.create(displayHomeInputData.getCurrentTemperature(),
+                        displayHomeInputData.getHighTemperature(), displayHomeInputData.getLowTemperature(),
+                        displayHomeInputData.getWeatherCondition() );
+        displayHomeAccessObject.recordWeather(weather);
+
+        // pass the weather data to output boundary
+        final DisplayHomeOutputData displayHomeOutputData = new DisplayHomeOutputData("Toronto", weather.getCurrentTemperature(), weather.getHighTemperature(), weather.getLowTemperature(), weather.getTime());
+        weatherPresenter.prepareView(displayHomeOutputData);
     }
 }

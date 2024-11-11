@@ -1,5 +1,7 @@
 package use_case.display_home;
 
+import java.time.LocalDateTime;
+
 /**
  * Output Data for the Display Home Use Case.
  */
@@ -9,13 +11,15 @@ public class DisplayHomeOutputData {
     private final int temperature;
     private final int highTemperature;
     private final int lowTemperature;
+    private final LocalDateTime time;
 
     public DisplayHomeOutputData(String location, int temperature,
-                                 int highTemperature, int lowTemperature) {
+                                 int highTemperature, int lowTemperature, LocalDateTime time) {
         this.location = location;
         this.temperature = temperature;
         this.highTemperature = highTemperature;
         this.lowTemperature = lowTemperature;
+        this.time = time;
     }
 
     public String getLocation() {
@@ -34,4 +38,5 @@ public class DisplayHomeOutputData {
         return lowTemperature;
     }
 
+    public LocalDateTime getTime() { return time; }
 }

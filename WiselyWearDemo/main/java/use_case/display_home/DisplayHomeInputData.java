@@ -16,4 +16,15 @@ public class DisplayHomeInputData {
         return location;
     }
 
+    public int getCurrentTemperature() {
+    }
+
+    public int getHighTemperature() {
+    }
+
+    public int getLowTemperature() {
+    }
+
+    public String getWeatherCondition() {
+    }
 }
