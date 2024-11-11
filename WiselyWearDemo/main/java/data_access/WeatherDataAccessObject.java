@@ -1,4 +1,4 @@
-package java.data_access;
+package data_access;
 
 import use_case.display_home.DisplayHomeWeatherDataAccessInterface;
 
