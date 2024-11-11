@@ -2,6 +2,9 @@ package use_case.display_home;
 
 import entity.Weather;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+
 /**
  * The interface of the DAO for the Display Home Use Case.
  */
@@ -10,6 +13,6 @@ public interface DisplayHomeWeatherDataAccessInterface {
     /**
      * Gets the current temperature.
      */
-    String getWeatherData(double latitude, double longitude, String exclude);
+    double getWeatherData(double latitude, double longitude, String exclude) throws IOException;
 
 }
