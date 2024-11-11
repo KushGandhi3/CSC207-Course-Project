@@ -27,18 +27,14 @@ public class WeatherDataAccessObject implements DisplayHomeWeatherDataAccessInte
 
     /**
      * Gets the current temperature.
-     *
-     * @param latitude the latitude of the location
-     * @param longitude the longitude of the location
-     * @param exclude  the data to exclude
      */
     @Override
-    public Weather getWeatherData(double latitude, double longitude, String exclude){
+    public Weather getWeatherData(){
 
         // Make an API call to get the weather data
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final Request request = new Request.Builder()
-                .url(API_URL + "?lat=" + TORONTO_LATITUDE + "&lon=" + TORONTO_LONGITUDE + "&exclude=" + exclude + "&appid=" + API_KEY)
+                .url(API_URL + "?lat=" + TORONTO_LATITUDE + "&lon=" + TORONTO_LONGITUDE + "&exclude=" + "&appid=" + API_KEY)
                 .method("GET", null)
                 .build();
 

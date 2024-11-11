@@ -66,7 +66,7 @@ public class WeatherHomeView extends JPanel {
             double longitude = -79.42;
             String exclude = "minutely,hourly,daily";
 
-            Weather weather = weatherDataAccessObject.getWeatherData(latitude, longitude, exclude);
+            Weather weather = weatherDataAccessObject.getWeatherData();
 
             temperatureLabel.setText("Temperature: " + weather.getCurrentTemperature() + " °C");
             locationLabel.setText("Location: " + weather.getLocation());
