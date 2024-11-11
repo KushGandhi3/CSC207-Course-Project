@@ -20,7 +20,7 @@ public class DisplayHomeInteractor implements DisplayHomeInputBoundary {
     }
 
     @Override
-    public void execute(DisplayHomeInputData displayHomeInputData) {
+    public void execute() {
 
         // get the weather data from the API
         final Weather weather =

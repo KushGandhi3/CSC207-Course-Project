@@ -1,11 +1,13 @@
 package java.data_access;
 
+import use_case.display_home.DisplayHomeWeatherDataAccessInterface;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class WeatherDataFetcher {
+public class WeatherDataFetcher implements DisplayHomeWeatherDataAccessInterface {
     private static final String API_KEY = ""; // ADD API KEY HERE;
     private static final String API_URL = "https://api.openweathermap.org/data/3.0/onecall";
 

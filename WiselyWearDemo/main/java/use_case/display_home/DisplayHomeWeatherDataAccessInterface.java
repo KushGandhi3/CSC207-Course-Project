@@ -8,9 +8,8 @@ import entity.Weather;
 public interface DisplayHomeWeatherDataAccessInterface {
 
     /**
-     * Updates the system to record the current weather forecast.
-     * @param weather the current weather forecast
+     * Gets the current temperature.
      */
-    void recordWeather(Weather weather);
+    String getWeatherData(double latitude, double longitude, String exclude);
 
 }
