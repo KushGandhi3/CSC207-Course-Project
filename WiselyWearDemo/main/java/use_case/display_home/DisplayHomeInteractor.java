@@ -6,7 +6,7 @@ import entity.WeatherFactory;
 /**
  * The Display Home Input Boundary.
  */
-public class DisplayHomeInteractor implements DisplayHomeInputBoundary {
+public class DisplayHomeInteractor {
     private final DisplayHomeWeatherDataAccessInterface displayHomeAccessObject;
     private final DisplayHomeOutputBoundary weatherPresenter;
     private final WeatherFactory weatherFactory;
@@ -19,7 +19,6 @@ public class DisplayHomeInteractor implements DisplayHomeInputBoundary {
         this.weatherFactory = weatherFactory;
     }
 
-    @Override
     public void execute() {
 
         // get the weather data from the API

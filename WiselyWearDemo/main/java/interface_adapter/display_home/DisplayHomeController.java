@@ -1,7 +1,5 @@
 package interface_adapter.display_home;
 
-import use_case.display_home.DisplayHomeInputBoundary;
-
 /**
  * Controller for the display_home Use Case.
  */
