@@ -1,4 +1,6 @@
-package entity;
+package java.entity;
+
+import java.entity.Weather;
 
 /**
  * Factory for creating weather forecasts.
