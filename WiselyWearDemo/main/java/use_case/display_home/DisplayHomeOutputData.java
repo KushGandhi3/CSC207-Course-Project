@@ -6,7 +6,7 @@ package use_case.display_home;
 public class DisplayHomeOutputData {
 
     private final String location;
-    private final int temperature;
+    private final double temperature;
 
     public DisplayHomeOutputData(String location, int temperature) {
         this.location = location;

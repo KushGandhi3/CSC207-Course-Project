@@ -4,12 +4,15 @@ import entity.Weather;
 import entity.WeatherFactory;
 
 /**
- * The Display Home Input Boundary.
+ * The Display Home Interactor.
  */
 public class DisplayHomeInteractor {
+
+    private final String LOCATION = "Toronto";
+
     private final DisplayHomeWeatherDataAccessInterface displayHomeAccessObject;
     private final DisplayHomeOutputBoundary weatherPresenter;
-    private final WeatherFactory weatherFactory;
+    //private final WeatherFactory weatherFactory;
 
     public DisplayHomeInteractor(DisplayHomeWeatherDataAccessInterface displayHomeAccessObject,
                                  DisplayHomeOutputBoundary weatherPresenter,
@@ -21,17 +24,12 @@ public class DisplayHomeInteractor {
 
     public void execute() {
 
-        // get the weather data from the API
-        final Weather weather =
-                weatherFactory.create(displayHomeInputData.getCurrentTemperature(),
-                        displayHomeInputData.getHighTemperature(), displayHomeInputData.getLowTemperature(),
-                        displayHomeInputData.getWeatherCondition() );
-        displayHomeAccessObject.recordWeather(weather);
-
         // pass the weather data to output boundary
-        final DisplayHomeOutputData displayHomeOutputData = new DisplayHomeOutputData("Toronto",
-                weather.getCurrentTemperature(), weather.getHighTemperature(), weather.getLowTemperature(),
-                weather.getTime(), weather.getWeatherCondition());
+        final DisplayHomeOutputData displayHomeOutputData =
+                new DisplayHomeOutputData(LOCATION, /* don't know what goes
+                here */ );
         weatherPresenter.prepareView(displayHomeOutputData);
+
     }
+
 }
