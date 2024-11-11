@@ -5,18 +5,28 @@ import java.awt.*;
 import data_access.WeatherDataAccessObject;
 import entity.CommonWeatherFactory;
 import entity.Weather;
+import interface_adapter.display_home.DisplayHomeViewModel;
 
 /**
  * The View for when the user is on the home page, displaying weather information.
  */
-public class WeatherHomeView extends JPanel {
+public class DisplayHomeView extends JPanel {
     private final JLabel temperatureLabel;
     private final JLabel cityLabel;
     private final WeatherDataAccessObject weatherDataAccessObject;
 
-    public WeatherHomeView() {
+    private final JButton hourlyButton = new JButton(DisplayHomeViewModel.HOURLY_BUTTON_LABEL);
+    private final JButton weeklyButton = new JButton(DisplayHomeViewModel.WEEKLY_BUTTON_LABEL);
+    private final JButton alertsButton = new JButton(DisplayHomeViewModel.ALERTS_BUTTON_LABEL);
+    private final JButton outfitButton = new JButton(DisplayHomeViewModel.OUTFIT_BUTTON_LABEL);
+    private final JButton mapButton = new JButton(DisplayHomeViewModel.MAP_BUTTON_LABEL);
+    // add a text field for the user to input a city
+
+    public DisplayHomeView(DisplayHomeViewModel displayHomeViewModel) {
+
         CommonWeatherFactory weatherFactory = new CommonWeatherFactory();
         this.weatherDataAccessObject = new WeatherDataAccessObject(weatherFactory);
+
 
         setLayout(new BorderLayout());
 
