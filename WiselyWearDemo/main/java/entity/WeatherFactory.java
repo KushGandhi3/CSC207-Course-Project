@@ -15,6 +15,6 @@ public interface WeatherFactory {
      * @param weatherCondition the current weather condition.
      * @return the new weather forecast
      */
-    Weather create(int currentTemperature, int highTemperature, int lowTemperature, String weatherCondition);
+    Weather create(int currentTemperature, String location);
 
 }
