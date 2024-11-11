@@ -15,6 +15,8 @@ public class WeatherDataAccessObject implements DisplayHomeWeatherDataAccessInte
     private static final String STATUS_CODE_LABEL = "status_code";
     private static final String TEMPERATURE_LABEL = "temperature";
     private static final String LOCATION = "TORONTO";
+    private static final double TORONTO_LATITUDE = 43.7;
+    private static final double TORONTO_LONGITUDE = -79.42;
     private static final String API_KEY = "";
     private static final String API_URL = "https://api.openweathermap.org/data/3.0/onecall";
     private final WeatherFactory weatherFactory;
@@ -36,7 +38,7 @@ public class WeatherDataAccessObject implements DisplayHomeWeatherDataAccessInte
         // Make an API call to get the weather data
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final Request request = new Request.Builder()
-                .url(API_URL + "?lat=" + latitude + "&lon=" + longitude + "&exclude=" + exclude + "&appid=" + API_KEY)
+                .url(API_URL + "?lat=" + TORONTO_LATITUDE + "&lon=" + TORONTO_LONGITUDE + "&exclude=" + exclude + "&appid=" + API_KEY)
                 .method("GET", null)
                 .build();
 
