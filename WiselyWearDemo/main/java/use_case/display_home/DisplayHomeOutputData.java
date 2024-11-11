@@ -1,5 +1,6 @@
 package use_case.display_home;
 
+import javax.swing.*;
 import java.time.LocalDateTime;
 
 /**
@@ -12,14 +13,16 @@ public class DisplayHomeOutputData {
     private final int highTemperature;
     private final int lowTemperature;
     private final LocalDateTime time;
+    private final String weatherCondition;
 
     public DisplayHomeOutputData(String location, int temperature,
-                                 int highTemperature, int lowTemperature, LocalDateTime time) {
+                                 int highTemperature, int lowTemperature, LocalDateTime time, String weatherCondition) {
         this.location = location;
         this.temperature = temperature;
         this.highTemperature = highTemperature;
         this.lowTemperature = lowTemperature;
         this.time = time;
+        this.weatherCondition = weatherCondition;
     }
 
     public String getLocation() {
@@ -37,6 +40,8 @@ public class DisplayHomeOutputData {
     public int getLowTemperature() {
         return lowTemperature;
     }
+
+    public String getWeatherCondition() { return weatherCondition; }
 
     public LocalDateTime getTime() { return time; }
 }

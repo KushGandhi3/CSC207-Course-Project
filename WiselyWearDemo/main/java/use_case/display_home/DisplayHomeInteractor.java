@@ -30,7 +30,9 @@ public class DisplayHomeInteractor implements DisplayHomeInputBoundary {
         displayHomeAccessObject.recordWeather(weather);
 
         // pass the weather data to output boundary
-        final DisplayHomeOutputData displayHomeOutputData = new DisplayHomeOutputData("Toronto", weather.getCurrentTemperature(), weather.getHighTemperature(), weather.getLowTemperature(), weather.getTime());
+        final DisplayHomeOutputData displayHomeOutputData = new DisplayHomeOutputData("Toronto",
+                weather.getCurrentTemperature(), weather.getHighTemperature(), weather.getLowTemperature(),
+                weather.getTime(), weather.getWeatherCondition());
         weatherPresenter.prepareView(displayHomeOutputData);
     }
 }
