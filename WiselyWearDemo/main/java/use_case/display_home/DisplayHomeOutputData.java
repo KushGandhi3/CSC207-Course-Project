@@ -8,7 +8,7 @@ public class DisplayHomeOutputData {
     private final String location;
     private final double temperature;
 
-    public DisplayHomeOutputData(String location, int temperature) {
+    public DisplayHomeOutputData(String location, double temperature) {
         this.location = location;
         this.temperature = temperature;
     }
