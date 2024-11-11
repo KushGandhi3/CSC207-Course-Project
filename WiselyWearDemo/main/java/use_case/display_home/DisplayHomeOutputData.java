@@ -6,9 +6,9 @@ package use_case.display_home;
 public class DisplayHomeOutputData {
 
     private final String location;
-    private final double temperature;
+    private final Double temperature;
 
-    public DisplayHomeOutputData(String location, double temperature) {
+    public DisplayHomeOutputData(String location, Double temperature) {
         this.location = location;
         this.temperature = temperature;
     }
@@ -17,7 +17,7 @@ public class DisplayHomeOutputData {
         return location;
     }
 
-    public double getTemperature() {
+    public Double getTemperature() {
         return temperature;
     }
 

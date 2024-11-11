@@ -12,7 +12,7 @@ public interface Weather {
      * Returns the current temperature.
      * @return the current temperature.
      */
-    int getCurrentTemperature();
+    Double getCurrentTemperature();
 
     /**
      * Returns the city location.

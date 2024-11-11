@@ -2,16 +2,16 @@ package entity;
 
 public class CommonWeather implements Weather {
 
-    int currentTemperature;
+    Double currentTemperature;
     String location;
 
-    public CommonWeather(int currentTemperature, String location) {
+    public CommonWeather(Double currentTemperature, String location) {
         this.currentTemperature = currentTemperature;
         this.location = location;
     }
 
     @Override
-    public int getCurrentTemperature() {
+    public Double getCurrentTemperature() {
         return currentTemperature;
     }
 

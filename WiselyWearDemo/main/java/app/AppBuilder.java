@@ -1,21 +1,13 @@
 package app;
 
 import java.awt.CardLayout;
-import java.security.PrivateKey;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import data_access.WeatherDataAccessObject;
-import entity.CommonWeatherFactory;
-import entity.WeatherFactory;
-import interface_adapter.display_home.DisplayHomeController;
-import interface_adapter.display_home.DisplayHomePresenter;
 import interface_adapter.display_home.DisplayHomeViewModel;
-import use_case.display_home.DisplayHomeInteractor;
-import use_case.display_home.DisplayHomeOutputBoundary;
-import view.WeatherHomeView;
+import view.DisplayHomeView;
 
 /**
  * The AppBuilder class is responsible for putting together the pieces of
@@ -28,19 +20,20 @@ public class AppBuilder {
     private final CardLayout cardLayout = new CardLayout();
 
     private final DisplayHomeViewModel displayHomeViewModel = new DisplayHomeViewModel();
-    private final WeatherHomeView weatherHomeView = new WeatherHomeView(displayHomeViewModel);
+    private final DisplayHomeView displayHomeView =
+            new DisplayHomeView(displayHomeViewModel);
 
     /**
      * Adds the WeatherHomeView to the app.
      * @return the AppBuilder
      */
     public AppBuilder addWeatherHomeView() {
-        cardPanel.add(weatherHomeView, "weatherHomeView");
+        cardPanel.add(displayHomeView, "displayHomeView");
         return this;
     }
 
     /**
-     * Builds the JFrame for the app and initially sets the weatherHomeView to be displayed.
+     * Builds the JFrame for the app and initially sets the displayHomeView to be displayed.
      * @return the JFrame
      */
     public JFrame build() {
@@ -49,7 +42,7 @@ public class AppBuilder {
 
         application.add(cardPanel);
 
-        cardLayout.show(cardPanel, "weatherHomeView");
+        cardLayout.show(cardPanel, "displayHomeView");
         return application;
     }
 }
