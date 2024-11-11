@@ -28,7 +28,7 @@ public class AppBuilder {
     private final CardLayout cardLayout = new CardLayout();
 
     private final DisplayHomeViewModel displayHomeViewModel = new DisplayHomeViewModel();
-    private final WeatherHomeView weatherHomeView = new WeatherHomeView(displayHomeViewModel, displayHomeController);
+    private final WeatherHomeView weatherHomeView = new WeatherHomeView(displayHomeViewModel);
 
     /**
      * Adds the WeatherHomeView to the app.
