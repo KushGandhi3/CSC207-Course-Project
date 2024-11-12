@@ -15,7 +15,7 @@ public class WeatherDataAccessObject implements DisplayHomeWeatherDataAccessInte
     private static final String LOCATION = "TORONTO";
     private static final double TORONTO_LATITUDE = 43.7;
     private static final double TORONTO_LONGITUDE = -79.42;
-    private static final String API_KEY = "YOUR API KEY";
+    private static final String API_KEY = "YOUR_API_KEY";
     private static final String API_URL = "https://api.openweathermap.org/data/3.0/onecall";
     private final WeatherFactory weatherFactory;
 
