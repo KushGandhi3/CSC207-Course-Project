@@ -11,13 +11,11 @@ import java.io.IOException;
 
 public class WeatherDataAccessObject implements DisplayHomeWeatherDataAccessInterface {
 
-    private static final int SUCCESS_CODE = 200;
-    private static final String STATUS_CODE_LABEL = "status_code";
-    private static final String TEMPERATURE_LABEL = "temperature";
+    private static final String TEMPERATURE_LABEL = "temp";
     private static final String LOCATION = "TORONTO";
     private static final double TORONTO_LATITUDE = 43.7;
     private static final double TORONTO_LONGITUDE = -79.42;
-    private static final String API_KEY = "";
+    private static final String API_KEY = "YOUR API KEY";
     private static final String API_URL = "https://api.openweathermap.org/data/3.0/onecall";
     private final WeatherFactory weatherFactory;
 
@@ -25,31 +23,25 @@ public class WeatherDataAccessObject implements DisplayHomeWeatherDataAccessInte
         this.weatherFactory = weatherFactory;
     }
 
-    /**
-     * Gets the current temperature.
-     */
     @Override
-    public Weather getWeatherData(){
-
-        // Make an API call to get the weather data
-        final OkHttpClient client = new OkHttpClient().newBuilder().build();
-        final Request request = new Request.Builder()
-                .url(API_URL + "?lat=" + TORONTO_LATITUDE + "&lon=" + TORONTO_LONGITUDE + "&exclude=" + "&appid=" + API_KEY)
-                .method("GET", null)
+    public Weather getWeatherData() {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(API_URL + "?lat=" + TORONTO_LATITUDE + "&lon=" + TORONTO_LONGITUDE + "&units=metric&exclude=minutely,hourly,daily,alerts&appid=" + API_KEY)
                 .build();
 
-        try {
-            final Response response = client.newCall(request).execute();
-            final JSONObject responseBody = new JSONObject(response.body().string());
-
-            if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
-                return weatherFactory.create(responseBody.getDouble(TEMPERATURE_LABEL), LOCATION);
-            } else {
-                throw new RuntimeException("Failed to get weather data");
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
             }
 
+            JSONObject responseBody = new JSONObject(response.body().string());
+            double temperature = responseBody.getJSONObject("current").getDouble(TEMPERATURE_LABEL);
+            return weatherFactory.create(temperature, LOCATION);
+
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new RuntimeException("Failed to get weather data", e);
         }
     }
 }

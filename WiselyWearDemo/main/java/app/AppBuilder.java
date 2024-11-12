@@ -8,9 +8,6 @@ import javax.swing.WindowConstants;
 
 import data_access.*;
 import entity.*;
-import interface_adapter.ViewManagerModel;
-import interface_adapter.display_home.*;
-import use_case.display_home.*;
 import view.*;
 
 /**
@@ -23,13 +20,10 @@ public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
     private final WeatherFactory weatherFactory = new CommonWeatherFactory();
-    private final ViewManagerModel viewManagerModel = new ViewManagerModel();
-    private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     private final WeatherDataAccessObject weatherDataAccessObject =
             new WeatherDataAccessObject(weatherFactory);
 
-    private DisplayHomeViewModel displayHomeViewModel;
     private DisplayHomeView displayHomeView;
 
     public AppBuilder() {
@@ -41,31 +35,8 @@ public class AppBuilder {
      * @return the AppBuilder
      */
     public AppBuilder addWeatherHomeView() {
-        displayHomeViewModel = new DisplayHomeViewModel();
-        displayHomeView = new DisplayHomeView(displayHomeViewModel);
+        displayHomeView = new DisplayHomeView(weatherDataAccessObject);
         cardPanel.add(displayHomeView, displayHomeView.getViewName());
-        return this;
-    }
-
-    /**
-     * Adds the Display Home Case to the application.
-     * @return this builder
-     */
-    public AppBuilder addSignupUseCase() {
-        final DisplayHomeOutputBoundary displayHomeOutputBoundary =
-                new DisplayHomePresenter(displayHomeViewModel,
-                        viewManagerModel);
-        final DisplayHomeInteractor displayHomeInteractor =
-                new DisplayHomeInteractor(
-                weatherDataAccessObject, displayHomeOutputBoundary); // This
-        // should be decoupled to the input interface, but it's okay for the
-        // demo atm
-
-        // No controller necessary for demo
-        /*final DisplayHomeController controller =
-                new DisplayHomeController(displayHomeInteractor);*/
-
-        displayHomeView.setDisplayHomeController(controller);
         return this;
     }
 
@@ -76,6 +47,8 @@ public class AppBuilder {
     public JFrame build() {
         final JFrame application = new JFrame();
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        application.setPreferredSize(new java.awt.Dimension(800, 600));
+        application.setTitle("Wisely Wear");
 
         application.add(cardPanel);
 
