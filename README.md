@@ -9,7 +9,7 @@ KushGandhi3, jannate-r, dakhmedova30, daniilio, Kurochiisu
 * Anna wants to check the weather, she opens the application and immediately sees the current temperature for the location she is in, the condition, and the time. She also sees four buttons, "Hourly", “Weekly”,  "Outfit Analysis", “Map”, and "Reminders". **[team story]**
 
 * Anna wants to check the current weather for her location in more detail, she clicks "Hourly" from the homepage and is provided with detailed weather by the hour including temperature, humidity, wind speed, and precipitation. **[Diana]**
-* 
+  
 * Anna wants to check the current weather for her location in more detail, she clicks "Weekly" from the homepage and is provided with detailed weather by the hour including temperature, humidity, wind speed, and precipitation. **[Daniil]**
 
 * Anna wishes to receive updates exclusively when specific weather conditions (temperature, humidity, pressure, weather state, etc.) occur in her area. She can specify both the specific conditions she wants to be alerted about and the time period in advance for which she wants the alert to be set. If these trigger conditions are met, the service will generate an alert for Anna. **[Chika]**
