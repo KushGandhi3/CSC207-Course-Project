@@ -12,7 +12,7 @@ KushGandhi3, jannate-r, dakhmedova30, daniilio, Kurochiisu
   
 * Anna wants to check the current weather for her location in more detail, she clicks "Weekly" from the homepage and is provided with detailed weather by the hour including temperature, humidity, wind speed, and precipitation. **[Daniil]**
 
-* Anna plans to visit the beach tomorrow from 10:00 AM to 5:00 PM. She wants to know if the temperature during that time will drop below 10°C. After entering the location, selecting the desired condition, and specifying the time range, she presses the "Check" button. The app then displays a dialog box confirming whether or not the condition will occur during the specified period. **[Chika]**
+* Anna plans to visit the beach tomorrow from 10:00 AM to 5:00 PM. She wants to know if it will rain during that time. After entering the location, selecting the desired condition, and specifying the time range, she presses the "Check" button. The app then displays a dialog box confirming whether the condition will occur during the specified period. **[Chika]**
 
 * Anna wants to view the weather map with various layers, including temperature, precipitation, wind speed, and pressure, allowing her to monitor the current, forecast, and historical weather conditions in a visual format. **[Jannate]**
   
