@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 import interface_adapter.display_weekly.DisplayWeeklyController;
 import interface_adapter.display_weekly.DisplayWeeklyViewModel;
 
-import constants.Constants;
+import resources.Constants;
 
 /**
  * The view for when the user is in the weekly forecast use-case.

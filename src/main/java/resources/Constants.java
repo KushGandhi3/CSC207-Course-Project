@@ -1,4 +1,4 @@
-package constants;
+package resources;
 
 /**
  * All constants used in the Display Weekly Use-Case.
