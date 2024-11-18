@@ -1,4 +1,4 @@
 package use_case.checker;
 
-public class CheckerOutputBoundary {
+public interface CheckerOutputBoundary {
 }
