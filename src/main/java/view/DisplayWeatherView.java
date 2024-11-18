@@ -61,6 +61,7 @@ public class DisplayWeatherView extends JFrame {
 
         // Show the frame
         setVisible(true);
+
     }
 
     /**

@@ -20,6 +20,7 @@ public class WeatherViewModel {
         this.currentWeatherData = WeatherDataService.getWeatherData(city);
     }
 
+
     /**
      * Gets the current temperature in Celsius from the weather data.
      *

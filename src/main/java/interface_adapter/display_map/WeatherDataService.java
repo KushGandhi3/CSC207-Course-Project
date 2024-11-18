@@ -23,6 +23,7 @@ public class WeatherDataService {
      * @param city The name of the city to get the weather data for.
      * @return A JSONObject containing the weather data for the specified city, or null if an error occurs.
      */
+
     public static JSONObject getWeatherData(String city) {
         try {
             String urlString = BASE_URL + "?q=" + city + "&appid=" + API_KEY + "&units=metric"; // Metric for Celsius
