@@ -1,6 +1,6 @@
 package interface_adapter.display_weekly;
 
-import constants.Constants;
+import resources.Constants;
 import org.jetbrains.annotations.NotNull;
 
 /**
