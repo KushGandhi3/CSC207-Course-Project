@@ -8,7 +8,7 @@ KushGandhi3, jannate-r, dakhmedova30, daniilio, Kurochiisu
 **User Stories:**
 * Anna wants to check the weather, she opens the application and immediately sees the current temperature for the location she is in, the condition, and the time. She also sees four buttons, "Hourly", “Weekly”,  "Outfit Analysis", “Map”, and "Reminders". **[team story]**
 
-* Anna wants to check the current weather for her location in more detail, she clicks "Hourly" from the homepage and is provided with detailed weather by the hour including temperature, humidity, wind speed, and precipitation. **[Diana]**
+* Anna wants to check the current weather for her location in more detail, she clicks "Daily" from the homepage and is provided with detailed weather by the hour including temperature, humidity, wind speed, and precipitation. **[Diana]**
   
 * Anna wants to check the current weather for her location in more detail, she clicks "Weekly" from the homepage and is provided with detailed weather by the hour including temperature, humidity, wind speed, and precipitation. **[Daniil]**
 
