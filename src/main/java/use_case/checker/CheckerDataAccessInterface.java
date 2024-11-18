@@ -1,4 +1,4 @@
 package use_case.checker;
 
-public class CheckerDataAccessInterface {
+public interface CheckerDataAccessInterface {
 }

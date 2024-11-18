@@ -1,4 +1,4 @@
 package use_case.display_map;
 
-public class DisplayMapDataAccessInterface {
+public interface DisplayMapDataAccessInterface {
 }

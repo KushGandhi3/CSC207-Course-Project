@@ -1,4 +1,4 @@
 package use_case.display_map;
 
-public class DisplayMapOutputBoundary {
+public interface DisplayMapOutputBoundary {
 }

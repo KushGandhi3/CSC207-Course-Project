@@ -1,17 +1,15 @@
 package data_access;
 
-import entity.Weather;
-import entity.WeatherFactory;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.json.JSONObject;
-import use_case.display_home.DisplayHomeWeatherDataAccessInterface;
+
 import java.io.IOException;
 
 public class WeatherMapDataAccessObject {
 
-    public class WeatherDataAccessObject implements DisplayHomeWeatherDataAccessInterface {
+    public class WeatherDataAccessObject {
 
         //private static final String TEMPERATURE_LABEL = "temp";
         private static final String LOCATION = "TORONTO";
