@@ -12,16 +12,27 @@ public class FontManager {
     static {
         try {
             // Load Crimson Text font
-            InputStream crimsonStream = FontManager.class.getClassLoader().getResourceAsStream("fonts/CrimsonText-Regular.ttf");
-            if (crimsonStream == null) throw new IOException("Font file not found!");
-            crimsonText = Font.createFont(Font.TRUETYPE_FONT, crimsonStream).deriveFont(24f);
+            InputStream crimsonStream =
+                    FontManager.class.getClassLoader().getResourceAsStream(
+                            "fonts/crimson_text/CrimsonText-Regular.ttf");
+            if (crimsonStream == null) {
+                throw new IOException("Font file not found!");
+            }
+            crimsonText =
+                    Font.createFont(Font.TRUETYPE_FONT,
+                            crimsonStream).deriveFont(24f);
 
             // Load Inter font
-            InputStream interStream = FontManager.class.getClassLoader().getResourceAsStream("fonts/Inter-Regular.ttf");
-            if (interStream == null) throw new IOException("Font file not found!");
-            inter = Font.createFont(Font.TRUETYPE_FONT, interStream).deriveFont(24f);
-        } catch (FontFormatException | IOException e) {
-            e.printStackTrace();
+            InputStream interStream =
+                    FontManager.class.getClassLoader().getResourceAsStream(
+                            "fonts/inter/Inter-Regular.ttf");
+            if (interStream == null) {
+                throw new IOException("Font file not found!");
+            }
+            inter = Font.createFont(Font.TRUETYPE_FONT,
+                    interStream).deriveFont(24f);
+        } catch (FontFormatException | IOException exception) {
+            exception.printStackTrace();
             // Fallback to default fonts
             crimsonText = new Font("Serif", Font.PLAIN, 24);
             inter = new Font("SansSerif", Font.PLAIN, 24);
@@ -35,4 +46,5 @@ public class FontManager {
     public static Font getInter(float size) {
         return inter.deriveFont(size);
     }
+
 }

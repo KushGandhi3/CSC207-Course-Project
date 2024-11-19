@@ -1,4 +1,4 @@
-package resources;
+package constants;
 
 /**
  * All constants used throughout src.
@@ -13,5 +13,10 @@ public class Constants {
     public static final int FRIDAY = 4;
     public static final int SATURDAY = 5;
     public static final int SUNDAY = 6;
+
+    // default font sizes
+    public static final float TITLE_FONT_SIZE = 96;
+    public static final float INFORMATION_FONT_SIZE = 32;
+    public static final float SUBTITLE_FONT_SIZE = 20;
 
 }
