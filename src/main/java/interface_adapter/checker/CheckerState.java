@@ -2,12 +2,12 @@ package interface_adapter.checker;
 
 public class CheckerState {
 
-    private String location = "Toronto";
+    private String location = "";
     // private String tempOptions = "Below";
     // private int tempValue = 0;
-    private String weatherConditionOptions = "Clear";
-    private int startChecking = 0;
-    private int stopChecking = 1;
+    private String weatherConditionOptions = "";
+    private int startChecking;
+    private int stopChecking;
 
     // Getters
     public String getLocation() {return location;}

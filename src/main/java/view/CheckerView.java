@@ -5,19 +5,28 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.awt.FlowLayout;
 
 import interface_adapter.checker.CheckerController;
 import interface_adapter.checker.CheckerState;
 import interface_adapter.checker.CheckerViewModel;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JOptionPane;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.DocumentEvent;
+
 
 public class CheckerView extends JPanel implements ActionListener, PropertyChangeListener {
 
     private final String viewName = "Checker";
     private final CheckerViewModel checkerViewModel;
-    private final CheckerController controller;
+    private CheckerController checkerController;
 
     private final JTextField locationField = new JTextField(10);
     // private final JComboBox<String> tempOptions = new JComboBox<>(CheckerViewModel.TEMPERATURE_OPTIONS);
@@ -91,30 +100,103 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
         buttonPanel.add(checkButton);
         buttonPanel.add(cancelButton);
 
-        // set the fields and combo boxes to the default value
-        locationField.setText(checkerViewModel.getState().getLocation());
-        // tempOptions.setSelectedIndex(0);
-        // tempField.setText(String.valueOf(checkerViewModel.getState().getTempValue()));
-        weatherConditionOptions.setSelectedIndex(0);
-        startCheckingOptions.setSelectedIndex(0);
-        stopCheckingOptions.setSelectedIndex(0);
+        // setting default value
+        CheckerState checkerState = checkerViewModel.getState();
+        checkerState.setLocation("Toronto");
+        checkerState.setWeatherConditionOptions("Clear");
+        checkerState.setStartChecking(0);
+        checkerState.setStopChecking(1);
+        checkerViewModel.setState(checkerState);
 
         // add action listeners to the buttons
-
         checkButton.addActionListener(
-                // TODO add action listener
+                // this creates an anonymous subclass of ActionListener and instantiates it.
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(checkButton)) {
+                            final CheckerState currentState = checkerViewModel.getState();
+
+                            checkerController.execute(
+                                    currentState.getLocation(),
+                                    currentState.getWeatherConditionOptions(),
+                                    currentState.getStartChecking(),
+                                    currentState.getStopChecking()
+                            );
+
+                        }
+
+                    }
+                }
         );
 
         cancelButton.addActionListener(
-                // TODO add action listener
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(cancelButton)) {
+                            checkerController.switchToHomeView();
+                        }
+                    }
+                }
         );
 
-        addLocationListener();
-        // addTempOptionsListener();
-        // addTempValueListener();
-        addWeatherConditionListener();
-        addStartCheckingListener();
-        addStopCheckingListener();
+        locationField.getDocument().addDocumentListener(new DocumentListener() {
+
+            private void documentListenerHelper() {
+                final CheckerState currentState = checkerViewModel.getState();
+                currentState.setLocation(locationField.getText());
+                checkerViewModel.setState(currentState);
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+        }
+        );
+
+        weatherConditionOptions.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        final CheckerState currentState = checkerViewModel.getState();
+                        String selectedWeatherCondition = (String) weatherConditionOptions.getSelectedItem();
+                        currentState.setWeatherConditionOptions(selectedWeatherCondition);
+                        checkerViewModel.setState(currentState);
+                    }
+                }
+        );
+
+        startCheckingOptions.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        final CheckerState currentState = checkerViewModel.getState();
+                        int selectedStartChecking = (int) startCheckingOptions.getSelectedItem();
+                        currentState.setStartChecking(selectedStartChecking);
+                        checkerViewModel.setState(currentState);
+                    }
+                }
+        );
+
+        stopCheckingOptions.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        final CheckerState currentState = checkerViewModel.getState();
+                        int selectedStopChecking = (int) stopCheckingOptions.getSelectedItem();
+                        currentState.setStopChecking(selectedStopChecking);
+                        checkerViewModel.setState(currentState);
+                    }
+                }
+        );
 
         // main panel
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -127,48 +209,32 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
         this.add(buttonPanel);
     }
 
-    private void addLocationListener() {
-        // TODO add location listener
-    }
-
-    /*
-    private void addTempOptionsListener() {
-        // add temp options listener
-    }
-
-    private void addTempValueListener() {
-        // add temp value listener
-    }
-    */
-
-    private void addWeatherConditionListener() {
-        // TODO add weather condition listener
-    }
-
-    private void addStartCheckingListener() {
-        // TODO add start checking listener
-    }
-
-    private void addStopCheckingListener() {
-        // TODO add stop checking listener
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO implement actionPerformed
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        // TODO implement propertyChange
+        // TODO: Check this method
+        // get the new value from the event
+        final CheckerState state = (CheckerState) evt.getNewValue();
+        // check the weather condition results (condition met or not)
+        boolean isWeatherConditionMet = state.isWeatherConditionMet();
+
+        // display the message based on the weather condition results
+        if (isWeatherConditionMet) {
+            JOptionPane.showMessageDialog(this, "Weather condition is met.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Weather condition is not met.");
+        }
     }
 
     public String getViewName() {
         return viewName;
     }
 
-    public void setController(CheckerController controller) {
-        this.controller = controller;
+    public void setCheckerController(CheckerController checkerController) {
+        this.checkerController = checkerController;
     }
 }
 
