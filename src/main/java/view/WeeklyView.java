@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Component;
+import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -15,8 +16,7 @@ import javax.swing.event.DocumentListener;
 
 import interface_adapter.display_weekly.DisplayWeeklyController;
 import interface_adapter.display_weekly.DisplayWeeklyViewModel;
-
-import resources.Constants;
+import constants.Constants;
 
 /**
  * The view for when the user is in the weekly forecast use-case.
@@ -61,14 +61,13 @@ public class WeeklyView extends JPanel implements PropertyChangeListener {
         // absolute positioning
         this.setLayout(null);
 
-        Font customFont = new Font("Crimson")
-
         // city label
         this.city = new JLabel();
-        city.setAlignmentX(Component.CENTER_ALIGNMENT);
+        Font crimsonText =
+                FontManager.getCrimsonText(Constants.TITLE_FONT_SIZE);
+        this.city.setFont(crimsonText);
+        this.city.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        this.temperatureForecasts[Constants.MONDAY] = new JLabel("5 C");
-        this.conditionForecasts[Constants.MONDAY] = new JLabel("Cloudy");
 
         mondayButton = new JButton("");
         tuesdayButton = new JButton("");
