@@ -22,24 +22,23 @@ public class WeeklyView extends JPanel implements PropertyChangeListener {
     private DisplayWeeklyController displayWeeklyController;
 
     // weekday temperatures
-    private JLabel[] temperatureForecasts = new JLabel[7];
+    private final JLabel[] temperatureForecasts;
     // weekday conditions (i.e. sunny, cloudy, rainy)
-    private JLabel[] conditionForecasts = new JLabel[7];
+    private final JLabel[] conditionForecasts;
     // weekday feels like temperatures
-    private JLabel[] feelsLikeForecasts = new JLabel[7];
+    private final JLabel[] feelsLikeForecasts;
     // weekday wind speeds
-    private JLabel[] windSpeedForecasts = new JLabel[7];
+    private final JLabel[] windSpeedForecasts;
     // weekday precipitation forecasts
-    private JLabel[] precipitationForecasts = new JLabel[7];
+    private final JLabel[] precipitationForecasts;
     // weekday UV indices
-    private JLabel[] uvIndexForecasts = new JLabel[7];
+    private final JLabel[] uvIndexForecasts;
     // weekday air quality forecasts
-    private JLabel[] airQualityForecasts = new JLabel[7];
+    private final JLabel[] airQualityForecasts;
     // weekday humidity forecasts
-    private JLabel[] humidityForecasts = new JLabel[7];
+    private final JLabel[] humidityForecasts;
 
-    private JLabel city;
-
+    private final JLabel city;
     private final JButton mondayButton;
     private final JButton tuesdayButton;
     private final JButton wednesdayButton;

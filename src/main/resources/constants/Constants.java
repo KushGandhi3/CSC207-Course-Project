@@ -1,7 +1,7 @@
 package resources;
 
 /**
- * All constants used in the Display Weekly Use-Case.
+ * All constants used throughout src.
  */
 public class Constants {
 
