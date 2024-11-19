@@ -7,22 +7,30 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-public class WeatherMapDataAccessObject {
+import entity.map.MapFactory;
+import entity.map.Map;
+import use_case.display_map.DisplayMapDataAccessInterface;
 
-    public class WeatherDataAccessObject {
+public class WeatherMapDataAccessObject implements DisplayMapDataAccessInterface {
 
-        //private static final String TEMPERATURE_LABEL = "temp";
-        private static final String LOCATION = "TORONTO";
-        private static final String API_KEY = "YOUR_API_KEY";
-        private static final String API_URL = "https://maps.openweathermap.org/maps/2.0/weather/1h/{op}/{z}/{x}/{y}?appid={API key}";
-        private final WeatherFactory weatherFactory;
+    //private static final String TEMPERATURE_LABEL = "temp";
+    private static final String LOCATION = "";
+    private static final String API_KEY = "YOUR_API_KEY";
+    private static final String GEOCODING_API_URL = "http://api" +
+            ".openweathermap.org/geo/1" +
+            ".0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}";
+    private final MapFactory mapFactory;
 
-        public WeatherDataAccessObject( weatherFactory) {
-            this.weatherFactory = weatherFactory;
+    //http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
+
+
+        public WeatherMapDataAccessObject(MapFactory mapFactory) {
+            this.mapFactory = mapFactory;
         }
 
         @Override
-        public Weather getWeatherData() {
+        public Map getMap(String city) {
+
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
                     .url(API_URL + "?lat=" + TORONTO_LATITUDE + "&lon=" + TORONTO_LONGITUDE + "&units=metric&exclude=minutely,hourly,daily,alerts&appid=" + API_KEY)
