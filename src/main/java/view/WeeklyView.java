@@ -1,11 +1,17 @@
 package view;
 
+import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import interface_adapter.display_weekly.DisplayWeeklyController;
 import interface_adapter.display_weekly.DisplayWeeklyViewModel;
@@ -49,14 +55,17 @@ public class WeeklyView extends JPanel implements PropertyChangeListener {
     private final JButton homeButton;
 
     public WeeklyView(DisplayWeeklyViewModel displayWeeklyViewModel) {
-
         this.displayWeeklyViewModel = displayWeeklyViewModel;
+        this.displayWeeklyViewModel.addPropertyChangeListener(this);
 
-        // Set the layout
-        this.setLayout(null); // Absolute positioning
+        // absolute positioning
+        this.setLayout(null);
 
-        // Create the city label
-        this.city = new JLabel("Toronto");
+        Font customFont = new Font("Crimson")
+
+        // city label
+        this.city = new JLabel();
+        city.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         this.temperatureForecasts[Constants.MONDAY] = new JLabel("5 C");
         this.conditionForecasts[Constants.MONDAY] = new JLabel("Cloudy");
