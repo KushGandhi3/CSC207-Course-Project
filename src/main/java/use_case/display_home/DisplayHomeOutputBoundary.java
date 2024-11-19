@@ -1,4 +1,4 @@
 package use_case.display_home;
 
-public class DisplayHomeOutputBoundary {
+public interface DisplayHomeOutputBoundary {
 }

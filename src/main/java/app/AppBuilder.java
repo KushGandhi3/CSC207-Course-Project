@@ -7,20 +7,10 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 // Data Access Objects
-import data_access.WeatherDataAccessObject;
-import data_access.OutfitDataAccessObject;
 
 // View Models Manager
-import interface_adapter.ViewManagerModel;
 
 // Home Page
-import use_case.display_home.DisplayHomeDataAccessInterface;
-import use_case.display_home.DisplayHomeInteractor;
-import use_case.display_home.DisplayHomeInputBoundary;
-import use_case.display_home.DisplayHomeOutputBoundary;
-import interface_adapter.display_home.DisplayHomeController;
-import interface_adapter.display_home.DisplayHomePresenter;
-import interface_adapter.display_home.DisplayHomeState;
 import interface_adapter.display_home.DisplayHomeViewModel;
 import view.HomeView;
 
