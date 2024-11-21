@@ -11,4 +11,5 @@ public class DisplayHomeViewModel extends ViewModel<DisplayHomeState> {
         super("Home");
         this.setState(new DisplayHomeState());
     }
+
 }

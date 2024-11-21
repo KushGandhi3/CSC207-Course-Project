@@ -1,7 +1,7 @@
 package interface_adapter.display_home;
 
 /**
- * The state for the Home View Model
+ * The state for the Home View Model Use Case.
  */
 
 public class DisplayHomeState {
@@ -51,4 +51,5 @@ public class DisplayHomeState {
     private void setCondition(String condition) {
         this.condition = condition;
     }
+
 }
