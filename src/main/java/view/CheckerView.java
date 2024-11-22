@@ -108,7 +108,7 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
         checkerState.setStopChecking(1);
         checkerViewModel.setState(checkerState);
 
-        // add action listeners to the buttons
+        // add action listeners to the check button
         checkButton.addActionListener(
                 // this creates an anonymous subclass of ActionListener and instantiates it.
                 new ActionListener() {
@@ -129,6 +129,7 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
                 }
         );
 
+        // add action listeners to the cancel button
         cancelButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
@@ -139,6 +140,7 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
                 }
         );
 
+        // add document listeners to the location field
         locationField.getDocument().addDocumentListener(new DocumentListener() {
 
             private void documentListenerHelper() {
@@ -165,6 +167,7 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
         }
         );
 
+        // add action listeners to the temperature options
         weatherConditionOptions.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
@@ -176,6 +179,7 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
                 }
         );
 
+        // add action listeners to the start and stop checking options
         startCheckingOptions.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
@@ -187,6 +191,7 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
                 }
         );
 
+        // add action listeners to the stop checking options
         stopCheckingOptions.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
