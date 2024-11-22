@@ -1,6 +1,6 @@
 package data_access.weekly_weather;
 
-import entity.weekly_weather.WeatherData;
+import entity.weekly_weather.WeeklyWeatherData;
 import exception.APICallException;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -83,7 +83,7 @@ public class WeeklyWeatherDataAccessObject implements DisplayWeeklyDataAccessInt
                 .replaceFirst("\\{API key}", API_KEY);
     }
     @Override
-    public WeatherData getWeatherData(String city) {
+    public WeeklyWeatherData getWeatherData(String city) {
         return null;
     }
 }

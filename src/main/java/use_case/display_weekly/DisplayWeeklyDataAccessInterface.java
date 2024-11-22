@@ -1,6 +1,6 @@
 package use_case.display_weekly;
 
-import entity.weekly_weather.WeatherData;
+import entity.weekly_weather.WeeklyWeatherData;
 
 /**
  * DAO Interface for the Weekly Data use-case.
@@ -12,6 +12,6 @@ public interface DisplayWeeklyDataAccessInterface {
      * @param city the city to grab weather information
      * @return the WeatherData object with current weather information
      */
-    WeatherData getWeatherData(String city);
+    WeeklyWeatherData getWeatherData(String city);
 
 }
