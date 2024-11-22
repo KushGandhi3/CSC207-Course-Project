@@ -5,6 +5,9 @@ package constants;
  */
 public class Constants {
 
+    // hold the number of days in a week
+    public static final int WEEK_SIZE = 7;
+
     // weekday indices for arrays
     public static final int MONDAY = 0;
     public static final int TUESDAY = 1;

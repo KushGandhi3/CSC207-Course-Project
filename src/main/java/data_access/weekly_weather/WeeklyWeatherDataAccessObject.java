@@ -1,21 +1,23 @@
-package data_access;
+package data_access.weekly_weather;
 
+import entity.weekly_weather.WeatherData;
+import exception.APICallException;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.json.JSONArray;
 import org.json.JSONObject;
+import use_case.display_weekly.DisplayWeeklyDataAccessInterface;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import org.json.JSONArray;
-import java.io.IOException;
-import exception.APICallException;
 
 /**
- * Finds geo-coordinates of a city given a String name using the OpenWeather
- * Geocoding API.
+ * The DAO for weather data.
  */
-public class GeocodingDataAccessObject {
+public class WeeklyWeatherDataAccessObject implements DisplayWeeklyDataAccessInterface {
+
 
     // limit indicates the number of matching queries that will be returned by
     // the API
@@ -63,7 +65,7 @@ public class GeocodingDataAccessObject {
 
         } catch (IOException exception) {
             exception.printStackTrace();
-            throw new APICallException("Failed to get city geo-coordinates",
+            throw new APICallException("Failed to get geo-coordinates for " + city,
                     exception);
         }
     }
@@ -80,5 +82,8 @@ public class GeocodingDataAccessObject {
                 .replaceFirst("\\{limit}", LIMIT.toString())
                 .replaceFirst("\\{API key}", API_KEY);
     }
-
+    @Override
+    public WeatherData getWeatherData(String city) {
+        return null;
+    }
 }

@@ -1,4 +1,4 @@
-package data_access;
+package data_access.map;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
