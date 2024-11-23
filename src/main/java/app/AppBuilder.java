@@ -11,7 +11,7 @@ import javax.swing.WindowConstants;
 // View Models Manager
 
 // Home Page
-import interface_adapter.checker.CheckerViewModel;
+import interface_adapter.display_checker.DisplayCheckerViewModel;
 import interface_adapter.display_home.DisplayHomeViewModel;
 import view.CheckerView;
 import view.HomeView;
@@ -71,7 +71,7 @@ public class AppBuilder {
     private final JPanel cardPanel = new JPanel(cardLayout);
 
     private CheckerView checkerView;
-    private CheckerViewModel checkerViewModel;
+    private DisplayCheckerViewModel displayCheckerViewModel;
 
     public JPanel buildViews() {
         cardPanel.add(new HomeView(new DisplayHomeViewModel()), "Home");
@@ -84,8 +84,8 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addCheckerView() {
-        checkerViewModel = new CheckerViewModel();
-        checkerView = new CheckerView(checkerViewModel);
+        displayCheckerViewModel = new DisplayCheckerViewModel();
+        checkerView = new CheckerView(displayCheckerViewModel);
         cardPanel.add(checkerView, checkerView.getViewName());
         return this;
     }
