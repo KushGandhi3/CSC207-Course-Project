@@ -7,21 +7,13 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 // Data Access Objects
-import data_access.WeatherDataAccessObject;
-import data_access.OutfitDataAccessObject;
 
 // View Models Manager
-import interface_adapter.ViewManagerModel;
 
 // Home Page
-import use_case.display_home.DisplayHomeDataAccessInterface;
-import use_case.display_home.DisplayHomeInteractor;
-import use_case.display_home.DisplayHomeInputBoundary;
-import use_case.display_home.DisplayHomeOutputBoundary;
-import interface_adapter.display_home.DisplayHomeController;
-import interface_adapter.display_home.DisplayHomePresenter;
-import interface_adapter.display_home.DisplayHomeState;
+import interface_adapter.display_checker.DisplayCheckerViewModel;
 import interface_adapter.display_home.DisplayHomeViewModel;
+import view.CheckerView;
 import view.HomeView;
 
 //// Daily Page
@@ -68,16 +60,6 @@ import view.HomeView;
 //import interface_adapter.analyze_outfit.AnaylzeOutfitViewModel;
 //import view.AnalyzeOutfitView;
 //
-//// Map Page
-//import use_case.display_map.DisplayMapDataAccessInterface;
-//import use_case.display_map.DisplayMapInteractor;
-//import use_case.display_map.DisplayMapInputBoundary;
-//import use_case.display_map.DisplayMapOutputBoundary;
-//import interface_adapter.display_map.DisplayMapController;
-//import interface_adapter.display_map.DisplayMapPresenter;
-//import interface_adapter.display_map.DisplayMapState;
-//import interface_adapter.display_map.DisplayMapViewModel;
-//import view.MapView;
 
 /**
  * The AppBuilder class is responsible for building the application.
@@ -88,10 +70,24 @@ public class AppBuilder {
     private final CardLayout cardLayout = new CardLayout();
     private final JPanel cardPanel = new JPanel(cardLayout);
 
+    private CheckerView checkerView;
+    private DisplayCheckerViewModel displayCheckerViewModel;
+
     public JPanel buildViews() {
         cardPanel.add(new HomeView(new DisplayHomeViewModel()), "Home");
         // TODO: Add the other views here
         return cardPanel;
+    }
+
+    /**
+     * Adds the Checker View to the application
+     * @return this builder
+     */
+    public AppBuilder addCheckerView() {
+        displayCheckerViewModel = new DisplayCheckerViewModel();
+        checkerView = new CheckerView(displayCheckerViewModel);
+        cardPanel.add(checkerView, checkerView.getViewName());
+        return this;
     }
 
     /**

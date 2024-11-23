@@ -1,7 +1,7 @@
 package use_case.display_home;
 
 /**
- * Teh output boundary for the DisplayHome Use Case.
+ * The output boundary for the DisplayHome Use Case.
  */
 public interface DisplayHomeOutputBoundary {
     /**

@@ -1,9 +1,12 @@
 package constants;
 
 /**
- * All constants used in the Display Weekly Use-Case.
+ * All constants used throughout src.
  */
 public class Constants {
+
+    // hold the number of days in a week
+    public static final int WEEK_SIZE = 7;
 
     // weekday indices for arrays
     public static final int MONDAY = 0;
@@ -13,5 +16,10 @@ public class Constants {
     public static final int FRIDAY = 4;
     public static final int SATURDAY = 5;
     public static final int SUNDAY = 6;
+
+    // default font sizes
+    public static final float TITLE_FONT_SIZE = 96;
+    public static final float INFORMATION_FONT_SIZE = 32;
+    public static final float SUBTITLE_FONT_SIZE = 20;
 
 }
