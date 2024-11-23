@@ -1,5 +1,13 @@
 package data_access.weather;
 
-// TODO: Implement the InMemoryWeatherDataAccessObject class [TEAM]
-public class InMemoryWeatherDataAccessObject {
+import entity.weekly_weather.WeatherData;
+import use_case.display_weekly.DisplayWeeklyDataAccessInterface;
+
+public class InMemoryWeatherDataAccessObject implements DisplayWeeklyDataAccessInterface {
+
+    @Override
+    public WeatherData getWeatherData(String city) {
+        return null;
+    }
+
 }
