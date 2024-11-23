@@ -17,6 +17,8 @@ import use_case.display_hourly.DisplayHourlyDAI;
 import use_case.display_home.DisplayHomeDAI;
 import use_case.display_daily.DisplayDailyDAI;
 
+import static data_access.geocoding.GeocodingDAO.LIMIT;
+
 /**
  * The DAO for the weather data used by all use cases.
  * TODO: This class is not complete. It also contains numerous checkstyle errors.
@@ -26,8 +28,12 @@ public class WeatherDAO implements DisplayHomeDAI,
         DisplayHourlyDAI,
         DisplayDailyDAI {
 
-    private static final String API_KEY = "";
-    private static final String API_URL = "https://api.openweathermap.org/data/3.0/onecall";
+    // weather data to be excluded from API response (current,minutely,
+    // hourly,daily,alerts)
+    private static final String EXCLUDE = "minutely,alerts";
+    private static final String API_KEY = System.getenv("OPEN_WEATHER_API_KEY");
+    private static final String API_URL = "https://api.openweathermap.org/data/" +
+            "3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}";
     private final WeatherDataFactory weatherDataFactory;
 
     public WeatherDAO(WeatherDataFactory weatherDataFactory) {
@@ -43,17 +49,24 @@ public class WeatherDAO implements DisplayHomeDAI,
     @Override
     public WeatherData getWeatherData(String location) throws APICallException {
 
-        final Map<String, Double> coordinates = GeocodingDAO.getCoordinates(location);
+        final Map<String, Double> coordinates =
+                GeocodingDAO.getCoordinates(location);
 
-        final OkHttpClient client = new OkHttpClient().newBuilder().build();
-        final Request request = new Request.Builder()
-                .url(API_URL + "?lat=" + coordinates.get("lat") + "&lon=" + coordinates.get("long")
-                        + "&units=metric&exclude=minutely,hourly,daily,alerts&appid=" + API_KEY)
+        final String url = buildAPIURL(coordinates);
+
+        // build http request
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
                 .build();
-
+        // execute request
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                throw new APICallException("API call unsuccessful! " + response);
+                throw new IOException("API call unsuccessful! " + response);
+            }
+            if (response.body() == null) {
+                throw new IOException("API returned no response! Weather data" +
+                        " not found!");
             }
 
             final JSONObject jsonResponse = new JSONObject(response.body().string());
@@ -79,7 +92,26 @@ public class WeatherDAO implements DisplayHomeDAI,
                     highTemperature, lowTemperature);
         }
         catch (IOException exception) {
-            throw new APICallException("Failed to get daily weather data", exception);
+            exception.printStackTrace();
+            throw new APICallException("Failed to get weather data for " + location + "!", exception);
         }
     }
+
+    /**
+     * Builds the API URL for grabbing the weather in the city.
+     * @param coordinates the coordinates of the city that weather data
+     *                    will be requested for.
+     * @return the OpenWeather Weather API URL for requesting
+     * weather for the city.
+     */
+    private static String buildAPIURL(Map<String, Double> coordinates) {
+        String latitude = String.valueOf(coordinates.get("latitude"));
+        String longitude = String.valueOf(coordinates.get("longitude"));
+
+        return API_URL.replaceFirst("\\{lat}", latitude)
+                .replaceFirst("\\{lon}", longitude)
+                .replaceFirst("\\{part}", EXCLUDE)
+                .replaceFirst("\\{API key}", API_KEY);
+    }
+
 }
