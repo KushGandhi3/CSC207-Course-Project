@@ -740,7 +740,7 @@
         <module name="AbbreviationAsWordInName">
             <property name="ignoreFinal" value="false"/>
             <property name="allowedAbbreviationLength" value="0"/>
-            <property name="allowedAbbreviations" value="DB,AST,HTML,ID,JSON,CSV"/>
+            <property name="allowedAbbreviations" value="DB,AST,HTML,ID,JSON,CSV, DAI, DAO"/>
         </module>
         <module name="AbstractClassName"/>
         <module name="ClassTypeParameterName"/>
