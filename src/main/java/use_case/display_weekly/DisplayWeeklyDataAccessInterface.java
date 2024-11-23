@@ -1,17 +1,18 @@
 package use_case.display_weekly;
 
-import entity.weekly_weather.WeatherData;
+import entity.weather_data.WeatherData;
+import exception.APICallException;
 
 /**
- * DAO Interface for the Weekly Data use-case.
+ * The interface of the DAO for the weather data used by all use cases.
  */
 public interface DisplayWeeklyDataAccessInterface {
 
     /**
-     * Return the WeatherData object with the current weather information.
-     * @param city the city to grab weather information
-     * @return the WeatherData object with current weather information
+     * Get Weather data from the API.
+     * @param location the name of the location.
+     * @return the weather data.
+     * @throws APICallException if the request fails.
      */
-    WeatherData getWeatherData(String city);
-
+    WeatherData getWeatherData(String location) throws APICallException;
 }

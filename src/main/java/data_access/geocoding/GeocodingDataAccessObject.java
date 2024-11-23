@@ -30,7 +30,7 @@ public class GeocodingDataAccessObject {
      * @param city the name of the city
      * @return coordinates of the city
      */
-    public Map<String, Double> getCoordinates(String city) throws APICallException {
+    public static Map<String, Double> getCoordinates(String city) throws APICallException {
         String url = buildAPIURL(city);
 
         // Build http request
@@ -74,7 +74,7 @@ public class GeocodingDataAccessObject {
      * @return the OpenWeather Geocoding API URL for requesting
      * geo-coordinates of the city
      */
-    private String buildAPIURL(String city) {
+    private static String buildAPIURL(String city) {
         return GEOCODING_API_URL
                 .replaceFirst("\\{city name}", city)
                 .replaceFirst("\\{limit}", LIMIT.toString())
