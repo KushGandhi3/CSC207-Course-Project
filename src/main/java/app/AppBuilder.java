@@ -11,7 +11,9 @@ import javax.swing.WindowConstants;
 // View Models Manager
 
 // Home Page
+import interface_adapter.checker.CheckerViewModel;
 import interface_adapter.display_home.DisplayHomeViewModel;
+import view.CheckerView;
 import view.HomeView;
 
 //// Daily Page
@@ -58,16 +60,6 @@ import view.HomeView;
 //import interface_adapter.analyze_outfit.AnaylzeOutfitViewModel;
 //import view.AnalyzeOutfitView;
 //
-//// Map Page
-//import use_case.display_map.DisplayMapDataAccessInterface;
-//import use_case.display_map.DisplayMapInteractor;
-//import use_case.display_map.DisplayMapInputBoundary;
-//import use_case.display_map.DisplayMapOutputBoundary;
-//import interface_adapter.display_map.DisplayMapController;
-//import interface_adapter.display_map.DisplayMapPresenter;
-//import interface_adapter.display_map.DisplayMapState;
-//import interface_adapter.display_map.DisplayMapViewModel;
-//import view.MapView;
 
 /**
  * The AppBuilder class is responsible for building the application.
@@ -78,10 +70,24 @@ public class AppBuilder {
     private final CardLayout cardLayout = new CardLayout();
     private final JPanel cardPanel = new JPanel(cardLayout);
 
+    private CheckerView checkerView;
+    private CheckerViewModel checkerViewModel;
+
     public JPanel buildViews() {
         cardPanel.add(new HomeView(new DisplayHomeViewModel()), "Home");
         // TODO: Add the other views here
         return cardPanel;
+    }
+
+    /**
+     * Adds the Checker View to the application
+     * @return this builder
+     */
+    public AppBuilder addCheckerView() {
+        checkerViewModel = new CheckerViewModel();
+        checkerView = new CheckerView(checkerViewModel);
+        cardPanel.add(checkerView, checkerView.getViewName());
+        return this;
     }
 
     /**
