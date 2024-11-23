@@ -2,19 +2,12 @@ package use_case.checker;
 
 public interface CheckerOutputBoundary {
     /**
-     * Prepare the success view with the given exist string.
-     * @param exist the string to display in the success view
+     * Prepare the condition met view with the given exist string.
      */
-    void prepareCondMetView(String exist);
+    void prepareCondMetView();
 
     /**
-     * Prepare the fail view with the given nonexist string.
-     * @param nonexist the string to display in the fail view
+     * Prepare the condition not met view with the given nonexist string.
      */
-    void prepareCondNotMetView(String nonexist);
-
-    /**
-     * Switch to the home view.
-     */
-    void switchToHomeView();
+    void prepareCondNotMetView();
 }
