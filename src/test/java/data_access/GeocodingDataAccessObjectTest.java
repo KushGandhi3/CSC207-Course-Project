@@ -1,7 +1,5 @@
 package data_access;
 
-import data_access.GeocodingDataAccessObject;
-
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

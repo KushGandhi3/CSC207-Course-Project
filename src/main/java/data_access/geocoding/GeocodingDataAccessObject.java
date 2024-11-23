@@ -1,4 +1,4 @@
-package data_access;
+package data_access.geocoding;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -63,7 +63,7 @@ public class GeocodingDataAccessObject {
 
         } catch (IOException exception) {
             exception.printStackTrace();
-            throw new APICallException("Failed to get city geo-coordinates",
+            throw new APICallException("Failed to get geo-coordinates for " + city,
                     exception);
         }
     }

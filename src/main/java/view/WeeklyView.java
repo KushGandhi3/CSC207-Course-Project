@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Component;
+import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -13,10 +14,10 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import interface_adapter.display_weekly.DisplayWeeklyState;
 import interface_adapter.display_weekly.DisplayWeeklyController;
 import interface_adapter.display_weekly.DisplayWeeklyViewModel;
-
-import resources.Constants;
+import constants.Constants;
 
 /**
  * The view for when the user is in the weekly forecast use-case.
@@ -45,13 +46,16 @@ public class WeeklyView extends JPanel implements PropertyChangeListener {
     private final JLabel[] humidityForecasts;
 
     private final JLabel city;
-    private final JButton mondayButton;
-    private final JButton tuesdayButton;
-    private final JButton wednesdayButton;
-    private final JButton thursdayButton;
-    private final JButton fridayButton;
-    private final JButton saturdayButton;
-    private final JButton sundayButton;
+
+    // days of the week
+    private final JButton dayOne;
+    private final JButton dayTwo;
+    private final JButton dayThree;
+    private final JButton dayFour;
+    private final JButton dayFive;
+    private final JButton daySix;
+    private final JButton daySeven;
+
     private final JButton homeButton;
 
     public WeeklyView(DisplayWeeklyViewModel displayWeeklyViewModel) {
@@ -61,22 +65,24 @@ public class WeeklyView extends JPanel implements PropertyChangeListener {
         // absolute positioning
         this.setLayout(null);
 
-        Font customFont = new Font("Crimson")
-
         // city label
         this.city = new JLabel();
-        city.setAlignmentX(Component.CENTER_ALIGNMENT);
+        Font crimsonText =
+                FontManager.getCrimsonText(Constants.TITLE_FONT_SIZE);
+        this.city.setFont(crimsonText);
+        this.city.setAlignmentX(Component.CENTER_ALIGNMENT);
+        this.city.setAlignmentY(55);
 
-        this.temperatureForecasts[Constants.MONDAY] = new JLabel("5 C");
-        this.conditionForecasts[Constants.MONDAY] = new JLabel("Cloudy");
+        //
+        this.dayOne = new JButton("");
 
-        mondayButton = new JButton("");
-        tuesdayButton = new JButton("");
-        wednesdayButton = new JButton("");
-        thursdayButton = new JButton("");
-        fridayButton = new JButton("");
-        saturdayButton = new JButton("");
-        sundayButton = new JButton("");
+
+        dayTwo = new JButton();
+        dayThree = new JButton("");
+        dayFour = new JButton("");
+        dayFive = new JButton("");
+        daySix = new JButton("");
+        daySeven = new JButton("");
         homeButton = new JButton("");
 
         // Add the components to the view
@@ -97,6 +103,11 @@ public class WeeklyView extends JPanel implements PropertyChangeListener {
         city.setBounds(10, 10, 100, 20);
         temperatureForecasts[Constants.MONDAY].setBounds(10, 30, 100, 20);
         conditionForecasts[Constants.MONDAY].setBounds(10, 90, 100, 20);
+    }
+
+    private void setFields(DisplayWeeklyState state) {
+        usernameInputField.setText(state.get());
+        passwordInputField.setText(state.getPassword());
     }
 
     @Override
