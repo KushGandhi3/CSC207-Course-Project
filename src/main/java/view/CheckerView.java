@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.awt.FlowLayout;
+import java.util.Objects;
 
 import interface_adapter.checker.CheckerController;
 import interface_adapter.checker.CheckerState;
@@ -108,7 +109,7 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
         checkerState.setStopChecking(1);
         checkerViewModel.setState(checkerState);
 
-        // add action listeners to the buttons
+        // add action listeners to the check button
         checkButton.addActionListener(
                 // this creates an anonymous subclass of ActionListener and instantiates it.
                 new ActionListener() {
@@ -129,6 +130,7 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
                 }
         );
 
+        // add action listeners to the cancel button
         cancelButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
@@ -139,6 +141,7 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
                 }
         );
 
+        // add document listeners to the location field
         locationField.getDocument().addDocumentListener(new DocumentListener() {
 
             private void documentListenerHelper() {
@@ -165,6 +168,7 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
         }
         );
 
+        // add action listeners to the temperature options
         weatherConditionOptions.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
@@ -176,6 +180,7 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
                 }
         );
 
+        // add action listeners to the start and stop checking options
         startCheckingOptions.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
@@ -187,6 +192,7 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
                 }
         );
 
+        // add action listeners to the stop checking options
         stopCheckingOptions.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
@@ -219,13 +225,15 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
         // get the new value from the event
         final CheckerState state = (CheckerState) evt.getNewValue();
         // check the weather condition results (condition met or not)
-        boolean isWeatherConditionMet = state.isWeatherConditionMet();
+        String isWeatherConditionMet = state.getMessage();
 
         // display the message based on the weather condition results
-        if (isWeatherConditionMet) {
+        if (Objects.equals(isWeatherConditionMet, "exist")) {
             JOptionPane.showMessageDialog(this, "Weather condition is met.");
-        } else {
+            state.setMessage(null);
+        } else if (Objects.equals(isWeatherConditionMet, "nonexist")) {
             JOptionPane.showMessageDialog(this, "Weather condition is not met.");
+            state.setMessage(null);
         }
     }
 

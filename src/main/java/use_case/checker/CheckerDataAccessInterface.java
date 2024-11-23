@@ -16,5 +16,5 @@ public interface CheckerDataAccessInterface {
      * @throws IOException if the request fails.
      */
     WeatherData getWeatherData(String location) throws IOException;
-}
+
 
