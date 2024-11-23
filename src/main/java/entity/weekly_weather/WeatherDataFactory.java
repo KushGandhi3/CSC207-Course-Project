@@ -1,4 +1,4 @@
-package entity.weather_data;
+package entity.weekly_weather;
 
 /**
  * The factory for the weather data.
