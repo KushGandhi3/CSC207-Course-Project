@@ -1,9 +1,8 @@
 package interface_adapter.display_home;
 
 /**
- * The state for the Home View Model
+ * The state for the Home View Model Use Case.
  */
-
 public class DisplayHomeState {
 
     private String city = "";
@@ -12,43 +11,45 @@ public class DisplayHomeState {
     private String lowTemperature = "";
     private String condition = "";
 
-    private String getCity() {
+    // Public getter methods
+    public String getCity() {
         return this.city;
     }
 
-    private String getTemperature() {
+    public String getTemperature() {
         return this.temperature;
     }
 
-    private String getHighTemperature() {
+    public String getHighTemperature() {
         return this.highTemperature;
     }
 
-    private String getLowTemperature() {
+    public String getLowTemperature() {
         return this.lowTemperature;
     }
 
-    private String getCondition() {
+    public String getCondition() {
         return this.condition;
     }
 
-    private void setCity(String city) {
+    // Public setter methods
+    public void setCity(String city) {
         this.city = city;
     }
 
-    private void setTemperature(String temperature) {
+    public void setTemperature(String temperature) {
         this.temperature = temperature;
     }
 
-    private void setHighTemperature(String highTemperature) {
+    public void setHighTemperature(String highTemperature) {
         this.highTemperature = highTemperature;
     }
 
-    private void setLowTemperature(String lowTemperature) {
+    public void setLowTemperature(String lowTemperature) {
         this.lowTemperature = lowTemperature;
     }
 
-    private void setCondition(String condition) {
+    public void setCondition(String condition) {
         this.condition = condition;
     }
 }
