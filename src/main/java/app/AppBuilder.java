@@ -60,16 +60,6 @@ import view.HomeView;
 //import interface_adapter.analyze_outfit.AnaylzeOutfitViewModel;
 //import view.AnalyzeOutfitView;
 //
-//// Map Page
-//import use_case.display_map.DisplayMapDataAccessInterface;
-//import use_case.display_map.DisplayMapInteractor;
-//import use_case.display_map.DisplayMapInputBoundary;
-//import use_case.display_map.DisplayMapOutputBoundary;
-//import interface_adapter.display_map.DisplayMapController;
-//import interface_adapter.display_map.DisplayMapPresenter;
-//import interface_adapter.display_map.DisplayMapState;
-//import interface_adapter.display_map.DisplayMapViewModel;
-//import view.MapView;
 
 /**
  * The AppBuilder class is responsible for building the application.
