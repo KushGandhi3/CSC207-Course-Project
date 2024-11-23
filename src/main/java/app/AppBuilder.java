@@ -11,7 +11,9 @@ import javax.swing.WindowConstants;
 // View Models Manager
 
 // Home Page
+import interface_adapter.checker.CheckerViewModel;
 import interface_adapter.display_home.DisplayHomeViewModel;
+import view.CheckerView;
 import view.HomeView;
 
 //// Daily Page
@@ -78,10 +80,24 @@ public class AppBuilder {
     private final CardLayout cardLayout = new CardLayout();
     private final JPanel cardPanel = new JPanel(cardLayout);
 
+    private CheckerView checkerView;
+    private CheckerViewModel checkerViewModel;
+
     public JPanel buildViews() {
         cardPanel.add(new HomeView(new DisplayHomeViewModel()), "Home");
         // TODO: Add the other views here
         return cardPanel;
+    }
+
+    /**
+     * Adds the Checker View to the application
+     * @return this builder
+     */
+    public AppBuilder addCheckerView() {
+        checkerViewModel = new CheckerViewModel();
+        checkerView = new CheckerView(checkerViewModel);
+        cardPanel.add(checkerView, checkerView.getViewName());
+        return this;
     }
 
     /**
