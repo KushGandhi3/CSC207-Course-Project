@@ -1,7 +1,5 @@
 package use_case.display_checker;
 
-import entity.weather_data.WeatherDataFactory;
-
 /**
  * Tge Checker Interactor class.
  */
