@@ -6,80 +6,104 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 
-import org.opencv.videoio.VideoCapture;
-
-import interface_adapter.display_summarization.SummarizationState;
-import interface_adapter.display_summarization.SummarizationViewModel;
+import interface_adapter.display_summarization.DisplaySummarizationController;
+import interface_adapter.display_summarization.DisplaySummarizationState;
+import interface_adapter.display_summarization.DisplaySummarizationViewModel;
 
 /*
  * The View for when the user wants to analyze an outfit.
  */
 public class SummarizationView extends JPanel implements PropertyChangeListener, ActionListener {
 
-    private final String viewName = "Analyze Outfit";
-    private final SummarizationViewModel analyzeOutfitViewModel;
+    // View Model
+    private final DisplaySummarizationViewModel viewModel;
 
+    // View Name
+    public final String viewName = "Summarization View";
+
+    // Title Label
     private final JLabel titleLabel;
-    private final JLabel webcamLabel;
 
-    private final JButton analyzeButton;
+    // Weather Summary
+    private final JLabel weatherSummaryLabel;
+    private final JLabel weatherSummaryText;
+
+    // Outfit Suggestions
+    private final JLabel outfitSuggestionsLabel;
+    private final JLabel outfitSuggestionsText;
+
+    // Travel Advice
+    private final JLabel travelAdviceLabel;
+    private final JLabel travelAdviceText;
+
+    // Back Button
     private final JButton backButton;
 
-    private final VideoCapture capture;
+    // Refresh Button
+    private final JButton refreshButton;
 
-    public SummarizationView(SummarizationViewModel analyzeOutfitViewModel) {
+    public SummarizationView(DisplaySummarizationViewModel viewModel) {
+        this.viewModel = viewModel;
+        this.viewModel.addPropertyChangeListener(this);
 
-        this.analyzeOutfitViewModel = analyzeOutfitViewModel;
-        this.analyzeOutfitViewModel.addPropertyChangeListener(this);
+        // Initializing Font
+        final Font crimsonTextTitle = FontManager.getCrimsonText(80);
+        final Font crimsonTextSubtitle = FontManager.getCrimsonText(24);
+        final Font crimsonTextText = FontManager.getCrimsonText(16);
 
-        // Webcam Initialization
-        capture = new VideoCapture(0);
-        if (!capture.isOpened()) {
-            throw new RuntimeException("Error: Webcam not found.");
-        }
+        // Initializing Title Labels
+        this.titleLabel = new JLabel("AI Summarization");
+        this.titleLabel.setFont(crimsonTextTitle);
 
-        // Set the layout
-        this.setLayout(null); // Absolute positioning
+        // Initializing Subtitle Labels
+        this.weatherSummaryLabel = new JLabel("Weather Summary");
+        this.weatherSummaryLabel.setFont(crimsonTextSubtitle);
+        this.outfitSuggestionsLabel = new JLabel("Outfit Suggestions");
+        this.outfitSuggestionsLabel.setFont(crimsonTextSubtitle);
+        this.travelAdviceLabel = new JLabel("Travel Advice");
+        this.travelAdviceLabel.setFont(crimsonTextSubtitle);
 
-        // Create the title label
-        titleLabel = new JLabel("Analyze Outfit");
-        titleLabel.setBounds(162, 125, 875, 125);
-        final Font titleFont = new Font("Arial", Font.PLAIN, 96);
-        titleLabel.setFont(titleFont);
-        this.add(titleLabel);
+        // Initializing Text Labels
+        this.weatherSummaryText = new JLabel("");
+        this.weatherSummaryText.setFont(crimsonTextText);
+        this.outfitSuggestionsText = new JLabel("");
+        this.outfitSuggestionsText.setFont(crimsonTextText);
+        this.travelAdviceText = new JLabel("");
+        this.travelAdviceText.setFont(crimsonTextText);
 
-        // Create the webcam label
-        webcamLabel = new JLabel();
-        webcamLabel.setBounds(198, 282, 803, 386);
-        this.add(webcamLabel);
-
-        // Create the analyze button
-        final ImageIcon analyzeIcon = new ImageIcon("src/main/resources/analyze.png");
-        analyzeButton = new JButton(analyzeIcon);
-        analyzeButton.setBounds(520, 701, 159, 77);
-        analyzeButton.addActionListener(this);
-        this.add(analyzeButton);
-
-        // Create the back button
+        // Initializing Back Button
         final ImageIcon backIcon = new ImageIcon("src/main/resources/back.png");
-        backButton = new JButton(backIcon);
-        backButton.setBounds(7, 6, 34, 24);
-        backButton.addActionListener(this);
-        this.add(backButton);
+        this.backButton = new JButton(backIcon);
+        this.backButton.setActionCommand("back");
+        this.backButton.addActionListener(this);
+
+        // Initializing Refresh Button
+        final ImageIcon refreshIcon = new ImageIcon("src/main/resources/refresh.png");
+        this.refreshButton = new JButton(refreshIcon);
+        this.refreshButton.setActionCommand("refresh");
+        this.refreshButton.addActionListener(this);
+
+        // Add All Components
+        this.add(this.titleLabel);
+        this.add(this.weatherSummaryLabel);
+        this.add(this.weatherSummaryText);
+        this.add(this.outfitSuggestionsLabel);
+        this.add(this.outfitSuggestionsText);
+        this.add(this.travelAdviceLabel);
+        this.add(this.travelAdviceText);
+        this.add(this.backButton);
+        this.add(this.refreshButton);
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        final SummarizationState state = (SummarizationState) evt.getNewValue();
+        // TODO: Handle property changes here
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        // TODO: Handle action events here
     }
 }
