@@ -32,7 +32,7 @@ public class GeocodingDAO {
      * @return coordinates of the city
      */
     public static Map<String, Double> getCoordinates(String city) throws APICallException {
-        String url = buildAPIURL(city);
+        final String url = buildAPIURL(city);
 
         // Build http request
         OkHttpClient client = new OkHttpClient();
@@ -64,7 +64,7 @@ public class GeocodingDAO {
 
         } catch (IOException exception) {
             exception.printStackTrace();
-            throw new APICallException("Failed to get geo-coordinates for " + city,
+            throw new APICallException("Failed to get geo-coordinates for " + city + "!",
                     exception);
         }
     }
