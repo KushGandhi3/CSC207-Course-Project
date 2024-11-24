@@ -1,23 +1,17 @@
 package data_access.time;
 
-import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 public class TimeDAO {
 
     /**
-     * Get the current time (in UTC) as a Unix timestamp.
-     * @return the current time as a Unix timestamp.
+     * Get the current date and time in a particular timezone.
+     * @param timezone the timezone for the date and time
+     * @return ZonedDateTime object
      */
-    public static long getCurrentUnixTime () {
-        return Instant.now().getEpochSecond();
+    public static ZonedDateTime getCurrentZonedDateTime(String timezone) {
+        return ZonedDateTime.now(ZoneId.of(timezone));
     }
 
-    /**
-     * Get the calculated time from current time(in UTC) as a Unix timestamp.
-     * @param hours the next hours from current time.
-     * @return the calculated time as a Unix timestamp.
-     */
-    public static long getCalculatedUnixTime (int hours) {
-        return Instant.now().plusSeconds(hours * 3600L).getEpochSecond();
-    }
 }

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class parses OpenWeather JSON Objects.
+ * This class parses OpenWeather JSON Objects and creates DailyWeatherData and HourlyWeatherDataObjects.
  */
 public class JSONOpenWeatherDAO {
 
