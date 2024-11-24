@@ -20,9 +20,8 @@ public class SummarizationController {
      */
 
     public void execute(byte[] imageData) {
-        //DisplaySummarizationInputData inputData =
-                //new DisplaySummarizationInputData(imageData);
-        //analyzeOutfitInputInteractor.execute(inputData);
+        DisplaySummarizationInputData inputData = new DisplaySummarizationInputData(imageData);
+        analyzeOutfitInputInteractor.execute(inputData);
     }
 
     /**
