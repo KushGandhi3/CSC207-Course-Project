@@ -1,6 +1,5 @@
 package use_case.display_home;
 
-import entity.weather.WeatherData;
 import exception.APICallException;
 
 /**

@@ -1,7 +1,5 @@
 package use_case.display_home;
 
-import entity.WeatherData;
-
 /**
  * Output Data for the Display Home Use Case.
  */

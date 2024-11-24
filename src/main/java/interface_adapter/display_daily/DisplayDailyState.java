@@ -1,6 +1,6 @@
 package interface_adapter.display_daily;
 
-import resources.Constants;
+import constants.Constants;
 import org.jetbrains.annotations.NotNull;
 
 /**

@@ -1,18 +1,15 @@
 package use_case.display_home;
 
-import entity.WeatherData;
-import entity.WeatherDataFactory;
-
 /**
  * The DisplayHome Interactor.
  */
 public class DisplayHomeInteractor implements DisplayHomeInputBoundary {
 
-    private final DisplayHomeDataAccessInterface dataAccessObject;
+    private final DisplayHomeDAI dataAccessObject;
     private final DisplayHomeOutputBoundary userPresenter;
     private final WeatherDataFactory weatherDataFactory;
 
-    public DisplayHomeInteractor(DisplayHomeDataAccessInterface dataAccessObject,
+    public DisplayHomeInteractor(DisplayHomeDAI dataAccessObject,
                                  DisplayHomeOutputBoundary userPresenter,
                                  WeatherDataFactory weatherDataFactory) {
         this.dataAccessObject = dataAccessObject;
