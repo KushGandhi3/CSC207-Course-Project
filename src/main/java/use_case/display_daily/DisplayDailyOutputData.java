@@ -1,5 +1,10 @@
 package use_case.display_daily;
 
+import constants.Constants;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,19 +26,44 @@ public class DisplayDailyOutputData {
     private int precipitation;
     private int humidity;
 
-    public DisplayDailyOutputData(String city, List<String> weekdays, List<Integer> temperatures,
-                                  List<String> conditions, int feelsLikeTemperature, int uvIndex, int windSpeed,
-                                  int cloudCover, int precipitation, int humidity) {
-        this.city = city;
-        this.weekdays = weekdays;
-        this.temperatures = temperatures;
-        this.conditions = conditions;
-        this.feelsLikeTemperature = feelsLikeTemperature;
-        this.uvIndex = uvIndex;
-        this.windSpeed = windSpeed;
-        this.cloudCover = cloudCover;
-        this.precipitation = precipitation;
-        this.humidity = humidity;
+    public DisplayDailyOutputData(JSONObject outputDataPackage) {
+        this.city = outputDataPackage.getString("city");
+
+        JSONArray weekdaysArray = outputDataPackage.getJSONArray("weekdays");
+        this.weekdays = parseJSONArray(weekdaysArray, String.class);
+
+        JSONArray temperaturesArray = outputDataPackage.getJSONArray("temperatures");
+        this.temperatures = parseJSONArray(temperaturesArray, Integer.class);
+
+        JSONArray conditionsArray = outputDataPackage.getJSONArray("conditions");
+        this.conditions = parseJSONArray(conditionsArray, String.class);
+
+        this.feelsLikeTemperature = outputDataPackage.getInt("feelsLikeTemperature");
+        this.uvIndex = outputDataPackage.getInt("uvIndex");
+        this.windSpeed = outputDataPackage.getInt("windSpeed");
+        this.cloudCover = outputDataPackage.getInt("cloudCover");
+        this.precipitation = outputDataPackage.getInt("precipitation");
+        this.humidity = outputDataPackage.getInt("humidity");
+    }
+
+    /**
+     * Parses a JSONArray that contains elements of generic type. Returns a list containing the parsed data in order.
+     * @param jsonArray the JSONArray to parse
+     * @param type the type of the data being parsed
+     * @param <T> the type class of the data being parsed
+     * @throws IllegalArgumentException when data to be parsed is not of type <T>
+     */
+    private <T> List<T> parseJSONArray(JSONArray jsonArray, Class<T> type) throws IllegalArgumentException {
+        List<T> dataValues = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            Object value = jsonArray.get(i);
+            if (type.isInstance(value)) {
+                dataValues.add(type.cast(value));
+            } else {
+                throw new IllegalArgumentException("Element at index " + i + " is not of type " + type.getSimpleName());
+            }
+        }
+        return dataValues;
     }
 
     public String getCity() {
