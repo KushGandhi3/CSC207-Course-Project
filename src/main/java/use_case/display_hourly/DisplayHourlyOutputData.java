@@ -1,118 +1,87 @@
 package use_case.display_hourly;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import javax.swing.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * Data object representing the output data for the hourly forecast use case.
- */
 public class DisplayHourlyOutputData {
 
     // City Variables
     private final String city;
-    private final int lowTemperature;
-    private final int highTemperature;
+    private final double lowTemperature;
+    private final double highTemperature;
 
     // Weather Variables
-    private final List<String> time;
-    private final List<String> condition;
-    private final List<String> temperature;
-    private final String feelsLike;
-    private final String windSpeed;
-    private final String precipitation;
-    private final String uvIndex;
-    private final String cloudCover;
-    private final String humidity;
+    private final Double[] time;
+    private final String[] condition;
+    private final Double[] temperature;
+    private final Double[] feelsLike;
+    private final Double[] windSpeed;
+    private final Double[] precipitation;
+    private final Double[] uvIndex;
+    private final Double[] airQuality;
+    private final Double[] humidity;
 
-    /**
-     * Constructs DisplayHourlyOutputData from a JSON object.
-     *
-     * @param outputDataPackage the JSON object containing the output data
-     */
-    public DisplayHourlyOutputData(JSONObject outputDataPackage) {
-        this.city = outputDataPackage.getString("city");
-        this.lowTemperature = outputDataPackage.getInt("lowTemperature");
-        this.highTemperature = outputDataPackage.getInt("highTemperature");
-
-        JSONArray timeArray = outputDataPackage.getJSONArray("time");
-        this.time = parseJSONArray(timeArray, String.class);
-
-        JSONArray conditionArray = outputDataPackage.getJSONArray("condition");
-        this.condition = parseJSONArray(conditionArray, String.class);
-
-        JSONArray temperatureArray = outputDataPackage.getJSONArray("temperature");
-        this.temperature = parseJSONArray(temperatureArray, String.class);
-
-        this.feelsLike = outputDataPackage.getString("feelsLike");
-        this.windSpeed = outputDataPackage.getString("windSpeed");
-        this.precipitation = outputDataPackage.getString("precipitation");
-        this.uvIndex = outputDataPackage.getString("uvIndex");
-        this.cloudCover = outputDataPackage.getString("cloudCover");
-        this.humidity = outputDataPackage.getString("humidity");
-    }
-
-    private <T> List<T> parseJSONArray(JSONArray jsonArray, Class<T> type) throws IllegalArgumentException {
-        List<T> dataValues = new ArrayList<>();
-        for (int i = 0; i < jsonArray.length(); i++) {
-            Object value = jsonArray.get(i);
-            if (type.isInstance(value)) {
-                dataValues.add(type.cast(value));
-            } else {
-                throw new IllegalArgumentException("Element at index " + i + " is not of type " + type.getSimpleName() + ".");
-            }
-        }
-        return dataValues;
+    public DisplayHourlyOutputData(String city, double lowTemperature,
+                                   double highTemperature, Double[] time,
+                                   String[] condition, Double[] temperature,
+                                   Double[] feelsLike, Double[] windSpeed,
+                                   Double[] precipitation, Double[] uvIndex,
+                                   Double[] airQuality, Double[] humidity) {
+        this.city = city;
+        this.lowTemperature = lowTemperature;
+        this.highTemperature = highTemperature;
+        this.time = time;
+        this.condition = condition;
+        this.temperature = temperature;
+        this.feelsLike = feelsLike;
+        this.windSpeed = windSpeed;
+        this.precipitation = precipitation;
+        this.uvIndex = uvIndex;
+        this.airQuality = airQuality;
+        this.humidity = humidity;
     }
 
     // Getters
-    public String getCity() {
-        return city;
-    }
-
-    public int getLowTemperature() {
+    public double getLowTemperature() {
         return lowTemperature;
     }
 
-    public int getHighTemperature() {
+    public double getHighTemperature() {
         return highTemperature;
     }
 
-    public List<String> getTime() {
-        return time;
+    public Double[] getTime() {
+        return time.clone();
     }
 
-    public List<String> getCondition() {
-        return condition;
+    public String[] getCondition() {
+        return condition.clone();
     }
 
-    public List<String> getTemperature() {
-        return temperature;
+    public Double[] getTemperature() {
+        return temperature.clone();
     }
 
-    public String getFeelsLike() {
-        return feelsLike;
+    public Double[] getFeelsLike() {
+        return feelsLike.clone();
     }
 
-    public String getWindSpeed() {
-        return windSpeed;
+    public Double[] getWindSpeed() {
+        return windSpeed.clone();
     }
 
-    public String getPrecipitation() {
-        return precipitation;
+    public Double[] getPrecipitation() {
+        return precipitation.clone();
     }
 
-    public String getUvIndex() {
-        return uvIndex;
+    public Double[] getUvIndex() {
+        return uvIndex.clone();
     }
 
-    public String getCloudCover() {
-        return cloudCover;
+    public Double[] getAirQuality() {
+        return airQuality.clone();
     }
 
-    public String getHumidity() {
-        return humidity;
+    public Double[] getHumidity() {
+        return humidity.clone();
     }
 }
