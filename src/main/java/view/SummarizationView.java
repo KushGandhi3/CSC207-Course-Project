@@ -56,34 +56,43 @@ public class SummarizationView extends JPanel implements PropertyChangeListener,
         // Initializing Title Labels
         this.titleLabel = new JLabel("AI Summarization");
         this.titleLabel.setFont(crimsonTextTitle);
+        this.titleLabel.setBounds(162, 55, 875, 125);
 
         // Initializing Subtitle Labels
         this.weatherSummaryLabel = new JLabel("Weather Summary");
         this.weatherSummaryLabel.setFont(crimsonTextSubtitle);
+        this.weatherSummaryLabel.setBounds(151, 282, 230, 31);
         this.outfitSuggestionsLabel = new JLabel("Outfit Suggestions");
         this.outfitSuggestionsLabel.setFont(crimsonTextSubtitle);
+        this.outfitSuggestionsLabel.setBounds(485, 282, 230, 31);
         this.travelAdviceLabel = new JLabel("Travel Advice");
         this.travelAdviceLabel.setFont(crimsonTextSubtitle);
+        this.travelAdviceLabel.setBounds(823, 282, 230, 31);
 
         // Initializing Text Labels
         this.weatherSummaryText = new JLabel("");
         this.weatherSummaryText.setFont(crimsonTextText);
+        this.weatherSummaryText.setBounds(147, 323, 234, 195);
         this.outfitSuggestionsText = new JLabel("");
         this.outfitSuggestionsText.setFont(crimsonTextText);
+        this.outfitSuggestionsText.setBounds(481, 323, 234, 195);
         this.travelAdviceText = new JLabel("");
         this.travelAdviceText.setFont(crimsonTextText);
+        this.travelAdviceText.setBounds(819, 323, 234, 195);
 
         // Initializing Back Button
         final ImageIcon backIcon = new ImageIcon("src/main/resources/back.png");
         this.backButton = new JButton(backIcon);
         this.backButton.setActionCommand("back");
         this.backButton.addActionListener(this);
+        this.backButton.setBounds(7, 6, 34, 24);
 
         // Initializing Refresh Button
         final ImageIcon refreshIcon = new ImageIcon("src/main/resources/refresh.png");
         this.refreshButton = new JButton(refreshIcon);
         this.refreshButton.setActionCommand("refresh");
         this.refreshButton.addActionListener(this);
+        this.refreshButton.setBounds(541, 679, 117, 59);
 
         // Add All Components
         this.add(this.titleLabel);
