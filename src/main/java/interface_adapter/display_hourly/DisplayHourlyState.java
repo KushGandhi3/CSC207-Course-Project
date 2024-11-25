@@ -8,9 +8,9 @@ public class DisplayHourlyState {
     private String city;
     private String lowTemperature;
     private String highTemperature;
+    private String time;
 
     // Weather Variables
-    private String[] time = new String[8];
     private String[] condition = new String[8];
     private String[] temperature = new String[8];
     private String[] feelsLike = new String[8];
@@ -22,7 +22,6 @@ public class DisplayHourlyState {
 
     public DisplayHourlyState() {
         for (int i = 0; i < 8; i++) {
-            time[i] = "";
             condition[i] = "";
             temperature[i] = "";
             feelsLike[i] = "";
@@ -48,7 +47,7 @@ public class DisplayHourlyState {
         return highTemperature;
     }
 
-    public String[] getTime() {
+    public String getTime() {
         return time;
     }
 
@@ -97,8 +96,8 @@ public class DisplayHourlyState {
         this.highTemperature = highTemperature;
     }
 
-    public void setTime(@NotNull String[] time) {
-        this.time = time.clone();
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public void setCondition(@NotNull String[] condition) {
