@@ -63,7 +63,6 @@ public class OpenWeatherGeocodingDAO {
             return coordinates;
 
         } catch (IOException exception) {
-            exception.printStackTrace();
             throw new APICallException("Failed to get geo-coordinates for " + city + "!",
                     exception);
         }
