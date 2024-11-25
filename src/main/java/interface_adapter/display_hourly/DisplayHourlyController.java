@@ -1,4 +1,5 @@
 package interface_adapter.display_hourly;
 
 public class DisplayHourlyController {
+    // TODO: Complete class
 }
