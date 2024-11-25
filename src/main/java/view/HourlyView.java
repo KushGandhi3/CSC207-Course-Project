@@ -1,7 +1,10 @@
 package view;
 
+import interface_adapter.display_hourly.DisplayHourlyController;
 import interface_adapter.display_hourly.DisplayHourlyViewModel;
 
+import java.awt.Component;
+import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -16,30 +19,40 @@ public class HourlyView extends JPanel implements PropertyChangeListener {
 
     // View Model
     private final DisplayHourlyViewModel displayHourlyViewModel;
+    private DisplayHourlyController displayHourlyController;
 
     // City Labels
-    private JLabel city; // TODO: Change to input field
-    private JLabel lowTemperature;
-    private JLabel highTemperature;
-    private JLabel forecast;
-    private JLabel details;
+    private final JLabel city; // TODO: Change to input field
+    private final JLabel lowTemperature;
+    private final JLabel highTemperature;
+    private final JLabel time;
+    private final JLabel forecast;
+    private final JLabel details;
 
     // Weather Labels
-    private JLabel[] time = new JLabel[8];
-    private JLabel[] condition = new JLabel[8];
-    private JLabel[] temperature = new JLabel[8];
-    private JLabel[] feelsLike = new JLabel[8];
-    private JLabel[] windSpeed = new JLabel[8];
-    private JLabel[] precipitation = new JLabel[8];
-    private JLabel[] uvIndex = new JLabel[8];
-    private JLabel[] airQuality = new JLabel[8];
-    private JLabel[] humidity = new JLabel[8];
+    private final JLabel[] condition = new JLabel[8];
+    private final JLabel[] temperature = new JLabel[8];
+    private final JLabel[] feelsLike = new JLabel[8];
+    private final JLabel[] windSpeed = new JLabel[8];
+    private final JLabel[] precipitation = new JLabel[8];
+    private final JLabel[] uvIndex = new JLabel[8];
+    private final JLabel[] cloudCover = new JLabel[8];
+    private final JLabel[] humidity = new JLabel[8];
 
     // Buttons
-    private JButton homeButton;
+    private final JButton hourOne;
+    private final JButton hourTwo;
+    private final JButton hourThree;
+    private final JButton hourFour;
+    private final JButton hourFive;
+    private final JButton hourSix;
+    private final JButton hourSeven;
+    private final JButton hourEight;
+    private final JButton homeButton;
 
     public HourlyView(DisplayHourlyViewModel displayHourlyViewModel) {
         this.displayHourlyViewModel = displayHourlyViewModel;
+//        this.displayHourlyViewModel.addPropertyChangeListener(this);
 
         // Set Layout
         this.setLayout(null);
@@ -48,13 +61,11 @@ public class HourlyView extends JPanel implements PropertyChangeListener {
         this.city = new JLabel("Toronto");
         this.lowTemperature = new JLabel("Low: 17 C");
         this.highTemperature = new JLabel("High: 23 C");
+        this.time = new JLabel("9:00");
         this.forecast = new JLabel("Today's Forecast");
         this.details = new JLabel("Weather Details");
 
         // Create Weather Labels
-        for (int i = 0; i < 8; i++) {
-            this.time[i] = new JLabel("Time: 09:00");
-        }
         for (int i = 0; i < 8; i++) {
             this.condition[i] = new JLabel("Condition: Sunny");
         }
@@ -74,13 +85,21 @@ public class HourlyView extends JPanel implements PropertyChangeListener {
             this.uvIndex[i] = new JLabel("UV Index: 2");
         }
         for (int i = 0; i < 8; i++) {
-            this.airQuality[i] = new JLabel("Air Quality: 96");
+            this.cloudCover[i] = new JLabel("Air Quality: 96");
         }
         for (int i = 0; i < 8; i++) {
             this.humidity[i] = new JLabel("Humidity: 76%");
         }
 
         // Create Buttons
+        this.hourOne = new JButton("");
+        this.hourTwo = new JButton("");
+        this.hourThree = new JButton("");
+        this.hourFour = new JButton("");
+        this.hourFive = new JButton("");
+        this.hourSix = new JButton("");
+        this.hourSeven = new JButton("");
+        this.hourEight = new JButton("");
         this.homeButton = new JButton("Home");
 
         // Add Components
@@ -90,15 +109,22 @@ public class HourlyView extends JPanel implements PropertyChangeListener {
         this.add(forecast);
         this.add(details);
         for (int i = 0; i < 8; i++) {
-            this.add(time[i]);
             this.add(condition[i]);
             this.add(temperature[i]);
             this.add(feelsLike[i]);
             this.add(windSpeed[i]);
             this.add(uvIndex[i]);
-            this.add(airQuality[i]);
+            this.add(cloudCover[i]);
             this.add(humidity[i]);
         }
+        this.add(hourOne);
+        this.add(hourTwo);
+        this.add(hourThree);
+        this.add(hourFour);
+        this.add(hourFive);
+        this.add(hourSix);
+        this.add(hourSeven);
+        this.add(hourEight);
         this.add(homeButton);
 
         // Set Bounds
