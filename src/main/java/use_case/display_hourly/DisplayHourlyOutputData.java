@@ -1,27 +1,25 @@
 package use_case.display_hourly;
 
-import javax.swing.*;
-
 public class DisplayHourlyOutputData {
 
     // City Variables
     private final String city;
     private final double lowTemperature;
     private final double highTemperature;
+    private final double time;
 
     // Weather Variables
-    private final Double[] time;
     private final String[] condition;
     private final Double[] temperature;
     private final Double[] feelsLike;
     private final Double[] windSpeed;
     private final Double[] precipitation;
     private final Double[] uvIndex;
-    private final Double[] airQuality;
+    private final Double[] cloudCover;
     private final Double[] humidity;
 
     public DisplayHourlyOutputData(String city, double lowTemperature,
-                                   double highTemperature, Double[] time,
+                                   double highTemperature, double time,
                                    String[] condition, Double[] temperature,
                                    Double[] feelsLike, Double[] windSpeed,
                                    Double[] precipitation, Double[] uvIndex,
@@ -36,7 +34,7 @@ public class DisplayHourlyOutputData {
         this.windSpeed = windSpeed;
         this.precipitation = precipitation;
         this.uvIndex = uvIndex;
-        this.airQuality = airQuality;
+        this.cloudCover = airQuality;
         this.humidity = humidity;
     }
 
@@ -49,8 +47,8 @@ public class DisplayHourlyOutputData {
         return highTemperature;
     }
 
-    public Double[] getTime() {
-        return time.clone();
+    public double getTime() {
+        return time;
     }
 
     public String[] getCondition() {
@@ -77,8 +75,8 @@ public class DisplayHourlyOutputData {
         return uvIndex.clone();
     }
 
-    public Double[] getAirQuality() {
-        return airQuality.clone();
+    public Double[] getCloudCover() {
+        return cloudCover.clone();
     }
 
     public Double[] getHumidity() {
