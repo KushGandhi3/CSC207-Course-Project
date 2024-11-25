@@ -1,79 +1,79 @@
 package use_case.display_daily;
 
+import java.util.List;
+
 /**
- * Output Data for the Display Weekly use-case.
+ * Output Data for the Display Daily use-case.
  */
 public class DisplayDailyOutputData {
 
-    private final String city;
+    private String city;
+    // list of the weekdays in the correct order
+    private List<String> weekdays;
+    // list of the temperatures in order of the weekdays
+    private List<Integer> temperatures;
+    private List<String> conditions;
+    // selected weather details for the particular weekday
+    private int feelsLikeTemperature;
+    private int uvIndex;
+    private int windSpeed;
+    private int cloudCover;
+    private int precipitation;
+    private int humidity;
 
-    // weekday temperature forecasts
-    private final Double[] temperatureForecasts;
-    // weekday conditions (i.e. sunny, cloudy, rainy)
-    private final String[] conditionForecasts;
-    // weekday feels like temperatures
-    private final Double[] feelsLikeForecasts;
-    // weekday wind speeds
-    private final Double[] windSpeedForecasts;
-    // weekday precipitation forecasts
-    private final Double[] precipitationForecasts;
-    // weekday UV indices
-    private final Double[] uvIndexForecasts;
-    // weekday air quality forecasts
-    private final Double[] airQualityForecasts;
-    // weekday humidity forecasts
-    private final Double[] humidityForecasts;
-
-    public DisplayDailyOutputData(String city, Double[] temperatureForecasts,
-                                  String[] conditionForecasts,
-                                  Double[] feelsLikeForecasts,
-                                  Double[] windSpeedForecasts,
-                                  Double[] precipitationForecasts,
-                                  Double[] uvIndexForecasts,
-                                  Double[] airQualityForecasts,
-                                  Double[] humidityForecasts) {
+    public DisplayDailyOutputData(String city, List<String> weekdays, List<Integer> temperatures,
+                                  List<String> conditions, int feelsLikeTemperature, int uvIndex, int windSpeed,
+                                  int cloudCover, int precipitation, int humidity) {
         this.city = city;
-        this.temperatureForecasts = temperatureForecasts.clone();
-        this.conditionForecasts = conditionForecasts.clone();
-        this.feelsLikeForecasts = feelsLikeForecasts.clone();
-        this.windSpeedForecasts = windSpeedForecasts.clone();
-        this.precipitationForecasts = precipitationForecasts.clone();
-        this.uvIndexForecasts = uvIndexForecasts.clone();
-        this.airQualityForecasts = airQualityForecasts.clone();
-        this.humidityForecasts = humidityForecasts.clone();
+        this.weekdays = weekdays;
+        this.temperatures = temperatures;
+        this.conditions = conditions;
+        this.feelsLikeTemperature = feelsLikeTemperature;
+        this.uvIndex = uvIndex;
+        this.windSpeed = windSpeed;
+        this.cloudCover = cloudCover;
+        this.precipitation = precipitation;
+        this.humidity = humidity;
     }
 
-
-    public Double[] getTemperatureForecasts() {
-        return temperatureForecasts.clone();
+    public String getCity() {
+        return city;
     }
 
-    public String[] getConditionForecasts() {
-        return conditionForecasts.clone();
+    public List<String> getWeekdays() {
+        return weekdays;
     }
 
-    public Double[] getFeelsLikeForecasts() {
-        return feelsLikeForecasts.clone();
+    public List<Integer> getTemperatures() {
+        return temperatures;
     }
 
-    public Double[] getWindSpeedForecasts() {
-        return windSpeedForecasts.clone();
+    public List<String> getConditions() {
+        return conditions;
     }
 
-    public Double[] getPrecipitationForecasts() {
-        return precipitationForecasts.clone();
+    public int getFeelsLikeTemperature() {
+        return feelsLikeTemperature;
     }
 
-    public Double[] getUvIndexForecasts() {
-        return uvIndexForecasts.clone();
+    public int getUvIndex() {
+        return uvIndex;
     }
 
-    public Double[] getAirQualityForecasts() {
-        return airQualityForecasts.clone();
+    public int getWindSpeed() {
+        return windSpeed;
     }
 
-    public Double[] getHumidityForecasts() {
-        return humidityForecasts.clone();
+    public int getCloudCover() {
+        return cloudCover;
+    }
+
+    public int getPrecipitation() {
+        return precipitation;
+    }
+
+    public int getHumidity() {
+        return humidity;
     }
 
 }

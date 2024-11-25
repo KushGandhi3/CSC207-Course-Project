@@ -1,4 +1,4 @@
-package data_access.geocoding;
+package data_access.weather.open_weather;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import okhttp3.Response;
  * Finds geo-coordinates of a city given a String name using the OpenWeather
  * Geocoding API.
  */
-public class GeocodingDAO {
+public class OpenWeatherGeocodingDAO {
 
     // limit indicates the number of matching queries that will be returned by
     // the API

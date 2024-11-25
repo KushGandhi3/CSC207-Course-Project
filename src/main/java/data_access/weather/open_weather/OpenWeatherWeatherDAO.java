@@ -1,6 +1,5 @@
-package data_access.weather;
+package data_access.weather.open_weather;
 
-import data_access.geocoding.GeocodingDAO;
 import exception.APICallException;
 import io.github.cdimascio.dotenv.Dotenv;
 import okhttp3.OkHttpClient;
@@ -14,7 +13,7 @@ import java.util.Map;
 /**
  * This class makes API calls to request weather data from OpenWeather.
  */
-public class APIOpenWeatherDAO {
+public class OpenWeatherWeatherDAO {
     // load environment variables file
     private static final Dotenv dotenv = Dotenv.load();
     // standard, metric, imperial
@@ -34,7 +33,7 @@ public class APIOpenWeatherDAO {
      */
     public static JSONObject apiRequest(String city) throws APICallException {
         final Map<String, Double> coordinates =
-                GeocodingDAO.getCoordinates(city);
+                OpenWeatherGeocodingDAO.getCoordinates(city);
 
         final String url = buildAPIURL(coordinates);
 
