@@ -2,7 +2,7 @@ package app;
 
 // TODO: Implement the Main class [TEAM]
 
-import data_access.geocoding.GeocodingDAO;
+import data_access.weather.open_weather.OpenWeatherGeocodingDAO;
 
 public class Main {
     public static void main(String[] args) {
@@ -12,6 +12,6 @@ public class Main {
 //        WeatherDAO weatherDAO = new WeatherDAO();
 //        weatherDAO.getWeatherDataTest("Toronto");
 
-        GeocodingDAO.getCoordinates("Toronto");
+        OpenWeatherGeocodingDAO.getCoordinates("Toronto");
     }
 }
