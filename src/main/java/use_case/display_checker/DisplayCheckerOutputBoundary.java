@@ -20,4 +20,9 @@ public interface DisplayCheckerOutputBoundary {
      * Prepare the location empty view.
      */
     void prepareLocationEmptyView();
+
+    /**
+     * Prepare the invalid location view.
+     */
+    void prepareInvalidLocationView();
 }

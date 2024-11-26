@@ -65,4 +65,14 @@ public class DisplayCheckerPresenter implements DisplayCheckerOutputBoundary {
         displayCheckerState.setMessage("empty");
         displayCheckerViewModel.firePropertyChanged();
     }
+
+    /**
+     * Prepare the view when the location is invalid
+     */
+    @Override
+    public void prepareInvalidLocationView() {
+        DisplayCheckerState displayCheckerState = displayCheckerViewModel.getState();
+        displayCheckerState.setMessage("invalid");
+        displayCheckerViewModel.firePropertyChanged();
+    }
 }

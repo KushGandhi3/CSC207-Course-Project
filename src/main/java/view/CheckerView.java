@@ -279,8 +279,10 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
         } else if (Objects.equals(isWeatherConditionMet, "empty")) {
             JOptionPane.showMessageDialog(this, "Location cannot be empty.");
             state.setMessage(null);
+        } else if (Objects.equals(isWeatherConditionMet, "invalid")) {
+            JOptionPane.showMessageDialog(this, "Invalid location. Please try another location.");
+            state.setMessage(null);
         }
-
     }
 
     public String getViewName() {

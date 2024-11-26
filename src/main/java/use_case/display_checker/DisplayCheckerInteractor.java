@@ -38,13 +38,17 @@ public class DisplayCheckerInteractor implements DisplayCheckerInputBoundary {
             return;
         }
 
-        boolean condMet = checkWeatherData(location, weatherConditionOptions, startChecking, stopChecking);
+        try {
+            boolean condMet = checkWeatherData(location, weatherConditionOptions, startChecking, stopChecking);
 
-        // pass the output data to the output boundary
-        if (condMet) {
-            displayCheckerOutputBoundary.prepareCondMetView();
-        } else {
-            displayCheckerOutputBoundary.prepareCondNotMetView();
+            // pass the output data to the output boundary
+            if (condMet) {
+                displayCheckerOutputBoundary.prepareCondMetView();
+            } else {
+                displayCheckerOutputBoundary.prepareCondNotMetView();
+            }
+        } catch (InvalidLocationException e) {
+            displayCheckerOutputBoundary.prepareInvalidLocationView();
         }
     }
 
@@ -53,32 +57,24 @@ public class DisplayCheckerInteractor implements DisplayCheckerInputBoundary {
         displayCheckerOutputBoundary.prepareHomeView();
     }
 
-    private boolean checkWeatherData(String location, String weatherConditionOptions, int startChecking, int stopChecking) {
+    private boolean checkWeatherData(String location, String weatherConditionOptions, int startChecking, int stopChecking) throws InvalidLocationException {
         try {
-            // get the hourly weather data from DAO
             HourlyWeatherData hourlyWeatherData = displayCheckerDAI.getHourlyWeatherData(location);
 
             if (hourlyWeatherData == null) {
-                System.out.println("Error: Hourly weather data is null");
-                return false;
+                // Throw exception when no weather data is retrieved
+                throw new InvalidLocationException("Failed to retrieve hourly weather data for " + location);
             }
 
             List<HourWeatherData> hourlyForecast = hourlyWeatherData.getHourWeatherDataList();
 
-            // Log whether the data is empty or not
-            if (hourlyForecast.isEmpty()) {
-                System.out.println("Hourly weather data is empty.");
-            } else {
-                System.out.println("Hourly weather data is not empty. Size: " + hourlyForecast.size());
+            if (hourlyForecast == null || hourlyForecast.isEmpty()) {
+                // Throw exception when forecast list is empty
+                throw new InvalidLocationException("No hourly forecast data available for " + location);
             }
 
             // loop through the hourly data between the start time until the (stop time + start time)
-            for (int i = startChecking; i <= (stopChecking + startChecking); i++) {
-                if (i >= hourlyForecast.size()) {
-                    System.out.println("Warning: Index " + i + " is out of bounds.");
-                    return false;
-                }
-
+            for (int i = startChecking; i < (stopChecking + startChecking); i++) {
                 HourWeatherData hourData = hourlyForecast.get(i);
                 String weatherCondition = hourData.getCondition();
 
@@ -87,11 +83,30 @@ public class DisplayCheckerInteractor implements DisplayCheckerInputBoundary {
                     return true;
                 }
             }
-            return false;
         } catch (APICallException e) {
-            System.out.println("Error occurred while calling the API: " + e.getMessage());
-            return false;
+            // Throw exception for API-related errors
+            throw new InvalidLocationException("API error for location: " + location, e);
         }
+        // If no matching condition is found
+        return false;
     }
 
+    // Create a new custom exception for invalid locations
+    private static class InvalidLocationException extends Exception {
+        public InvalidLocationException(String message) {
+            super(message);
+        }
+
+        public InvalidLocationException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
 }
+
+
+
+
+
+
+
+
