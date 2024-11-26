@@ -1,27 +1,36 @@
 package view;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.*;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 import interface_adapter.display_summarization.DisplaySummarizationController;
 import interface_adapter.display_summarization.DisplaySummarizationState;
 import interface_adapter.display_summarization.DisplaySummarizationViewModel;
 
-/*
+/**
  * The View for when the user wants to analyze an outfit.
  */
 public class SummarizationView extends JPanel implements PropertyChangeListener, ActionListener {
 
-    // View Model
-    private final DisplaySummarizationViewModel viewModel;
-
     // View Name
     public final String viewName = "Summarization View";
+
+    // View Model
+    private final DisplaySummarizationViewModel viewModel;
 
     // Title Label
     private final JLabel titleLabel;
@@ -41,69 +50,100 @@ public class SummarizationView extends JPanel implements PropertyChangeListener,
     // Back Button
     private final JButton backButton;
 
-    // Refresh Button
-    private final JButton refreshButton;
-
     public SummarizationView(DisplaySummarizationViewModel viewModel) {
         this.viewModel = viewModel;
         this.viewModel.addPropertyChangeListener(this);
 
+        this.setLayout(new BorderLayout());
+
         // Initializing Font
         final Font crimsonTextTitle = FontManager.getCrimsonText(80);
-        final Font crimsonTextSubtitle = FontManager.getCrimsonText(24);
-        final Font crimsonTextText = FontManager.getCrimsonText(16);
+        final Font crimsonTextSubtitle = FontManager.getCrimsonText(35);
+        // final Font crimsonTextText = FontManager.getCrimsonText(15);
 
         // Initializing Title Labels
-        this.titleLabel = new JLabel("AI Summarization");
+        this.titleLabel = new JLabel("AI Summarization", SwingConstants.CENTER);
         this.titleLabel.setFont(crimsonTextTitle);
-        this.titleLabel.setBounds(162, 55, 875, 125);
+
+        // Panel for title
+        final JPanel titlePanel = new JPanel(new BorderLayout());
+        titlePanel.setBorder(new EmptyBorder(20, 0, 0, 0));
+        titlePanel.add(this.titleLabel, BorderLayout.CENTER);
 
         // Initializing Subtitle Labels
-        this.weatherSummaryLabel = new JLabel("Weather Summary");
+        this.weatherSummaryLabel = new JLabel("Weather Summary", SwingConstants.CENTER);
         this.weatherSummaryLabel.setFont(crimsonTextSubtitle);
-        this.weatherSummaryLabel.setBounds(151, 282, 230, 31);
-        this.outfitSuggestionsLabel = new JLabel("Outfit Suggestions");
+        this.outfitSuggestionsLabel = new JLabel("Outfit Suggestions", SwingConstants.CENTER);
         this.outfitSuggestionsLabel.setFont(crimsonTextSubtitle);
-        this.outfitSuggestionsLabel.setBounds(485, 282, 230, 31);
-        this.travelAdviceLabel = new JLabel("Travel Advice");
+        this.travelAdviceLabel = new JLabel("Travel Advice", SwingConstants.CENTER);
         this.travelAdviceLabel.setFont(crimsonTextSubtitle);
-        this.travelAdviceLabel.setBounds(823, 282, 230, 31);
 
         // Initializing Text Labels
-        this.weatherSummaryText = new JLabel("");
-        this.weatherSummaryText.setFont(crimsonTextText);
-        this.weatherSummaryText.setBounds(147, 323, 234, 195);
-        this.outfitSuggestionsText = new JLabel("");
-        this.outfitSuggestionsText.setFont(crimsonTextText);
-        this.outfitSuggestionsText.setBounds(481, 323, 234, 195);
-        this.travelAdviceText = new JLabel("");
-        this.travelAdviceText.setFont(crimsonTextText);
-        this.travelAdviceText.setBounds(819, 323, 234, 195);
+        this.weatherSummaryText = new JLabel("<html>Good morning, Toronto! Today is cloudy with a 60% chance of "
+                +
+                "rain, so you might want to grab an umbrella on your way out. Temperatures will range from a cool "
+                +
+                "8C this morning to a comfortable 14C by the afternoon. A light breeze at 16 km/h makes it a great"
+                +
+                " day for a cozy cafe visit!</html>", SwingConstants.CENTER);
+        this.weatherSummaryText.setVerticalAlignment(SwingConstants.TOP);
+        this.outfitSuggestionsText = new JLabel("<html>In Toronto today, its a cool and rainy day-perfect for "
+                +
+                " layering! A light sweater with a waterproof jacket will keep you comfy and dry. Pair it with "
+                +
+                "sturdy boots for puddles, and don't forget an umbrella for the rain. If you're out in the evening, "
+                +
+                "consider adding a scarf for extra warmth.</html>", SwingConstants.CENTER);
+        this.outfitSuggestionsText.setVerticalAlignment(SwingConstants.TOP);
+        this.travelAdviceText = new JLabel("<html>Travelling today in Toronto? With a 60% chance of rain, wet "
+                +
+                "roads might cause delays, so plan extra time for your commute. Drive carefully and keep a safe"
+                +
+                " distance from other vehicles. If you're walking, wear waterproof shoes to avoid soggy feet. Public"
+                +
+                " transit is a great option to stay dry and avoid traffic congestion!</html>", SwingConstants.CENTER);
+        this.travelAdviceText.setVerticalAlignment(SwingConstants.TOP);
 
-        // Initializing Back Button
-        final ImageIcon backIcon = new ImageIcon("src/main/resources/back.png");
-        this.backButton = new JButton(backIcon);
-        this.backButton.setActionCommand("back");
-        this.backButton.addActionListener(this);
-        this.backButton.setBounds(7, 6, 34, 24);
+        // Panel for Weather Summary
+        final JPanel weatherPanel = createAlignedPanel(this.weatherSummaryLabel, this.weatherSummaryText);
 
-        // Initializing Refresh Button
-        final ImageIcon refreshIcon = new ImageIcon("src/main/resources/refresh.png");
-        this.refreshButton = new JButton(refreshIcon);
-        this.refreshButton.setActionCommand("refresh");
-        this.refreshButton.addActionListener(this);
-        this.refreshButton.setBounds(541, 679, 117, 59);
+        // Panel for Outfit Suggestions
+        final JPanel outfitPanel = createAlignedPanel(this.outfitSuggestionsLabel, this.outfitSuggestionsText);
+
+        // Panel for Travel Advice
+        final JPanel travelPanel = createAlignedPanel(this.travelAdviceLabel, this.travelAdviceText);
+
+        // Main Panel for subtitles and text
+        final JPanel contentPanel = new JPanel(new GridLayout(1, 3, 50, 0));
+        contentPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        contentPanel.add(weatherPanel);
+        contentPanel.add(outfitPanel);
+        contentPanel.add(travelPanel);
 
         // Add All Components
-        this.add(this.titleLabel);
-        this.add(this.weatherSummaryLabel);
-        this.add(this.weatherSummaryText);
-        this.add(this.outfitSuggestionsLabel);
-        this.add(this.outfitSuggestionsText);
-        this.add(this.travelAdviceLabel);
-        this.add(this.travelAdviceText);
-        this.add(this.backButton);
-        this.add(this.refreshButton);
+        this.add(titlePanel, BorderLayout.NORTH);
+        this.add(contentPanel, BorderLayout.CENTER);
+    }
+
+    /**
+     * Creates a JPanel with vertically aligned components.
+     *
+     * @param subtitle the subtitle JLabel to be added to the panel
+     * @param text the text JLabel to be added to the panel
+     * @return a JPanel with the given JLabels aligned and added in a vertical layout
+     */
+    private JPanel createAlignedPanel(JLabel subtitle, JLabel text) {
+        subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+        text.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        final JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        panel.add(subtitle);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(text);
+
+        return panel;
     }
 
     @Override
