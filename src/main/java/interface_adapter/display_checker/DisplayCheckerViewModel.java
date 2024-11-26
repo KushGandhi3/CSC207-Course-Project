@@ -2,12 +2,13 @@ package interface_adapter.display_checker;
 
 import  interface_adapter.ViewModel;
 
+import javax.swing.ImageIcon;
+
 public class DisplayCheckerViewModel extends ViewModel<DisplayCheckerState> {
 
     public static final String TITLE_LABEL = "Weather Checker";
     public static final String LOCATION_LABEL = "Location";
-    // public static final String TEMPERATURE_LABEL = "Temperature";
-    // public static final String TEMPERATURE_UNIT_LABEL = "°C";
+    public static final String WEATHER_CONDITION_LABEL = "Weather Condition";
     public static final String START_CHECKING_LABEL = "Start Checking";
     public static final String START_CHECKING_DESCRIPTION = "hour(s) from now";
     public static final String STOP_CHECKING_LABEL = "Stop Checking";
@@ -20,7 +21,7 @@ public class DisplayCheckerViewModel extends ViewModel<DisplayCheckerState> {
     public static final Integer[] STOP_CHECKING_OPTIONS = generateStopCheckingOptions();
 
     public static final String CHECK_BUTTON_LABEL = "Check";
-    public static final String CANCEL_BUTTON_LABEL = "Cancel";
+    public static final ImageIcon BACK_BUTTON_IMAGE = new ImageIcon("src/main/resources/assets/Back Button.png");
 
     public DisplayCheckerViewModel() {
         super("checker");

@@ -41,4 +41,28 @@ public class DisplayCheckerPresenter implements DisplayCheckerOutputBoundary {
 
         displayCheckerViewModel.firePropertyChanged();
     }
+
+    /**
+     * Prepare the view to switch to the home view
+     */
+    @Override
+    public void prepareHomeView() {
+        // Reset the state of the checker view to default state
+        DisplayCheckerState displayCheckerState = displayCheckerViewModel.getState();
+        displayCheckerViewModel.setState(displayCheckerState);
+
+        // switch and update to home view
+        viewManagerModel.setState("home");
+        displayCheckerViewModel.firePropertyChanged();
+    }
+
+    /**
+     * Prepare the view when the location is empty
+     */
+    @Override
+    public void prepareLocationEmptyView() {
+        DisplayCheckerState displayCheckerState = displayCheckerViewModel.getState();
+        displayCheckerState.setMessage("empty");
+        displayCheckerViewModel.firePropertyChanged();
+    }
 }
