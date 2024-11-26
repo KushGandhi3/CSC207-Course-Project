@@ -1,27 +1,28 @@
 package view;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.awt.FlowLayout;
 import java.util.Objects;
 
+import constants.Constants;
 import interface_adapter.display_checker.DisplayCheckerController;
 import interface_adapter.display_checker.DisplayCheckerState;
 import interface_adapter.display_checker.DisplayCheckerViewModel;
 
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.JButton;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
+import javax.swing.Box;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.DocumentEvent;
-
 
 public class CheckerView extends JPanel implements ActionListener, PropertyChangeListener {
 
@@ -30,78 +31,127 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
     private DisplayCheckerController displayCheckerController;
 
     private final JTextField locationField = new JTextField(10);
-    // private final JComboBox<String> tempOptions = new JComboBox<>(CheckerViewModel.TEMPERATURE_OPTIONS);
-    // private final JTextField tempField = new JTextField(5);
     private final JComboBox<String> weatherConditionOptions = new JComboBox<>(DisplayCheckerViewModel.WEATHER_CONDITION_OPTIONS);
     private final JComboBox<Integer> startCheckingOptions = new JComboBox<>(DisplayCheckerViewModel.START_CHECKING_OPTIONS);
     private final JComboBox<Integer> stopCheckingOptions = new JComboBox<>(DisplayCheckerViewModel.STOP_CHECKING_OPTIONS);
 
     private final JButton checkButton = new JButton(DisplayCheckerViewModel.CHECK_BUTTON_LABEL);
-    private final JButton cancelButton = new JButton(DisplayCheckerViewModel.CANCEL_BUTTON_LABEL);
+    private final JButton backButton = new JButton(DisplayCheckerViewModel.BACK_BUTTON_IMAGE);
 
     public CheckerView(DisplayCheckerViewModel displayCheckerViewModel) {
         this.displayCheckerViewModel = displayCheckerViewModel;
         this.displayCheckerViewModel.addPropertyChangeListener(this);
 
-        // title label "Weather Checker"
-        final JLabel titleLabel = new JLabel(DisplayCheckerViewModel.TITLE_LABEL);
+        // set the layout and border of the panel
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        // Create and style the back button
+        backButton.setBorder(BorderFactory.createEmptyBorder());
+        backButton.setContentAreaFilled(false);
+
+        // Back button panel
+        JPanel backButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        backButtonPanel.add(backButton);
+
+        // Title label
+        JLabel titleLabel = new JLabel(DisplayCheckerViewModel.TITLE_LABEL, JLabel.CENTER);
+        titleLabel.setFont(FontManager.getCrimsonText(Constants.TITLE_FONT_SIZE));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // Title panel
+        JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        titlePanel.add(titleLabel);
 
-        // location label
-        final JLabel locationLabel = new JLabel(DisplayCheckerViewModel.LOCATION_LABEL);
+        // Main content panel
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // location panel
-        final JPanel locationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
-        locationPanel.add(locationLabel);
-        locationPanel.add(locationField);
+        // Input fields panel
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 20, 10, 20); // Consistent padding
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        /*
-        // temperature label and unit
-        final JLabel tempLabel = new JLabel(CheckerViewModel.TEMPERATURE_LABEL);
-        final JLabel tempUnit = new JLabel(CheckerViewModel.TEMPERATURE_UNIT_LABEL);
+        // Location label and input
+        JLabel locationLabel = new JLabel(DisplayCheckerViewModel.LOCATION_LABEL);
+        locationLabel.setFont(FontManager.getCrimsonText(Constants.LABEL_FONT_SIZE));
+        locationField.setFont(FontManager.getCrimsonText(Constants.LABEL_FONT_SIZE));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        inputPanel.add(locationLabel, gbc);
+        gbc.gridx = 1;
+        inputPanel.add(locationField, gbc);
 
-        // temperature panel
-        final JPanel tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
-        tempPanel.add(tempLabel);
-        tempPanel.add(tempOptions);
-        tempPanel.add(tempField);
-        tempPanel.add(tempUnit);
-         */
+        // Weather condition label and input
+        JLabel weatherConditionLabel = new JLabel(DisplayCheckerViewModel.WEATHER_CONDITION_LABEL);
+        weatherConditionLabel.setFont(FontManager.getCrimsonText(Constants.LABEL_FONT_SIZE));
+        weatherConditionOptions.setFont(FontManager.getCrimsonText(Constants.LABEL_FONT_SIZE));
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        inputPanel.add(weatherConditionLabel, gbc);
+        gbc.gridx = 1;
+        inputPanel.add(weatherConditionOptions, gbc);
 
-        // weather condition label
-        final JLabel weatherConditionLabel = new JLabel("Weather Condition");
+        // Start checking label and input
+        JLabel startCheckingLabel = new JLabel(DisplayCheckerViewModel.START_CHECKING_LABEL);
+        startCheckingLabel.setFont(FontManager.getCrimsonText(Constants.LABEL_FONT_SIZE));
+        startCheckingOptions.setFont(FontManager.getCrimsonText(Constants.LABEL_FONT_SIZE));
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        inputPanel.add(startCheckingLabel, gbc);
+        gbc.gridx = 1;
+        inputPanel.add(startCheckingOptions, gbc);
 
-        // weather condition panel
-        final JPanel weatherConditionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
-        weatherConditionPanel.add(weatherConditionLabel);
-        weatherConditionPanel.add(weatherConditionOptions);
+        // Add label "hour(s) from now"
+        JLabel startCheckingDescription = new JLabel(DisplayCheckerViewModel.START_CHECKING_DESCRIPTION);
+        startCheckingDescription.setFont(FontManager.getCrimsonText(Constants.LABEL_FONT_SIZE));
+        gbc.gridx = 2;
+        inputPanel.add(startCheckingDescription, gbc);
 
-        // start checking label and description
-        final JLabel startCheckingLabel = new JLabel(DisplayCheckerViewModel.START_CHECKING_LABEL);
-        final JLabel startCheckingDescription = new JLabel(DisplayCheckerViewModel.START_CHECKING_DESCRIPTION);
+        // Stop checking label and input
+        JLabel stopCheckingLabel = new JLabel(DisplayCheckerViewModel.STOP_CHECKING_LABEL);
+        stopCheckingLabel.setFont(FontManager.getCrimsonText(Constants.LABEL_FONT_SIZE));
+        stopCheckingOptions.setFont(FontManager.getCrimsonText(Constants.LABEL_FONT_SIZE));
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        inputPanel.add(stopCheckingLabel, gbc);
+        gbc.gridx = 1;
+        inputPanel.add(stopCheckingOptions, gbc);
 
-        // start checking panel
-        final JPanel startCheckingPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
-        startCheckingPanel.add(startCheckingLabel);
-        startCheckingPanel.add(startCheckingOptions);
-        startCheckingPanel.add(startCheckingDescription);
+        // Add label "hour(s) from start time"
+        JLabel stopCheckingDescription = new JLabel(DisplayCheckerViewModel.STOP_CHECKING_DESCRIPTION);
+        stopCheckingDescription.setFont(FontManager.getCrimsonText(Constants.LABEL_FONT_SIZE));
+        gbc.gridx = 2;
+        inputPanel.add(stopCheckingDescription, gbc);
 
-        // stop checking label and description
-        final JLabel stopCheckingLabel = new JLabel(DisplayCheckerViewModel.STOP_CHECKING_LABEL);
-        final JLabel stopCheckingDescription = new JLabel(DisplayCheckerViewModel.STOP_CHECKING_DESCRIPTION);
-
-        // stop checking panel
-        final JPanel stopCheckingPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
-        stopCheckingPanel.add(stopCheckingLabel);
-        stopCheckingPanel.add(stopCheckingOptions);
-        stopCheckingPanel.add(stopCheckingDescription);
-
-        // button panel
-        final JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        // Check button panel
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        checkButton.setFont(FontManager.getCrimsonText(Constants.LABEL_FONT_SIZE));
         buttonPanel.add(checkButton);
-        buttonPanel.add(cancelButton);
+
+        // Add components to the content panel
+        contentPanel.add(Box.createVerticalStrut(20));
+        contentPanel.add(inputPanel);
+        contentPanel.add(Box.createVerticalStrut(20));
+        contentPanel.add(buttonPanel);
+
+        // Add panels to the main layout
+        add(backButtonPanel, BorderLayout.NORTH);
+        add(titlePanel, BorderLayout.PAGE_START);
+        add(contentPanel, BorderLayout.CENTER);
 
         // setting default value
+        setDefaultValues();
+
+        // add action and document listeners
+        addEventListeners();
+
+    }
+
+    // set the default values for the state and location field
+    private void setDefaultValues() {
         DisplayCheckerState displayCheckerState = displayCheckerViewModel.getState();
         displayCheckerState.setLocation("Toronto");
         displayCheckerState.setWeatherConditionOptions("Clear");
@@ -109,6 +159,11 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
         displayCheckerState.setStopChecking(1);
         displayCheckerViewModel.setState(displayCheckerState);
 
+        // set the default value for the location field
+        locationField.setText(displayCheckerState.getLocation());
+    }
+
+    private void addEventListeners() {
         // add action listeners to the check button
         checkButton.addActionListener(
                 // this creates an anonymous subclass of ActionListener and instantiates it.
@@ -131,10 +186,10 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
         );
 
         // add action listeners to the cancel button
-        cancelButton.addActionListener(
+        backButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(cancelButton)) {
+                        if (evt.getSource().equals(backButton)) {
                             displayCheckerController.switchToHomeView();
                         }
                     }
@@ -143,7 +198,6 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
 
         // add document listeners to the location field
         locationField.getDocument().addDocumentListener(new DocumentListener() {
-
             private void documentListenerHelper() {
                 final DisplayCheckerState currentState = displayCheckerViewModel.getState();
                 currentState.setLocation(locationField.getText());
@@ -164,9 +218,7 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
             public void changedUpdate(DocumentEvent e) {
                 documentListenerHelper();
             }
-
-        }
-        );
+        });
 
         // add action listeners to the temperature options
         weatherConditionOptions.addActionListener(
@@ -203,16 +255,6 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
                     }
                 }
         );
-
-        // main panel
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.add(titleLabel);
-        this.add(locationPanel);
-        // this.add(tempPanel);
-        this.add(weatherConditionPanel);
-        this.add(startCheckingPanel);
-        this.add(stopCheckingPanel);
-        this.add(buttonPanel);
     }
 
     @Override
@@ -234,7 +276,11 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
         } else if (Objects.equals(isWeatherConditionMet, "nonexist")) {
             JOptionPane.showMessageDialog(this, "Weather condition is not met.");
             state.setMessage(null);
+        } else if (Objects.equals(isWeatherConditionMet, "empty")) {
+            JOptionPane.showMessageDialog(this, "Location cannot be empty.");
+            state.setMessage(null);
         }
+
     }
 
     public String getViewName() {
