@@ -13,8 +13,6 @@ public class DisplayCheckerViewModel extends ViewModel<DisplayCheckerState> {
     public static final String START_CHECKING_DESCRIPTION = "hour(s) from now";
     public static final String STOP_CHECKING_LABEL = "Stop Checking";
     public static final String STOP_CHECKING_DESCRIPTION = "hour(s) from start time";
-
-    // public static final String[] TEMPERATURE_OPTIONS = new String[]{"Below", "At", "Above"};
     public static final String[] WEATHER_CONDITION_OPTIONS = new String[]{"Thunderstorm", "Drizzle", "Rain", "Snow", "Clear",
             "Clouds"};
     public static final Integer[] START_CHECKING_OPTIONS = generateStartCheckingOptions();
