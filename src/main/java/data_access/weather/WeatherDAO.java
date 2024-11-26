@@ -1,5 +1,6 @@
 package data_access.weather;
 
+import data_access.weather.open_weather.OpenWeatherWeatherDAO;
 import entity.weather.daily_weather.DailyWeatherData;
 import entity.weather.daily_weather.DailyWeatherDataFactory;
 import entity.weather.day_weather.DayWeatherData;
@@ -11,25 +12,25 @@ import entity.weather.hourly_weather.HourlyWeatherDataFactory;
 import exception.APICallException;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import use_case.display_checker.DisplayCheckerDAI;
+import use_case.display_daily.DisplayDailyDAI;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class parses OpenWeather JSON Objects.
+ * This class parses OpenWeather JSON Objects and creates DailyWeatherData and HourlyWeatherDataObjects.
  */
-public class JSONOpenWeatherDAO implements DisplayCheckerDAI {
+public class WeatherDAO implements DisplayDailyDAI {
 
     private final DayWeatherDataFactory dayWeatherDataFactory;
     private final DailyWeatherDataFactory dailyWeatherDataFactory;
     private final HourlyWeatherDataFactory hourlyWeatherDataFactory;
     private final HourWeatherDataFactory hourWeatherDataFactory;
 
-    public JSONOpenWeatherDAO(DayWeatherDataFactory dayWeatherDataFactory,
-                              DailyWeatherDataFactory dailyWeatherDataFactory,
-                              HourWeatherDataFactory hourWeatherDataFactory,
-                              HourlyWeatherDataFactory hourlyWeatherDataFactory) {
+    public WeatherDAO(DayWeatherDataFactory dayWeatherDataFactory,
+                      DailyWeatherDataFactory dailyWeatherDataFactory,
+                      HourWeatherDataFactory hourWeatherDataFactory,
+                      HourlyWeatherDataFactory hourlyWeatherDataFactory) {
         this.dayWeatherDataFactory = dayWeatherDataFactory;
         this.dailyWeatherDataFactory = dailyWeatherDataFactory;
         this.hourlyWeatherDataFactory = hourlyWeatherDataFactory;
@@ -43,7 +44,7 @@ public class JSONOpenWeatherDAO implements DisplayCheckerDAI {
      * @throws APICallException if the request fails or the API Key is not set
      */
     public HourlyWeatherData getHourlyWeatherData(String city) throws APICallException {
-        final JSONObject weatherData = APIOpenWeatherDAO.apiRequest(city);
+        final JSONObject weatherData = OpenWeatherWeatherDAO.apiRequest(city);
 
         final String timezone = weatherData.getString("timezone");
         // get min and max temperature for the day
@@ -123,7 +124,7 @@ public class JSONOpenWeatherDAO implements DisplayCheckerDAI {
      * @throws APICallException if the request fails or the API Key is not set
      */
     public DailyWeatherData getDailyWeatherData(String city) throws APICallException {
-        final JSONObject weatherData = APIOpenWeatherDAO.apiRequest(city);
+        final JSONObject weatherData = OpenWeatherWeatherDAO.apiRequest(city);
 
         final String timezone = weatherData.getString("timezone");
         final JSONArray dailyArray = weatherData.getJSONArray("daily");
