@@ -7,9 +7,4 @@ public interface DisplayCheckerInputBoundary {
      * @param displayCheckerInputData the input data
      */
     void execute(DisplayCheckerInputData displayCheckerInputData);
-
-    /**
-     * Executes the switch to the home view use case
-     */
-    void switchToHomeView();
 }

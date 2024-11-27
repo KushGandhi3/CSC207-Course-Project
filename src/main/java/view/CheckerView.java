@@ -8,6 +8,7 @@ import java.beans.PropertyChangeListener;
 import java.util.Objects;
 
 import constants.Constants;
+import interface_adapter.ViewManagerModel;
 import interface_adapter.display_checker.DisplayCheckerController;
 import interface_adapter.display_checker.DisplayCheckerState;
 import interface_adapter.display_checker.DisplayCheckerViewModel;
@@ -20,6 +21,7 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
 
     private final DisplayCheckerViewModel displayCheckerViewModel;
     private DisplayCheckerController displayCheckerController;
+    private final ViewManagerModel viewManagerModel;
 
     private final JTextField locationField = new JTextField(10);
     private final JComboBox<String> weatherConditionOptions = new JComboBox<>(DisplayCheckerViewModel.WEATHER_CONDITION_OPTIONS);
@@ -29,8 +31,9 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
     private final JButton checkButton = new JButton(DisplayCheckerViewModel.CHECK_BUTTON_LABEL);
     private final JButton backButton = new JButton(DisplayCheckerViewModel.BACK_BUTTON_IMAGE);
 
-    public CheckerView(DisplayCheckerViewModel displayCheckerViewModel) {
+    public CheckerView(DisplayCheckerViewModel displayCheckerViewModel, ViewManagerModel viewManagerModel) {
         this.displayCheckerViewModel = displayCheckerViewModel;
+        this.viewManagerModel = viewManagerModel;
         this.displayCheckerViewModel.addPropertyChangeListener(this);
 
         // set the layout and border of the panel
@@ -178,7 +181,8 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
         backButton.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(backButton)) {
-                        displayCheckerController.switchToHomeView();
+                        viewManagerModel.setActiveView("home");
+                        viewManagerModel.firePropertyChanged();
                     }
                 }
         );
