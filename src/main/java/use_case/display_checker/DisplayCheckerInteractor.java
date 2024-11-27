@@ -52,11 +52,6 @@ public class DisplayCheckerInteractor implements DisplayCheckerInputBoundary {
         }
     }
 
-    @Override
-    public void switchToHomeView() {
-        displayCheckerOutputBoundary.prepareHomeView();
-    }
-
     private boolean checkWeatherData(String location, String weatherConditionOptions, int startChecking, int stopChecking) throws InvalidLocationException {
         try {
             HourlyWeatherData hourlyWeatherData = displayCheckerDAI.getHourlyWeatherData(location);

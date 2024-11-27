@@ -12,11 +12,6 @@ public interface DisplayCheckerOutputBoundary {
     void prepareCondNotMetView();
 
     /**
-     * Prepare the switch to home view.
-     */
-    void prepareHomeView();
-
-    /**
      * Prepare the location empty view.
      */
     void prepareLocationEmptyView();
