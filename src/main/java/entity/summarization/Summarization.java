@@ -15,7 +15,7 @@ public interface Summarization {
      * Get the outfit suggestions.
      * @return the outfit suggestions
      */
-    String getOutfitSuggestions();
+    String getOutfitSuggestion();
 
     /**
      * Get the travel advice.
