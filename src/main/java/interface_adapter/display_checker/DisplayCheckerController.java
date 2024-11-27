@@ -22,11 +22,4 @@ public class DisplayCheckerController {
 
         checkerInteractor.execute(displayCheckerInputData);
     }
-
-    /**
-     * Executes the "Switch to HomeView" Use Cases.
-     */
-    public void switchToHomeView() {
-        checkerInteractor.switchToHomeView();
-    }
 }
