@@ -30,8 +30,6 @@ class DisplayCheckerInteractorTest {
             @Override
             public void prepareCondNotMetView() {fail("Condition not met view unexpectedly called.");}
             @Override
-            public void prepareHomeView() {fail("Home view unexpectedly called.");}
-            @Override
             public void prepareLocationEmptyView() {fail("Location empty view unexpectedly called.");}
             @Override
             public void prepareInvalidLocationView() {fail("Invalid location view unexpectedly called.");}
@@ -56,8 +54,6 @@ class DisplayCheckerInteractorTest {
             public void prepareCondMetView() {fail("Condition met view unexpectedly called.");}
             @Override
             public void prepareCondNotMetView() {assertTrue(true);}
-            @Override
-            public void prepareHomeView() {fail("Home view unexpectedly called.");}
             @Override
             public void prepareLocationEmptyView() {fail("Location empty view unexpectedly called.");}
             @Override
@@ -84,8 +80,6 @@ class DisplayCheckerInteractorTest {
             @Override
             public void prepareCondNotMetView() {fail("Condition not met view unexpectedly called.");}
             @Override
-            public void prepareHomeView() {fail("Home view unexpectedly called.");}
-            @Override
             public void prepareLocationEmptyView() {assertTrue(true);}
             @Override
             public void prepareInvalidLocationView() {fail("Invalid location view unexpectedly called.");}
@@ -110,8 +104,6 @@ class DisplayCheckerInteractorTest {
             public void prepareCondMetView() {fail("Condition met view unexpectedly called.");}
             @Override
             public void prepareCondNotMetView() {fail("Condition not met view unexpectedly called.");}
-            @Override
-            public void prepareHomeView() {fail("Home view unexpectedly called.");}
             @Override
             public void prepareLocationEmptyView() {fail("Location empty view unexpectedly called.");}
             @Override

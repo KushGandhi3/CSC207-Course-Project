@@ -63,11 +63,6 @@ public class DisplayCheckerInteractor implements DisplayCheckerInputBoundary {
 
             List<HourWeatherData> hourlyForecast = hourlyWeatherData.getHourWeatherDataList();
 
-            if (hourlyForecast == null || hourlyForecast.isEmpty()) {
-                // Throw exception when forecast list is empty
-                throw new InvalidLocationException("No hourly forecast data available for " + location);
-            }
-
             // loop through the hourly data between the start time until the (stop time + start time)
             for (int i = startChecking; i < (stopChecking + startChecking); i++) {
                 HourWeatherData hourData = hourlyForecast.get(i);
