@@ -14,5 +14,6 @@ public class Constants {
     public static final float TITLE_FONT_SIZE = 96;
     public static final float INFORMATION_FONT_SIZE = 32;
     public static final float SUBTITLE_FONT_SIZE = 20;
+    public static final float LABEL_FONT_SIZE = 27;
 
 }

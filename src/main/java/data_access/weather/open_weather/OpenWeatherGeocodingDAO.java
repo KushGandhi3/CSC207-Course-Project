@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -20,11 +21,12 @@ public class OpenWeatherGeocodingDAO {
 
     // limit indicates the number of matching queries that will be returned by
     // the API
+    private static final Dotenv dotenv = Dotenv.load();
     private static final Integer LIMIT = 1;
     private static final String GEOCODING_API_URL = "http://api" +
             ".openweathermap.org/geo/1" +
             ".0/direct?q={city name}&limit={limit}&appid={API key}";
-    private static final String API_KEY = System.getenv("OPEN_WEATHER_API_KEY");
+    private static final String API_KEY = dotenv.get("OPEN_WEATHER_API_KEY");
 
     /**
      * Get the geo-coordinates of a city using the OpenWeather Geocoding API.

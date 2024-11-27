@@ -10,4 +10,19 @@ public interface DisplayCheckerOutputBoundary {
      * Prepare the condition not met view with the given nonexist string.
      */
     void prepareCondNotMetView();
+
+    /**
+     * Prepare the switch to home view.
+     */
+    void prepareHomeView();
+
+    /**
+     * Prepare the location empty view.
+     */
+    void prepareLocationEmptyView();
+
+    /**
+     * Prepare the invalid location view.
+     */
+    void prepareInvalidLocationView();
 }
