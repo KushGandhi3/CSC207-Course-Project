@@ -1,18 +1,18 @@
 package use_case.display_daily;
 
-import entity.weather.WeatherData;
+import entity.weather.daily_weather.DailyWeatherData;
 import exception.APICallException;
 
 /**
- * The interface of the DAO for the weather data used by all use cases.
+ * The interface of the DAO for the daily weather data use case.
  */
 public interface DisplayDailyDAI {
 
     /**
-     * Get Weather data from the API.
-     * @param location the name of the location.
-     * @return the weather data.
-     * @throws APICallException if the request fails.
+     * Get Daily Weather data from the API.
+     * @param city the name of the city to get the forecast for
+     * @return the weather data
+     * @throws APICallException if the API request fails or the API Key is not set.
      */
-    WeatherData getWeatherData(String location) throws APICallException;
+    DailyWeatherData getDailyWeatherData(String city) throws APICallException;
 }

@@ -6,13 +6,12 @@ package use_case.display_summarization;
 public interface DisplaySummarizationInputBoundary {
 
     /**
-     * Switches to the Home View.
+     * Executes the Summarization use case.
      */
-    void switchtoHomeView();
+    void execute();
 
     /**
-     * Executes the Analyze Outfit use case.
-     * @param inputData The input data for the use case.
+     * Switches to the Home View.
      */
-    void execute(DisplaySummarizationInputData inputData);
+    void switchToHomeView();
 }

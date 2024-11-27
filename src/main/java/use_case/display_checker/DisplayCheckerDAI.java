@@ -1,6 +1,6 @@
 package use_case.display_checker;
 
-import entity.weather.WeatherData;
+import entity.weather.hourly_weather.HourlyWeatherData;
 import exception.APICallException;
 
 /**
@@ -9,12 +9,10 @@ import exception.APICallException;
 public interface DisplayCheckerDAI {
 
     /**
-     * Get Weather data from the API.
-     *
+     * Compare the hourly data with the wanted condition.
      * @param location the name of the location.
      * @return the weather data.
-     * @throws APICallException if the request fails.
      */
-    WeatherData getWeatherData(String location) throws APICallException;
+    HourlyWeatherData getHourlyWeatherData(String location) throws APICallException;
 }
 
