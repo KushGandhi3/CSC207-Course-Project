@@ -3,26 +3,27 @@ package interface_adapter.display_summarization;
 import use_case.display_summarization.DisplaySummarizationInputBoundary;
 
 /**
- * The Controller for when the user wants to analyze an outfit.
+ * Controller for the summarization use case.
  */
 public class DisplaySummarizationController {
 
-    private final DisplaySummarizationInputBoundary summarizationUseCaseInteractor;
+    private final DisplaySummarizationInputBoundary summarizationInteractor;
 
-    public DisplaySummarizationController(DisplaySummarizationInputBoundary summarizationUseCaseInteractor) {
-        this.summarizationUseCaseInteractor = summarizationUseCaseInteractor;
+    public DisplaySummarizationController(DisplaySummarizationInputBoundary summarizationInteractor) {
+        this.summarizationInteractor = summarizationInteractor;
     }
 
     /**
      * Executes the Summarization Use Case.
      */
     public void execute() {
-        summarizationUseCaseInteractor.execute();
+        summarizationInteractor.execute();
     }
 
     /**
-     * Executes the "switch to HomeView" Use Case.
+     * Executes the "Switch to HomeView" Use Case.
      */
     public void switchToHomeView() {
+        summarizationInteractor.switchToHomeView();
     }
 }
