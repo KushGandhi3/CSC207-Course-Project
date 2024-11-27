@@ -13,5 +13,5 @@ public interface DisplaySummarizationInputBoundary {
     /**
      * Switches to the Home View.
      */
-    void switchtoHomeView();
+    void switchToHomeView();
 }

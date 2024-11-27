@@ -7,8 +7,13 @@ import interface_adapter.ViewModel;
  */
 public class DisplaySummarizationViewModel extends ViewModel<DisplaySummarizationState> {
 
+    public static final String TITLE_LABEL = "AI Summarization";
+    public static final String SUMMARY_TITLE = "Weather Summary";
+    public static final String OUTFIT_LABEL = "Outfit Suggestion";
+    public static final String TRAVEL_LABEL = "Travel Advice";
+
     public DisplaySummarizationViewModel() {
-        super("Summarization");
+        super("summarization");
         setState(new DisplaySummarizationState());
     }
 }
