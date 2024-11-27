@@ -7,19 +7,14 @@ import java.time.DayOfWeek;
  */
 public class DisplayDailyInputData {
 
-    private final String city;
     private final DayOfWeek selectedWeekday;
 
-    public DisplayDailyInputData(String city, DayOfWeek selectedWeekday) {
-        this.city = city;
+    public DisplayDailyInputData(DayOfWeek selectedWeekday) {
         this.selectedWeekday = selectedWeekday;
-    }
-
-    public String getCity() {
-        return city;
     }
 
     public DayOfWeek getWeekday() {
         return selectedWeekday;
     }
+
 }

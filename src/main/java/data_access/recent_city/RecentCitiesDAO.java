@@ -1,5 +1,7 @@
 package data_access.recent_city;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import entity.recent_city.RecentCityData;
 import entity.recent_city.RecentCityDataFactory;
 import exception.RecentCitiesDataException;
@@ -12,6 +14,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.ArrayList;
+
+import static java.lang.System.in;
 
 /**
  * DAO for accessing data about recently viewed cities.
@@ -32,11 +36,12 @@ public class RecentCitiesDAO {
      * @throws RecentCitiesDataException when there is an issue writing data
      */
     public void addCity(String city) throws RecentCitiesDataException {
-        try {
-            Path filePath = Paths.get(path);
-            String jsonContent = Files.readString(filePath);
+        try (InputStream jsonFile = Thread.currentThread().getContextClassLoader().getResourceAsStream(path)) {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = mapper.readValue(jsonFile, JsonNode.class);
+            String jsonString = mapper.writeValueAsString(jsonNode);
 
-            JSONArray recentCities = new JSONArray(jsonContent);
+            JSONArray recentCities = new JSONArray(jsonString);
 
             // add the new city to the front of the city list
             recentCities.put(0, city);
