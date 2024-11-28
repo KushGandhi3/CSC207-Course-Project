@@ -1,6 +1,5 @@
 package data_access.weather;
 
-import data_access.weather.open_weather.OpenWeatherWeatherDAO;
 import entity.weather.daily_weather.DailyWeatherData;
 import entity.weather.daily_weather.DailyWeatherDataFactory;
 import entity.weather.day_weather.DayWeatherData;
@@ -10,7 +9,6 @@ import entity.weather.hour_weather.HourWeatherDataFactory;
 import entity.weather.hourly_weather.HourlyWeatherData;
 import entity.weather.hourly_weather.HourlyWeatherDataFactory;
 import exception.APICallException;
-import exception.RecentCitiesDataException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import use_case.display_daily.DisplayDailyDAI;
@@ -23,7 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * In Memory Data Object for simulating the creation of weather data entities.
+ * In Memory Data Object for simulating the creation of weather data entities. Note that the only available cities are
+ * Toronto, Vancouver, and Edmonton with weather data from a past forecast.
  */
 public class InMemoryWeatherDAO implements DisplayDailyDAI {
 
@@ -45,13 +44,13 @@ public class InMemoryWeatherDAO implements DisplayDailyDAI {
     }
 
     /**
-     * Returns HourlyWeatherData entity with updated weather information from in memory.
+     * Returns HourlyWeatherData entity with updated weather information from in memory weather data file.
      * @param city the name of the city to get the weather forecast for
      * @return an HourlyWeatherData entity
-     * @throws APICallException if the request fails or the API Key is not set
+     * @throws APICallException if the in memory weather data cannot be accessed
      */
-    public HourlyWeatherData getHourlyWeatherData(String city) {
-        final JSONObject weatherData = OpenWeatherWeatherDAO.apiRequest(city);
+    public HourlyWeatherData getHourlyWeatherData(String city) throws APICallException {
+        final JSONObject weatherData = readInMemoryWeather().getJSONObject(city);
 
         final String timezone = weatherData.getString("timezone");
         // get min and max temperature for the day
@@ -125,13 +124,13 @@ public class InMemoryWeatherDAO implements DisplayDailyDAI {
 
 
     /**
-     * Returns a DailyWeatherData entity with updated weather data from the OpenWeather API.
+     * Returns a DailyWeatherData entity with weather data from the in memory weather data file.
      * @param city the name of the city to get the weather forecast for
      * @return a DailyWeatherData entity
-     * @throws APICallException if the request fails or the API Key is not set
+     * @throws APICallException if the in memory weather data cannot be accessed
      */
     public DailyWeatherData getDailyWeatherData(String city) throws APICallException {
-        final JSONObject weatherData = OpenWeatherWeatherDAO.apiRequest(city);
+        final JSONObject weatherData = readInMemoryWeather().getJSONObject(city);
 
         final String timezone = weatherData.getString("timezone");
         final JSONArray dailyArray = weatherData.getJSONArray("daily");
@@ -200,14 +199,14 @@ public class InMemoryWeatherDAO implements DisplayDailyDAI {
     }
 
     /**
-     * Read the InMemoryWeatherData json file from resource. Return a JSONArray of the data in the file.
-     * @return JSONArray containing the recent cities
-     * @throws RecentCitiesDataException when the RecentCities json file is not found
+     * Read the InMemoryWeatherData json file from resource. Return a JSON Object of the weather data in the file.
+     * @return JSONObject containing the weather data
+     * @throws APICallException when the InMemoryWeatherData JSON file is not found
      */
-    private JSONArray readInMemoryWeather() throws RecentCitiesDataException{
-        try (InputStream inputStream = this.getClass().getResourceAsStream(RECENT_CITIES_PATH)) {
+    private JSONObject readInMemoryWeather() throws APICallException {
+        try (InputStream inputStream = this.getClass().getResourceAsStream(IN_MEMORY_WEATHER_DATA_PATH)) {
             if (inputStream == null) {
-                throw new IOException("Resource not found: " + RECENT_CITIES_PATH);
+                throw new IOException("Resource not found: " + IN_MEMORY_WEATHER_DATA_PATH);
             }
             // read file data
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
@@ -217,10 +216,10 @@ public class InMemoryWeatherDAO implements DisplayDailyDAI {
             while ((line = reader.readLine()) != null) {
                 jsonString.append(line);
             }
-            // convert the recent cities file data to a JSON array
-            return new JSONArray(jsonString.toString());
+            // convert the weather data file to a JSON object
+            return new JSONObject(jsonString.toString());
         } catch(IOException exception) {
-            throw new RecentCitiesDataException("Filed to load recent city data! " + exception);
+            throw new APICallException("Filed to load in memory weather data! " + exception);
         }
     }
 
