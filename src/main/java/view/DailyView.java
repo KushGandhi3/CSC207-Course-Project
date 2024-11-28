@@ -1,64 +1,71 @@
 package view;
 
-import java.awt.Component;
-import java.awt.Font;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 
+import interface_adapter.display_checker.DisplayCheckerViewModel;
 import interface_adapter.display_daily.DisplayDailyState;
 import interface_adapter.display_daily.DisplayDailyController;
 import interface_adapter.display_daily.DisplayDailyViewModel;
 import constants.Constants;
 
 /**
- * The view for when the user is in the weekly forecast use-case.
+ * The view for the daily weather use-case.
  */
-public class DailyView extends JPanel implements PropertyChangeListener {
+public class DailyView extends JPanel implements ActionListener, PropertyChangeListener {
+    private static final Font crimsonText20 = FontManager.getCrimsonTextRegular(20);
 
     private final String viewName = "Weekly Forecast";
+
     private final DisplayDailyViewModel displayDailyViewModel;
     private DisplayDailyController displayDailyController;
 
-    // weekday temperatures
-    private final JLabel[] temperatureForecasts;
-    // weekday conditions (i.e. sunny, cloudy, rainy)
-    private final JLabel[] conditionForecasts;
-    // weekday feels like temperatures
-    private final JLabel[] feelsLikeForecasts;
-    // weekday wind speeds
-    private final JLabel[] windSpeedForecasts;
-    // weekday precipitation forecasts
-    private final JLabel[] precipitationForecasts;
-    // weekday UV indices
-    private final JLabel[] uvIndexForecasts;
-    // weekday air quality forecasts
-    private final JLabel[] airQualityForecasts;
-    // weekday humidity forecasts
-    private final JLabel[] humidityForecasts;
-
+    // data to be displayed
     private final JLabel city;
+    private final List<JLabel> weekdays;
+    private final List<JLabel> temperatures;
+    private final List<JLabel> conditions;
+    private final JLabel feelsLikeTemperature;
+    private final JLabel uvIndex;
+    private final JLabel windSpeed;
+    private final JLabel cloudCover;
+    private final JLabel precipitation;
+    private final JLabel humidity;
 
-    // days of the week
-    private final JButton dayOne;
-    private final JButton dayTwo;
-    private final JButton dayThree;
-    private final JButton dayFour;
-    private final JButton dayFive;
-    private final JButton daySix;
-    private final JButton daySeven;
+    // days of the week listed in order
+    private final List<JButton> weekdays;
 
-    private final JButton homeButton;
+    private final JButton backButton = new JButton(DisplayCheckerViewModel.BACK_BUTTON_IMAGE);
 
     public DailyView(DisplayDailyViewModel displayDailyViewModel) {
         this.displayDailyViewModel = displayDailyViewModel;
         this.displayDailyViewModel.addPropertyChangeListener(this);
 
-        // absolute positioning
-        this.setLayout(null);
+        // set the layout and border of the panel
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        // Create and style the back button
+        this.backButton.setBorder(BorderFactory.createEmptyBorder());
+        this.backButton.setContentAreaFilled(false);
+        // Back button panel
+        JPanel backButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        backButtonPanel.add(backButton);
+
+
+
+        final JLabel forecastLabel = new JLabel(DisplayDailyViewModel.FORECAST_LABEL);
+        forecastLabel.setFont(crimsonText20);
+        forecastLabel.setAlignmentX(143);
+        forecastLabel.setAlignmentY(238);
+
+
 
         // city label
         this.city = new JLabel();
@@ -110,4 +117,8 @@ public class DailyView extends JPanel implements PropertyChangeListener {
         // TODO: Implement property change events
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
 }

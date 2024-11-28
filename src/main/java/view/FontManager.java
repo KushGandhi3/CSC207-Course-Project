@@ -81,11 +81,11 @@ public class FontManager {
         }
     }
 
-    public static Font getCrimsonText(float size) {
+    public static Font getCrimsonTextRegular(float size) {
         return crimsonTextRegular.deriveFont(size);
     }
 
-    public static Font getInter(float size) {
+    public static Font getInterTextRegular(float size) {
         return interTextRegular.deriveFont(size);
     }
 
