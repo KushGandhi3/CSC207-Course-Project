@@ -1,5 +1,6 @@
 package use_case.display_home;
 
+import entity.weather.hourly_weather.HourlyWeatherData;
 import exception.APICallException;
 
 /**
@@ -13,5 +14,5 @@ public interface DisplayHomeDAI {
      * @return the weather data.
      * @throws APICallException if the request fails.
      */
-    WeatherData getWeatherData(String location) throws APICallException;
+    HourlyWeatherData getHourlyWeatherData(String location) throws APICallException;
 }
