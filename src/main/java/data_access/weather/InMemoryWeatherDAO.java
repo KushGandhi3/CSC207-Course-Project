@@ -11,6 +11,7 @@ import entity.weather.hourly_weather.HourlyWeatherDataFactory;
 import exception.APICallException;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import use_case.display_checker.DisplayCheckerDAI;
 import use_case.display_daily.DisplayDailyWeatherDAI;
 
 import java.io.BufferedReader;
@@ -24,7 +25,7 @@ import java.util.List;
  * In Memory Data Object for simulating the creation of weather data entities. Note that the only available cities are
  * Toronto, Vancouver, and Edmonton with weather data from a past forecast.
  */
-public class InMemoryWeatherDAO implements DisplayDailyWeatherDAI {
+public class InMemoryWeatherDAO implements DisplayDailyWeatherDAI, DisplayCheckerDAI {
 
     private static final String IN_MEMORY_WEATHER_DATA_PATH = "/data/InMemoryWeatherData.json";
 
@@ -49,6 +50,7 @@ public class InMemoryWeatherDAO implements DisplayDailyWeatherDAI {
      * @return an HourlyWeatherData entity
      * @throws APICallException if the in memory weather data cannot be accessed
      */
+    @Override
     public HourlyWeatherData getHourlyWeatherData(String city) throws APICallException {
         final JSONObject weatherData = readInMemoryWeather().getJSONObject(city);
 
@@ -122,13 +124,13 @@ public class InMemoryWeatherDAO implements DisplayDailyWeatherDAI {
         }
     }
 
-
     /**
      * Returns a DailyWeatherData entity with weather data from the in memory weather data file.
      * @param city the name of the city to get the weather forecast for
      * @return a DailyWeatherData entity
      * @throws APICallException if the in memory weather data cannot be accessed
      */
+    @Override
     public DailyWeatherData getDailyWeatherData(String city) throws APICallException {
         final JSONObject weatherData = readInMemoryWeather().getJSONObject(city);
 

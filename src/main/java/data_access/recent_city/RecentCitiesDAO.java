@@ -34,6 +34,7 @@ public class RecentCitiesDAO implements DisplayDailyRecentCitiesDAI {
      * @param city the city to add to the recently viewed city list
      * @throws RecentCitiesDataException when there is an issue writing data
      */
+    @Override
     public void addCity(String city) throws RecentCitiesDataException {
         JSONArray recentCitiesArray = readRecentCities();
         // check if the city is already in the array
@@ -54,8 +55,9 @@ public class RecentCitiesDAO implements DisplayDailyRecentCitiesDAI {
     /**
      * Reads the recent cities from the JSON file and returns the corresponding RecentCityData entity.
      * @return a list of recent city names
-     * @throws RecentCitiesDataException if there is an issue reading or parsing the data
+     * @throws RecentCitiesDataException when there is an issue reading or parsing the data
      */
+    @Override
     public RecentCityData getRecentCityData() throws RecentCitiesDataException {
         JSONArray recentCitiesArray = readRecentCities();
 
