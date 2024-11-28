@@ -6,9 +6,8 @@ import exception.RecentCitiesDataException;
 import org.json.JSONArray;
 
 import java.io.*;
-import java.net.URL;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * DAO for accessing data about recently viewed cities.
@@ -16,7 +15,9 @@ import java.util.ArrayList;
 public class RecentCitiesDAO {
 
     // the path to the data resource
-    private static final String path = "data/RecentCities.json";
+    private static final String RESOURCES_FOLDER_PATH = "src/main/resources/";
+    private static final String RECENT_CITIES_PATH = "/data/RecentCities.json";
+
     private final RecentCityDataFactory recentCityDataFactory;
 
     public RecentCitiesDAO(RecentCityDataFactory recentCityDataFactory) {
@@ -28,12 +29,17 @@ public class RecentCitiesDAO {
      * @param city the city to add to the recently viewed city list
      * @throws RecentCitiesDataException when there is an issue writing data
      */
-    public void addCity(String city) throws RecentCitiesDataException, IOException {
+    public void addCity(String city) throws RecentCitiesDataException {
         JSONArray recentCitiesArray = readRecentCities();
         // check if the city is already in the array
         if (!cityExists(city, recentCitiesArray)) {
             // add the new city at the front of the JSON array
-            recentCitiesArray.put(0, city);
+            List<String> recentCitiesList = new ArrayList<>();
+            recentCitiesList.add(city);
+            for (int i = 0; i < recentCitiesArray.length(); i++) {
+                recentCitiesList.add(recentCitiesArray.getString(i));
+            }
+            recentCitiesArray = new JSONArray(recentCitiesList);
 
             // write to the RecentCities file
             writeToRecentCities(recentCitiesArray);
@@ -63,9 +69,9 @@ public class RecentCitiesDAO {
      * @throws RecentCitiesDataException when the RecentCities json file is not found
      */
     private JSONArray readRecentCities() throws RecentCitiesDataException{
-        try (InputStream inputStream = this.getClass().getResourceAsStream(path)) {
+        try (InputStream inputStream = this.getClass().getResourceAsStream(RECENT_CITIES_PATH)) {
             if (inputStream == null) {
-                throw new IOException("Resource not found: " + path);
+                throw new IOException("Resource not found: " + RECENT_CITIES_PATH);
             }
             // read file data
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
@@ -88,17 +94,14 @@ public class RecentCitiesDAO {
      * @throws RecentCitiesDataException when the RecentCities file cannot be found or written to
      */
     private void writeToRecentCities(JSONArray recentCitiesArray) throws RecentCitiesDataException {
-        // find recent cities file path
-        URL fileWritePath = this.getClass().getResource(path);
-        if (fileWritePath == null) {
-            throw new RecentCitiesDataException("Resource not found: " + path);
-        }
         // open writing object to write to the file
-        try (PrintWriter writer = new PrintWriter(new File(fileWritePath.getPath()))) {
+        try (PrintWriter writer = new PrintWriter(RESOURCES_FOLDER_PATH + RECENT_CITIES_PATH)) {
             // write the new json data to the file
             writer.println(recentCitiesArray);
         } catch(IOException exception) {
-            throw new RecentCitiesDataException("Failed to write to file: " + fileWritePath.getPath());
+            throw new RecentCitiesDataException(
+                    "Failed to write to file: " + RESOURCES_FOLDER_PATH + RECENT_CITIES_PATH
+            );
         }
     }
 
@@ -111,8 +114,8 @@ public class RecentCitiesDAO {
     private boolean cityExists(String city, JSONArray recentCitiesArray) {
         boolean exists = false;
         for (int i = 0; i < recentCitiesArray.length(); i++) {
-            String cityName = recentCitiesArray.getString(i);
-            if (cityName.equals(city)) {
+            String savedCityName = recentCitiesArray.getString(i);
+            if (savedCityName.equals(city)) {
                 exists = true;
             }
         }
