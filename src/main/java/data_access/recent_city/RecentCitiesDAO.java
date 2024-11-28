@@ -4,6 +4,7 @@ import entity.recent_city.RecentCityData;
 import entity.recent_city.RecentCityDataFactory;
 import exception.RecentCitiesDataException;
 import org.json.JSONArray;
+import use_case.display_daily.DisplayDailyRecentCitiesDAI;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -16,7 +17,7 @@ import java.util.List;
 /**
  * DAO for accessing data about recently viewed cities.
  */
-public class RecentCitiesDAO {
+public class RecentCitiesDAO implements DisplayDailyRecentCitiesDAI {
 
     // the path to the data resource
     private static final String RESOURCES_FOLDER_PATH = "src/main/resources/";
@@ -55,7 +56,7 @@ public class RecentCitiesDAO {
      * @return a list of recent city names
      * @throws RecentCitiesDataException if there is an issue reading or parsing the data
      */
-    public RecentCityData getCityList() throws RecentCitiesDataException {
+    public RecentCityData getRecentCityData() throws RecentCitiesDataException {
         JSONArray recentCitiesArray = readRecentCities();
 
         // create an array list of the city names
@@ -88,7 +89,7 @@ public class RecentCitiesDAO {
             // convert the recent cities file data to a JSON array
             return new JSONArray(jsonString.toString());
         } catch(IOException exception) {
-            throw new RecentCitiesDataException("Filed to load recent city data! " + exception);
+            throw new RecentCitiesDataException("Failed to load recent city data! " + exception);
         }
     }
 

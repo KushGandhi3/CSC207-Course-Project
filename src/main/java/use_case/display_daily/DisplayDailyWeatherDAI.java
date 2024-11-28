@@ -6,7 +6,7 @@ import exception.APICallException;
 /**
  * The interface of the DAO for the daily weather data use case.
  */
-public interface DisplayDailyDAI {
+public interface DisplayDailyWeatherDAI {
 
     /**
      * Get Daily Weather data from the API.

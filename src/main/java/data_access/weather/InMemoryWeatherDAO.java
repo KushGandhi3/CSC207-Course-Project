@@ -11,7 +11,7 @@ import entity.weather.hourly_weather.HourlyWeatherDataFactory;
 import exception.APICallException;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import use_case.display_daily.DisplayDailyDAI;
+import use_case.display_daily.DisplayDailyWeatherDAI;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,7 +24,7 @@ import java.util.List;
  * In Memory Data Object for simulating the creation of weather data entities. Note that the only available cities are
  * Toronto, Vancouver, and Edmonton with weather data from a past forecast.
  */
-public class InMemoryWeatherDAO implements DisplayDailyDAI {
+public class InMemoryWeatherDAO implements DisplayDailyWeatherDAI {
 
     private static final String IN_MEMORY_WEATHER_DATA_PATH = "/data/InMemoryWeatherData.json";
 
@@ -219,7 +219,7 @@ public class InMemoryWeatherDAO implements DisplayDailyDAI {
             // convert the weather data file to a JSON object
             return new JSONObject(jsonString.toString());
         } catch(IOException exception) {
-            throw new APICallException("Filed to load in memory weather data! " + exception);
+            throw new APICallException("Failed to load in memory weather data! " + exception);
         }
     }
 

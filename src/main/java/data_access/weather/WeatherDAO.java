@@ -13,7 +13,7 @@ import exception.APICallException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import use_case.display_checker.DisplayCheckerDAI;
-import use_case.display_daily.DisplayDailyDAI;
+import use_case.display_daily.DisplayDailyWeatherDAI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * This class parses OpenWeather JSON Objects and creates DailyWeatherData and HourlyWeatherDataObjects.
  */
-public class WeatherDAO implements DisplayDailyDAI, DisplayCheckerDAI {
+public class WeatherDAO implements DisplayDailyWeatherDAI, DisplayCheckerDAI {
 
     private final DayWeatherDataFactory dayWeatherDataFactory;
     private final DailyWeatherDataFactory dailyWeatherDataFactory;
