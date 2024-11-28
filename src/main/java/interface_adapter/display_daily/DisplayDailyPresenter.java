@@ -23,19 +23,37 @@ public class DisplayDailyPresenter implements DisplayDailyOutputBoundary {
 
     @Override
     public void prepareSuccessView(DisplayDailyOutputData displayDailyOutputData) {
-        // on success, switch to the display daily view
-        final DisplayDailyState displayDailyState = displayDailyViewModel.getState();
+        // set up the updated state
+        final DisplayDailyState displayDailyState = this.displayDailyViewModel.getState();
+        displayDailyState.setCity(displayDailyOutputData.getCity());
+        displayDailyState.setWeekdays(displayDailyOutputData.getWeekdays());
+        displayDailyState.setTemperatures(displayDailyOutputData.getTemperatures());
+        displayDailyState.setConditions(displayDailyOutputData.getConditions());
+        displayDailyState.setFeelsLikeTemperature(displayDailyOutputData.getFeelsLikeTemperature());
+        displayDailyState.setUvIndex(displayDailyOutputData.getUvIndex());
+        displayDailyState.setWindSpeed(displayDailyOutputData.getWindSpeed());
+        displayDailyState.setCloudCover(displayDailyOutputData.getCloudCover());
+        displayDailyState.setPrecipitation(displayDailyOutputData.getPrecipitation());
+        displayDailyState.setHumidity(displayDailyOutputData.getHumidity());
+        this.displayDailyViewModel.setState(displayDailyState);
+        this.displayDailyViewModel.firePropertyChanged();
+
+        this.viewManagerModel.setState(this.displayDailyViewModel.getViewName());
+        this.viewManagerModel.firePropertyChanged();
     }
 
     @Override
     public void prepareFailView(String errorMessage) {
-
+        // TODO: implement the fail view
+        final DisplayDailyState displayDailyState = this.displayDailyViewModel.getState();
+        displayDailyState.setCity(displayDailyState.getCity());
+        this.displayDailyViewModel.firePropertyChanged();
     }
 
     @Override
     public void switchToHomeView() {
-
+        viewManagerModel.setState(this.displayHomeViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
     }
-
 
 }

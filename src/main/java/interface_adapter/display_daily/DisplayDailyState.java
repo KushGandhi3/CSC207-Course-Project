@@ -15,8 +15,9 @@ public class DisplayDailyState {
     private String city;
     // list of the weekdays in the correct order
     private List<String> weekdays;
-    // list of the temperatures in order of the weekdays
+    // list of the temperatures in order of their corresponding weekdays
     private List<Integer> temperatures;
+    // list of conditions in order of their corresponding weekdays
     private List<String> conditions;
     // selected weather details for the particular weekday
     private int feelsLikeTemperature;

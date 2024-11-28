@@ -4,7 +4,7 @@ import entity.weather.daily_weather.DailyWeatherData;
 import exception.APICallException;
 
 /**
- * The interface of the DAO for the daily weather data use case.
+ * The interface of the DAO for grabbing weather data for the display daily use case.
  */
 public interface DisplayDailyWeatherDAI {
 

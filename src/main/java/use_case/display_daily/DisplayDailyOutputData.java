@@ -12,19 +12,19 @@ import java.util.List;
  */
 public class DisplayDailyOutputData {
 
-    private String city;
+    private final String city;
     // list of the weekdays in the correct order
-    private List<String> weekdays;
+    private final List<String> weekdays;
     // list of the temperatures in order of the weekdays
-    private List<Integer> temperatures;
-    private List<String> conditions;
+    private final List<Integer> temperatures;
+    private final List<String> conditions;
     // selected weather details for the particular weekday
-    private int feelsLikeTemperature;
-    private int uvIndex;
-    private int windSpeed;
-    private int cloudCover;
-    private int precipitation;
-    private int humidity;
+    private final int feelsLikeTemperature;
+    private final int uvIndex;
+    private final int windSpeed;
+    private final int cloudCover;
+    private final int precipitation;
+    private final int humidity;
 
     public DisplayDailyOutputData(JSONObject outputDataPackage) {
         this.city = outputDataPackage.getString("city");

@@ -11,7 +11,7 @@ public class FontManager {
 
     static {
         try {
-            // Load Crimson Text font
+            // load Crimson Text font
             InputStream crimsonStream =
                     FontManager.class.getClassLoader().getResourceAsStream(
                             "fonts/crimson_text/CrimsonText-Regular.ttf");
@@ -22,7 +22,7 @@ public class FontManager {
                     Font.createFont(Font.TRUETYPE_FONT,
                             crimsonStream).deriveFont(24f);
 
-            // Load Inter font
+            // load Inter font
             InputStream interStream =
                     FontManager.class.getClassLoader().getResourceAsStream(
                             "fonts/inter/Inter-Regular.ttf");
@@ -33,7 +33,7 @@ public class FontManager {
                     interStream).deriveFont(24f);
         } catch (FontFormatException | IOException exception) {
             exception.printStackTrace();
-            // Fallback to default fonts
+            // fallback to default fonts
             crimsonText = new Font("Serif", Font.PLAIN, 24);
             inter = new Font("SansSerif", Font.PLAIN, 24);
         }

@@ -44,6 +44,7 @@ public class WeatherDAO implements DisplayDailyWeatherDAI, DisplayCheckerDAI {
      * @return an HourlyWeatherData entity
      * @throws APICallException if the request fails or the API Key is not set
      */
+    @Override
     public HourlyWeatherData getHourlyWeatherData(String city) throws APICallException {
         final JSONObject weatherData = OpenWeatherWeatherDAO.apiRequest(city);
 
@@ -117,13 +118,13 @@ public class WeatherDAO implements DisplayDailyWeatherDAI, DisplayCheckerDAI {
         }
     }
 
-
     /**
      * Returns a DailyWeatherData entity with updated weather data from the OpenWeather API.
      * @param city the name of the city to get the weather forecast for
      * @return a DailyWeatherData entity
      * @throws APICallException if the request fails or the API Key is not set
      */
+    @Override
     public DailyWeatherData getDailyWeatherData(String city) throws APICallException {
         final JSONObject weatherData = OpenWeatherWeatherDAO.apiRequest(city);
 
