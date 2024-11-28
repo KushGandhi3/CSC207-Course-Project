@@ -10,10 +10,15 @@ import entity.weather.hour_weather.HourWeatherDataFactory;
 import entity.weather.hourly_weather.HourlyWeatherData;
 import entity.weather.hourly_weather.HourlyWeatherDataFactory;
 import exception.APICallException;
+import exception.RecentCitiesDataException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import use_case.display_daily.DisplayDailyDAI;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +27,7 @@ import java.util.List;
  */
 public class InMemoryWeatherDAO implements DisplayDailyDAI {
 
-    private static final String path = "";
+    private static final String IN_MEMORY_WEATHER_DATA_PATH = "/data/InMemoryWeatherData.json";
 
     private final DayWeatherDataFactory dayWeatherDataFactory;
     private final DailyWeatherDataFactory dailyWeatherDataFactory;
@@ -191,6 +196,31 @@ public class InMemoryWeatherDAO implements DisplayDailyDAI {
 
             DayWeatherData dayWeatherData = this.dayWeatherDataFactory.create(dayWeatherDataValues);
             dayWeatherDataList.add(dayWeatherData);
+        }
+    }
+
+    /**
+     * Read the InMemoryWeatherData json file from resource. Return a JSONArray of the data in the file.
+     * @return JSONArray containing the recent cities
+     * @throws RecentCitiesDataException when the RecentCities json file is not found
+     */
+    private JSONArray readInMemoryWeather() throws RecentCitiesDataException{
+        try (InputStream inputStream = this.getClass().getResourceAsStream(RECENT_CITIES_PATH)) {
+            if (inputStream == null) {
+                throw new IOException("Resource not found: " + RECENT_CITIES_PATH);
+            }
+            // read file data
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            StringBuilder jsonString = new StringBuilder();
+            BufferedReader reader = new BufferedReader(inputStreamReader);
+            String line;
+            while ((line = reader.readLine()) != null) {
+                jsonString.append(line);
+            }
+            // convert the recent cities file data to a JSON array
+            return new JSONArray(jsonString.toString());
+        } catch(IOException exception) {
+            throw new RecentCitiesDataException("Filed to load recent city data! " + exception);
         }
     }
 
