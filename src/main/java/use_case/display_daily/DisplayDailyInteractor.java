@@ -16,10 +16,10 @@ import java.util.List;
  * The interactor for the Display Daily use-case.
  */
 public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
-    private final DisplayDailyDAI weatherDataAccessObject;
+    private final DisplayDailyWeatherDAI weatherDataAccessObject;
     private final DisplayDailyOutputBoundary displayDailyPresenter;
 
-    public DisplayDailyInteractor(DisplayDailyDAI weatherDataAccessObject, DisplayDailyOutputBoundary displayDailyPresenter) {
+    public DisplayDailyInteractor(DisplayDailyWeatherDAI weatherDataAccessObject, DisplayDailyOutputBoundary displayDailyPresenter) {
         this.weatherDataAccessObject = weatherDataAccessObject;
         this.displayDailyPresenter = displayDailyPresenter;
     }
