@@ -12,6 +12,12 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import constants.Constants;
+
+/**
+ * View for displaying hourly weather data.
+ * Updates dynamically based on the ViewModel's state.
+ */
 public class HourlyView extends JPanel implements PropertyChangeListener {
 
     // View Name
@@ -22,7 +28,7 @@ public class HourlyView extends JPanel implements PropertyChangeListener {
     private DisplayHourlyController displayHourlyController;
 
     // City Labels
-    private final JLabel city; // TODO: Change to input field
+    private final JLabel city;
     private final JLabel lowTemperature;
     private final JLabel highTemperature;
     private final JLabel time;
@@ -30,14 +36,14 @@ public class HourlyView extends JPanel implements PropertyChangeListener {
     private final JLabel details;
 
     // Weather Labels
-    private final JLabel[] condition = new JLabel[8];
-    private final JLabel[] temperature = new JLabel[8];
-    private final JLabel[] feelsLike = new JLabel[8];
-    private final JLabel[] windSpeed = new JLabel[8];
-    private final JLabel[] precipitation = new JLabel[8];
-    private final JLabel[] uvIndex = new JLabel[8];
-    private final JLabel[] cloudCover = new JLabel[8];
-    private final JLabel[] humidity = new JLabel[8];
+    private final JLabel[] condition = new JLabel[Constants.TIME_SIZE];
+    private final JLabel[] temperature = new JLabel[Constants.TIME_SIZE];
+    private final JLabel[] feelsLike = new JLabel[Constants.TIME_SIZE];
+    private final JLabel[] windSpeed = new JLabel[Constants.TIME_SIZE];
+    private final JLabel[] precipitation = new JLabel[Constants.TIME_SIZE];
+    private final JLabel[] uvIndex = new JLabel[Constants.TIME_SIZE];
+    private final JLabel[] cloudCover = new JLabel[Constants.TIME_SIZE];
+    private final JLabel[] humidity = new JLabel[Constants.TIME_SIZE];
 
     // Buttons
     private final JButton hourOne;
@@ -50,9 +56,14 @@ public class HourlyView extends JPanel implements PropertyChangeListener {
     private final JButton hourEight;
     private final JButton homeButton;
 
+    /**
+     * Constructs an HourlyView with a specific ViewModel.
+     *
+     * @param displayHourlyViewModel the ViewModel to bind to this view
+     */
     public HourlyView(DisplayHourlyViewModel displayHourlyViewModel) {
         this.displayHourlyViewModel = displayHourlyViewModel;
-//        this.displayHourlyViewModel.addPropertyChangeListener(this);
+        this.displayHourlyViewModel.addPropertyChangeListener(this);
 
         // Set Layout
         this.setLayout(null);
@@ -66,28 +77,28 @@ public class HourlyView extends JPanel implements PropertyChangeListener {
         this.details = new JLabel("Weather Details");
 
         // Create Weather Labels
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < Constants.TIME_SIZE; i++) {
             this.condition[i] = new JLabel("Condition: Sunny");
         }
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < Constants.TIME_SIZE; i++) {
             this.temperature[i] = new JLabel("Temperature: 18 C");
         }
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < Constants.TIME_SIZE; i++) {
             this.feelsLike[i] = new JLabel("Feels Like: 20 C");
         }
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < Constants.TIME_SIZE; i++) {
             this.windSpeed[i] = new JLabel("Wind Speed: 8 km/h SE");
         }
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < Constants.TIME_SIZE; i++) {
             this.precipitation[i] = new JLabel("Precipitation: 0''");
         }
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < Constants.TIME_SIZE; i++) {
             this.uvIndex[i] = new JLabel("UV Index: 2");
         }
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < Constants.TIME_SIZE; i++) {
             this.cloudCover[i] = new JLabel("Air Quality: 96");
         }
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < Constants.TIME_SIZE; i++) {
             this.humidity[i] = new JLabel("Humidity: 76%");
         }
 
@@ -108,7 +119,8 @@ public class HourlyView extends JPanel implements PropertyChangeListener {
         this.add(highTemperature);
         this.add(forecast);
         this.add(details);
-        for (int i = 0; i < 8; i++) {
+
+        for (int i = 0; i < Constants.TIME_SIZE; i++) {
             this.add(condition[i]);
             this.add(temperature[i]);
             this.add(feelsLike[i]);
@@ -117,6 +129,7 @@ public class HourlyView extends JPanel implements PropertyChangeListener {
             this.add(cloudCover[i]);
             this.add(humidity[i]);
         }
+
         this.add(hourOne);
         this.add(hourTwo);
         this.add(hourThree);

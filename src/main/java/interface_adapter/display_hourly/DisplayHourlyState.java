@@ -1,37 +1,54 @@
 package interface_adapter.display_hourly;
 
-import org.jetbrains.annotations.NotNull;
+import java.util.ArrayList;
+import java.util.List;
+import constants.Constants;
 
+/**
+ * State model for representing hourly weather data in the view.
+ */
 public class DisplayHourlyState {
 
     // City Variables
     private String city;
-    private String lowTemperature;
-    private String highTemperature;
-    private String time;
+    private int lowTemperature;
+    private int highTemperature;
 
     // Weather Variables
-    private String[] condition = new String[8];
-    private String[] temperature = new String[8];
-    private String[] feelsLike = new String[8];
-    private String[] windSpeed = new String[8];
-    private String[] precipitation = new String[8];
-    private String[] uvIndex = new String[8];
-    private String[] airQuality = new String[8];
-    private String[] humidity = new String[8];
+    private List<String> time;
+    private List<String> condition;
+    private List<Integer> temperature;
+    private int feelsLike;
+    private int windSpeed;
+    private int precipitation;
+    private int uvIndex;
+    private int cloudCover;
+    private int humidity;
 
+    /**
+     * Constructs an empty DisplayHourlyState with default values.
+     */
     public DisplayHourlyState() {
-        for (int i = 0; i < 8; i++) {
-            condition[i] = "";
-            temperature[i] = "";
-            feelsLike[i] = "";
-            windSpeed[i] = "";
-            precipitation[i] = "";
-            uvIndex[i] = "";
-            airQuality[i] = "";
-            humidity[i] = "";
-        }
         city = "";
+        lowTemperature = 0;
+        highTemperature = 0;
+
+        this.time = new ArrayList<>(Constants.TIME_SIZE);
+        this.condition = new ArrayList<>(Constants.TIME_SIZE);
+        this.temperature = new ArrayList<>(Constants.TIME_SIZE);
+
+        for (int i = 0; i < Constants.TIME_SIZE; i++) {
+            this.time.add("");
+            this.condition.add("");
+            this.temperature.add(0);
+        }
+
+        this.feelsLike = 0;
+        this.windSpeed = 0;
+        this.precipitation = 0;
+        this.uvIndex = 0;
+        this.cloudCover = 0;
+        this.humidity = 0;
     }
 
     // Getters
@@ -39,47 +56,47 @@ public class DisplayHourlyState {
         return city;
     }
 
-    public String getLowTemperature() {
+    public int getLowTemperature() {
         return lowTemperature;
     }
 
-    public String getHighTemperature() {
+    public int getHighTemperature() {
         return highTemperature;
     }
 
-    public String getTime() {
+    public List<String> getTime() {
         return time;
     }
 
-    public String[] getCondition() {
+    public List<String> getCondition() {
         return condition;
     }
 
-    public String[] getTemperature() {
+    public List<Integer> getTemperature() {
         return temperature;
     }
 
-    public String[] getFeelsLike() {
+    public int getFeelsLike() {
         return feelsLike;
     }
 
-    public String[] getWindSpeed() {
+    public int getWindSpeed() {
         return windSpeed;
     }
 
-    public String[] getPrecipitation() {
+    public int getPrecipitation() {
         return precipitation;
     }
 
-    public String[] getUvIndex() {
+    public int getUvIndex() {
         return uvIndex;
     }
 
-    public String[] getAirQuality() {
-        return airQuality;
+    public int getCloudCover() {
+        return cloudCover;
     }
 
-    public String[] getHumidity() {
+    public int getHumidity() {
         return humidity;
     }
 
@@ -88,47 +105,47 @@ public class DisplayHourlyState {
         this.city = city;
     }
 
-    public void setLowTemperature(String lowTemperature) {
+    public void setLowTemperature(int lowTemperature) {
         this.lowTemperature = lowTemperature;
     }
 
-    public void setHighTemperature(String highTemperature) {
+    public void setHighTemperature(int highTemperature) {
         this.highTemperature = highTemperature;
     }
 
-    public void setTime(String time) {
+    public void setTime(List<String> time) {
         this.time = time;
     }
 
-    public void setCondition(@NotNull String[] condition) {
-        this.condition = condition.clone();
+    public void setCondition(List<String> condition) {
+        this.condition = condition;
     }
 
-    public void setTemperature(@NotNull String[] temperature) {
-        this.temperature = temperature.clone();
+    public void setTemperature(List<Integer> temperature) {
+        this.temperature = temperature;
     }
 
-    public void setFeelsLike(@NotNull String[] feelsLike) {
-        this.feelsLike = feelsLike.clone();
+    public void setFeelsLike(int feelsLike) {
+        this.feelsLike = feelsLike;
     }
 
-    public void setWindSpeed(@NotNull String[] windSpeed) {
-        this.windSpeed = windSpeed.clone();
+    public void setWindSpeed(int windSpeed) {
+        this.windSpeed = windSpeed;
     }
 
-    public void setPrecipitation(@NotNull String[] precipitation) {
-        this.precipitation = precipitation.clone();
+    public void setPrecipitation(int precipitation) {
+        this.precipitation = precipitation;
     }
 
-    public void setUvIndex(@NotNull String[] uvIndex) {
-        this.uvIndex = uvIndex.clone();
+    public void setUvIndex(int uvIndex) {
+        this.uvIndex = uvIndex;
     }
 
-    public void setAirQuality(@NotNull String[] airQuality) {
-        this.airQuality = airQuality.clone();
+    public void setCloudCover(int cloudCover) {
+        this.cloudCover = cloudCover;
     }
 
-    public void setHumidity(@NotNull String[] humidity) {
-        this.humidity = humidity.clone();
+    public void setHumidity(int humidity) {
+        this.humidity = humidity;
     }
 }
