@@ -22,7 +22,7 @@ public class SummarizationSummaryDAO implements DisplaySummarizationSummaryDAI {
     private final Dotenv dotenv = Dotenv.load();
     private final String apikey = dotenv.get("OPENAI_API_KEY");
 
-    public SummarizationSummaryDAO(SummarizationFactory summarizationFactory, String prompt) {
+    public SummarizationSummaryDAO(SummarizationFactory summarizationFactory) {
         this.summarizationFactory = summarizationFactory;
     }
 
