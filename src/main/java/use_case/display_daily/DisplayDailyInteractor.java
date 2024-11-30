@@ -41,10 +41,10 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
             displayDailyPresenter.prepareFailView(exception.getMessage());
             return;
         }
-        
+
         try {
             final DailyWeatherData dailyWeatherData = this.weatherDataAccessObject.getDailyWeatherData(city);
-            final DayOfWeek selectedWeekday = DayOfWeek.valueOf(displayDailyInputData.getWeekday());
+            final DayOfWeek selectedWeekday = DayOfWeek.valueOf(displayDailyInputData.getWeekday().toUpperCase());
             // package data for DisplayDailyOutputData constructor
             final JSONObject outputDataPackage = packageOutputData(dailyWeatherData, selectedWeekday, city);
 
@@ -77,7 +77,7 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
 
             DayWeatherData dayWeatherData = dayWeatherDataList.get(i);
 
-            temperatures.add(String.valueOf(dayWeatherData.getTemperature()));
+            temperatures.add(dayWeatherData.getTemperature() + "°C");
             conditions.add(dayWeatherData.getCondition());
         }
 
@@ -90,12 +90,12 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
         }
         final DayWeatherData selectedDayWeatherData = dayWeatherDataList.get(selectedWeekdayIndex);
         // get weather details for the selected weekday
-        final String feelsLikeTemperature = String.valueOf(selectedDayWeatherData.getFeelsLikeTemperature());
+        final String feelsLikeTemperature = selectedDayWeatherData.getFeelsLikeTemperature() + "°C";
         final String uvIndex = String.valueOf(selectedDayWeatherData.getUvIndex());
-        final String windSpeed = String.valueOf(selectedDayWeatherData.getWindSpeed());
-        final String cloudCover = String.valueOf(selectedDayWeatherData.getCloudCover());
-        final String precipitation = String.valueOf(selectedDayWeatherData.getPrecipitation());
-        final String humidity = String.valueOf(selectedDayWeatherData.getHumidity());
+        final String windSpeed = selectedDayWeatherData.getWindSpeed() + " m/s";
+        final String cloudCover = selectedDayWeatherData.getCloudCover() + "%";
+        final String precipitation = selectedDayWeatherData.getPrecipitation() + "%";
+        final String humidity = selectedDayWeatherData.getHumidity() + "%";
 
         // package data for DisplayDailyOutputData constructor
         final JSONObject outputDataPackage = new JSONObject();

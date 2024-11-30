@@ -2,16 +2,23 @@ package app;
 
 // TODO: Implement the Main class [TEAM]
 
-import data_access.weather.open_weather.OpenWeatherGeocodingDAO;
+import javax.swing.*;
 
 public class Main {
+    /**
+     * Builds and runs the CA architecture of the application.
+     * @param args unused arguments
+     */
     public static void main(String[] args) {
-//        AppBuilder appBuilder = new AppBuilder();
-//        JFrame frame = appBuilder.build();
-//        frame.setVisible(true);
-//        WeatherDAO weatherDAO = new WeatherDAO();
-//        weatherDAO.getWeatherDataTest("Toronto");
+        final AppBuilder appBuilder = new AppBuilder();
+        final JFrame application = appBuilder
+                .addCheckerView()
+                .addDisplayCheckerUseCase()
+                .addDailyView()
+                .addDisplayDailyUseCase()
+                .build();
 
-        OpenWeatherGeocodingDAO.getCoordinates("Toronto");
+        application.pack();
+        application.setVisible(true);
     }
 }
