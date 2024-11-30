@@ -1,5 +1,12 @@
 package use_case.display_home;
 
+import exception.APICallException;
+import entity.weather.hourly_weather.HourlyWeatherData;
+import entity.weather.hourly_weather.HourlyWeatherDataFactory;
+import entity.weather.hour_weather.HourWeatherData;
+
+import java.util.List;
+
 /**
  * The DisplayHome Interactor.
  */
@@ -7,11 +14,11 @@ public class DisplayHomeInteractor implements DisplayHomeInputBoundary {
 
     private final DisplayHomeDAI dataAccessObject;
     private final DisplayHomeOutputBoundary userPresenter;
-    private final WeatherDataFactory weatherDataFactory;
+    private final HourlyWeatherDataFactory weatherDataFactory;
 
     public DisplayHomeInteractor(DisplayHomeDAI dataAccessObject,
                                  DisplayHomeOutputBoundary userPresenter,
-                                 WeatherDataFactory weatherDataFactory) {
+                                 HourlyWeatherDataFactory weatherDataFactory) {
         this.dataAccessObject = dataAccessObject;
         this.userPresenter = userPresenter;
         this.weatherDataFactory = weatherDataFactory;
@@ -19,23 +26,28 @@ public class DisplayHomeInteractor implements DisplayHomeInputBoundary {
 
     @Override
     public void execute(DisplayHomeInputData displayHomeInputData) {
-        //Check if the city exists in the system (you can modify this logic based on how cities are handled)
-        if (!dataAccessObject.cityExists(displayHomeInputData.getCityName())) {
-            userPresenter.prepareFailView("City not found.");
+        // Fetch hourly weather data for the city
+        HourlyWeatherData hourlyWeatherData = dataAccessObject.getWeatherData(displayHomeInputData.getCityName());
+
+        if (hourlyWeatherData == null) {
+            userPresenter.prepareFailView("Unable to fetch weather data.");
             return;
         }
 
-        //Fetch the weather data using the WeatherDataFactory
-        WeatherData weatherData = dataAccessObject.fetchWeatherData(displayHomeInputData.getCityName());
+        // Retrieve the relevant data from the HourlyWeatherData object
+        String city = displayHomeInputData.getCityName();
+        String timezone = hourlyWeatherData.getTimezone();
+        int lowTemperature = Integer.parseInt(hourlyWeatherData.getLowTemperature());  // This should be set correctly in your data model
+        String highTemperature = hourlyWeatherData.getHighTemperature();  // Same as above
+        List<HourWeatherData> hourlyWeatherDataList = hourlyWeatherData.getHourWeatherDataList();
 
-        //If no weather data is returned, show failure view
-        if (weatherData == null) {
-            userPresenter.prepareFailView("Unable to fetch weather data.");
-        } else {
-            //Prepare the success view with the weather data
-            DisplayHomeOutputData outputData = new DisplayHomeOutputData(weatherData, false);
-            userPresenter.prepareSuccessView(outputData);
-        }
+        // Use the factory to create HourlyWeatherData object (if needed)
+        HourlyWeatherData createdHourlyWeatherData = weatherDataFactory.create(
+                hourlyWeatherDataList, timezone, city, lowTemperature, Integer.parseInt(highTemperature));
+
+        // Prepare the success view with the weather data
+        DisplayHomeOutputData outputData = new DisplayHomeOutputData(createdHourlyWeatherData, false);
+        userPresenter.prepareSuccessView(outputData);
+
     }
-
 }
