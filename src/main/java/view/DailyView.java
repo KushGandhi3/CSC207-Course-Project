@@ -1,15 +1,13 @@
 package view;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
 
-import interface_adapter.display_checker.DisplayCheckerViewModel;
 import interface_adapter.display_daily.DisplayDailyState;
 import interface_adapter.display_daily.DisplayDailyController;
 import interface_adapter.display_daily.DisplayDailyViewModel;
@@ -18,7 +16,7 @@ import constants.Constants;
 /**
  * The view for the daily weather use-case.
  */
-public class DailyView extends JPanel implements ActionListener, PropertyChangeListener {
+public class DailyView extends JPanel implements PropertyChangeListener {
     private static final Font crimsonText20 = FontManager.getCrimsonTextRegular(20);
 
     private final String viewName = "Weekly Forecast";
@@ -28,7 +26,6 @@ public class DailyView extends JPanel implements ActionListener, PropertyChangeL
 
     // data to be displayed
     private final JLabel city;
-    private final List<JLabel> weekdays;
     private final List<JLabel> temperatures;
     private final List<JLabel> conditions;
     private final JLabel feelsLikeTemperature;
@@ -38,87 +35,113 @@ public class DailyView extends JPanel implements ActionListener, PropertyChangeL
     private final JLabel precipitation;
     private final JLabel humidity;
 
-    // days of the week listed in order
+    // weekday names listed in order (i.e. Tuesday, Wednesday, ... )
     private final List<JButton> weekdays;
-
-    private final JButton backButton = new JButton(DisplayCheckerViewModel.BACK_BUTTON_IMAGE);
+    private final JButton backButton;
 
     public DailyView(DisplayDailyViewModel displayDailyViewModel) {
         this.displayDailyViewModel = displayDailyViewModel;
         this.displayDailyViewModel.addPropertyChangeListener(this);
 
-        // set the layout and border of the panel
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        city = new JLabel();
+        city.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Create and style the back button
-        this.backButton.setBorder(BorderFactory.createEmptyBorder());
-        this.backButton.setContentAreaFilled(false);
-        // Back button panel
-        JPanel backButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        backButtonPanel.add(backButton);
+        temperatures = new ArrayList<>(Constants.WEEK_SIZE);
+        conditions = new ArrayList<>(Constants.WEEK_SIZE);
+        weekdays = new ArrayList<>(Constants.WEEK_SIZE);
+        for (int i = 0; i < Constants.WEEK_SIZE; i++) {
+            conditions.add(new JLabel());
+            temperatures.add(new JLabel());
+            weekdays.add(new JButton());
+        }
+        feelsLikeTemperature = new JLabel();
+        uvIndex = new JLabel();
+        windSpeed = new JLabel();
+        cloudCover = new JLabel();
+        precipitation = new JLabel();
+        humidity = new JLabel();
+        backButton = new JButton(DisplayDailyViewModel.BACK_BUTTON_IMAGE);
 
+        final JPanel buttons = new JPanel();
+        for (int i = 0; i < Constants.WEEK_SIZE; i++) {
+            buttons.add(weekdays.get(i));
+        }
+        buttons.add(backButton);
 
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        final JLabel forecastLabel = new JLabel(DisplayDailyViewModel.FORECAST_LABEL);
-        forecastLabel.setFont(crimsonText20);
-        forecastLabel.setAlignmentX(143);
-        forecastLabel.setAlignmentY(238);
+        for (int i = 0; i < Constants.WEEK_SIZE; i++) {
+            final int index = i;
+            final JButton weekdayButton = weekdays.get(i);
+            weekdayButton.addActionListener(
+                    // This creates an anonymous subclass of ActionListener and instantiates it.
+                    evt -> {
+                        if (evt.getSource().equals(weekdayButton)) {
+                            final DisplayDailyState currentState = this.displayDailyViewModel.getState();
 
+                            this.displayDailyController.execute(
+                                    currentState.getWeekdays().get(index)
+                            );
+                        }
+                    }
+            );
+        }
 
+        backButton.addActionListener(
+                // This creates an anonymous subclass of ActionListener and instantiates it.
+                evt -> {
+                    if (evt.getSource().equals(backButton)) {
+                        final DisplayDailyState currentState = this.displayDailyViewModel.getState();
 
-        // city label
-        this.city = new JLabel();
-        Font crimsonText =
-                FontManager.getCrimsonText(Constants.TITLE_FONT_SIZE);
-        this.city.setFont(crimsonText);
-        this.city.setAlignmentX(Component.CENTER_ALIGNMENT);
-        this.city.setAlignmentY(55);
+                        // TODO: Implement the back button
+                        this.displayDailyController.execute(
+                                currentState.getWeekdays().getFirst()
+                        );
+                    }
+                });
 
-        //
-        this.dayOne = new JButton("");
-
-
-        dayTwo = new JButton();
-        dayThree = new JButton("");
-        dayFour = new JButton("");
-        dayFive = new JButton("");
-        daySix = new JButton("");
-        daySeven = new JButton("");
-        homeButton = new JButton("");
-
-        // Add the components to the view
         this.add(city);
-        this.add(temperatureForecasts[Constants.MONDAY]);
-        this.add(conditionForecasts[Constants.MONDAY]);
-
-        this.add(mondayButton);
-        this.add(tuesdayButton);
-        this.add(wednesdayButton);
-        this.add(thursdayButton);
-        this.add(fridayButton);
-        this.add(saturdayButton);
-        this.add(sundayButton);
-        this.add(homeButton);
-
-        // Set the bounds of the components
-        city.setBounds(10, 10, 100, 20);
-        temperatureForecasts[Constants.MONDAY].setBounds(10, 30, 100, 20);
-        conditionForecasts[Constants.MONDAY].setBounds(10, 90, 100, 20);
-    }
-
-    private void setFields(DisplayDailyState state) {
-        usernameInputField.setText(state.get());
-        passwordInputField.setText(state.getPassword());
+        for (int i = 0; i < Constants.WEEK_SIZE; i++) {
+            this.add(temperatures.get(i));
+            this.add(conditions.get(i));
+            this.add(weekdays.get(i));
+        }
+        this.add(feelsLikeTemperature);
+        this.add(uvIndex);
+        this.add(windSpeed);
+        this.add(cloudCover);
+        this.add(precipitation);
+        this.add(humidity);
+        this.add(backButton);
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        // TODO: Implement property change events
+        final DisplayDailyState currentState = (DisplayDailyState) evt.getNewValue();
+        setLabels(currentState);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
+    private void setLabels(DisplayDailyState state) {
+        city.setText(state.getCity());
+        for (int i = 0; i < Constants.WEEK_SIZE; i++) {
+            temperatures.get(i).setText(state.getTemperatures().get(i));
+            conditions.get(i).setText(state.getConditions().get(i));
+            weekdays.get(i).setText(state.getWeekdays().get(i));
+        }
+        feelsLikeTemperature.setText(state.getFeelsLikeTemperature());
+        uvIndex.setText(state.getUvIndex());
+        windSpeed.setText(state.getWindSpeed());
+        cloudCover.setText(state.getCloudCover());
+        precipitation.setText(state.getPrecipitation());
+        humidity.setText(state.getHumidity());
     }
+
+    public String getViewName() {
+        return viewName;
+    }
+
+    public void setDisplayDailyController(DisplayDailyController displayDailyController) {
+        this.displayDailyController = displayDailyController;
+    }
+
 }

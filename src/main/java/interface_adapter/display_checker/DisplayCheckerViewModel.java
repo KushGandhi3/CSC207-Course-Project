@@ -3,6 +3,7 @@ package interface_adapter.display_checker;
 import  interface_adapter.ViewModel;
 
 import javax.swing.ImageIcon;
+import java.util.Objects;
 
 public class DisplayCheckerViewModel extends ViewModel<DisplayCheckerState> {
 
@@ -19,7 +20,9 @@ public class DisplayCheckerViewModel extends ViewModel<DisplayCheckerState> {
     public static final Integer[] STOP_CHECKING_OPTIONS = generateStopCheckingOptions();
 
     public static final String CHECK_BUTTON_LABEL = "Check";
-    public static final ImageIcon BACK_BUTTON_IMAGE = new ImageIcon("src/main/resources/assets/Back Button.png");
+    public static final ImageIcon BACK_BUTTON_IMAGE = new ImageIcon(
+            Objects.requireNonNull(DisplayCheckerViewModel.class.getClassLoader().getResource(
+                    "assets/Buttons/BackButton.png")));
 
     public DisplayCheckerViewModel() {
         super("checker");

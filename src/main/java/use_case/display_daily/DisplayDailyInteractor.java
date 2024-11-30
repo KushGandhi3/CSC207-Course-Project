@@ -44,7 +44,7 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
         
         try {
             final DailyWeatherData dailyWeatherData = this.weatherDataAccessObject.getDailyWeatherData(city);
-            final DayOfWeek selectedWeekday = displayDailyInputData.getWeekday();
+            final DayOfWeek selectedWeekday = DayOfWeek.valueOf(displayDailyInputData.getWeekday());
             // package data for DisplayDailyOutputData constructor
             final JSONObject outputDataPackage = packageOutputData(dailyWeatherData, selectedWeekday, city);
 
@@ -64,8 +64,8 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
      * @return the package which can be used to initialize DisplayDailyOutputData
      */
     private JSONObject packageOutputData(DailyWeatherData dailyWeatherData, DayOfWeek selectedWeekday, String city) {
-        final List<DayOfWeek> weekdays = new ArrayList<>(Constants.WEEK_SIZE);
-        final List<Integer> temperatures = new ArrayList<>(Constants.WEEK_SIZE);
+        final List<String> weekdays = new ArrayList<>(Constants.WEEK_SIZE);
+        final List<String> temperatures = new ArrayList<>(Constants.WEEK_SIZE);
         final List<String> conditions = new ArrayList<>(Constants.WEEK_SIZE);
         // create weekdays, temperatures, and conditions
         final ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of(dailyWeatherData.getTimezone()));
@@ -73,11 +73,11 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
         final List<DayWeatherData> dayWeatherDataList = dailyWeatherData.getDayWeatherDataList();
         for (int i = 0; i < Constants.WEEK_SIZE; i++) {
             final ZonedDateTime dateTime = zonedDateTime.plusDays(i);
-            weekdays.add(dateTime.getDayOfWeek());
+            weekdays.add(dateTime.getDayOfWeek().toString());
 
             DayWeatherData dayWeatherData = dayWeatherDataList.get(i);
 
-            temperatures.add(dayWeatherData.getTemperature());
+            temperatures.add(String.valueOf(dayWeatherData.getTemperature()));
             conditions.add(dayWeatherData.getCondition());
         }
 
@@ -90,12 +90,12 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
         }
         final DayWeatherData selectedDayWeatherData = dayWeatherDataList.get(selectedWeekdayIndex);
         // get weather details for the selected weekday
-        final int feelsLikeTemperature = selectedDayWeatherData.getFeelsLikeTemperature();
-        final int uvIndex = selectedDayWeatherData.getUvIndex();
-        final int windSpeed = selectedDayWeatherData.getWindSpeed();
-        final int cloudCover = selectedDayWeatherData.getCloudCover();
-        final int precipitation = selectedDayWeatherData.getPrecipitation();
-        final int humidity = selectedDayWeatherData.getHumidity();
+        final String feelsLikeTemperature = String.valueOf(selectedDayWeatherData.getFeelsLikeTemperature());
+        final String uvIndex = String.valueOf(selectedDayWeatherData.getUvIndex());
+        final String windSpeed = String.valueOf(selectedDayWeatherData.getWindSpeed());
+        final String cloudCover = String.valueOf(selectedDayWeatherData.getCloudCover());
+        final String precipitation = String.valueOf(selectedDayWeatherData.getPrecipitation());
+        final String humidity = String.valueOf(selectedDayWeatherData.getHumidity());
 
         // package data for DisplayDailyOutputData constructor
         final JSONObject outputDataPackage = new JSONObject();
