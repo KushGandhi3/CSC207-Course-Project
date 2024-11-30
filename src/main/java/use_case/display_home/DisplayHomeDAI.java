@@ -15,4 +15,6 @@ public interface DisplayHomeDAI {
      * @throws APICallException if the request fails.
      */
     HourlyWeatherData getHourlyWeatherData(String location) throws APICallException;
+
+    HourlyWeatherData getWeatherData(String cityName);
 }
