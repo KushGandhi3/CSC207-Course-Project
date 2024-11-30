@@ -35,9 +35,9 @@ public class InMemoryWeatherDAO implements DisplayDailyWeatherDAI, DisplayChecke
     private final HourWeatherDataFactory hourWeatherDataFactory;
 
     public InMemoryWeatherDAO(DayWeatherDataFactory dayWeatherDataFactory,
-                      DailyWeatherDataFactory dailyWeatherDataFactory,
-                      HourWeatherDataFactory hourWeatherDataFactory,
-                      HourlyWeatherDataFactory hourlyWeatherDataFactory) {
+                              DailyWeatherDataFactory dailyWeatherDataFactory,
+                              HourWeatherDataFactory hourWeatherDataFactory,
+                              HourlyWeatherDataFactory hourlyWeatherDataFactory) {
         this.dayWeatherDataFactory = dayWeatherDataFactory;
         this.dailyWeatherDataFactory = dailyWeatherDataFactory;
         this.hourlyWeatherDataFactory = hourlyWeatherDataFactory;
@@ -50,7 +50,6 @@ public class InMemoryWeatherDAO implements DisplayDailyWeatherDAI, DisplayChecke
      * @return an HourlyWeatherData entity
      * @throws APICallException if the in memory weather data cannot be accessed
      */
-    @Override
     public HourlyWeatherData getHourlyWeatherData(String city) throws APICallException {
         final JSONObject weatherData = readInMemoryWeather().getJSONObject(city);
 
@@ -90,7 +89,7 @@ public class InMemoryWeatherDAO implements DisplayDailyWeatherDAI, DisplayChecke
             final JSONArray conditionArray = hourObject.getJSONArray("weather");
             final JSONObject conditionObject = conditionArray.getJSONObject(0);
             // main weather condition ("Rain", "Clouds", "Snow")
-            final String condition = conditionObject.getString("main");
+            final String condition = conditionObject.getString("app");
 
             final int temperature = (int) hourObject.getDouble("temp");
 
@@ -102,7 +101,7 @@ public class InMemoryWeatherDAO implements DisplayDailyWeatherDAI, DisplayChecke
 
             final int cloudCover = (int) hourObject.getDouble("clouds");
 
-            final int precipitation = (int) hourObject.getDouble("pop");
+            final int precipitation = (int) (hourObject.getDouble("pop") * 100);
 
             final int humidity = (int) hourObject.getDouble("humidity");
 
@@ -124,13 +123,13 @@ public class InMemoryWeatherDAO implements DisplayDailyWeatherDAI, DisplayChecke
         }
     }
 
+
     /**
      * Returns a DailyWeatherData entity with weather data from the in memory weather data file.
      * @param city the name of the city to get the weather forecast for
      * @return a DailyWeatherData entity
      * @throws APICallException if the in memory weather data cannot be accessed
      */
-    @Override
     public DailyWeatherData getDailyWeatherData(String city) throws APICallException {
         final JSONObject weatherData = readInMemoryWeather().getJSONObject(city);
 
@@ -160,7 +159,7 @@ public class InMemoryWeatherDAO implements DisplayDailyWeatherDAI, DisplayChecke
             final JSONArray conditionArray = dayObject.getJSONArray("weather");
             final JSONObject conditionObject = conditionArray.getJSONObject(0);
             // main weather condition ("Rain", "Clouds", "Snow")
-            final String condition = conditionObject.getString("main");
+            final String condition = conditionObject.getString("app");
 
             // unpacking for temperature
             final JSONObject temperatureObject = dayObject.getJSONObject("temp");
@@ -178,7 +177,7 @@ public class InMemoryWeatherDAO implements DisplayDailyWeatherDAI, DisplayChecke
 
             final int cloudCover = (int) dayObject.getDouble("clouds");
 
-            final int precipitation = (int) dayObject.getDouble("pop");
+            final int precipitation = (int) (dayObject.getDouble("pop") * 100);
 
             final int humidity = (int) dayObject.getDouble("humidity");
 
@@ -221,7 +220,7 @@ public class InMemoryWeatherDAO implements DisplayDailyWeatherDAI, DisplayChecke
             // convert the weather data file to a JSON object
             return new JSONObject(jsonString.toString());
         } catch(IOException exception) {
-            throw new APICallException("Failed to load in memory weather data! " + exception);
+            throw new APICallException("Filed to load in memory weather data! " + exception);
         }
     }
 

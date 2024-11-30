@@ -47,7 +47,7 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
 
         // Title label
         JLabel titleLabel = new JLabel(DisplayCheckerViewModel.TITLE_LABEL, SwingConstants.CENTER);
-        titleLabel.setFont(FontManager.getCrimsonText(Constants.TITLE_FONT_SIZE));
+        titleLabel.setFont(FontManager.getCrimsonTextRegular(Constants.TITLE_FONT_SIZE));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         // Title panel
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -67,8 +67,8 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
 
         // Location label and input
         JLabel locationLabel = new JLabel(DisplayCheckerViewModel.LOCATION_LABEL);
-        locationLabel.setFont(FontManager.getCrimsonText(Constants.LABEL_FONT_SIZE));
-        locationField.setFont(FontManager.getCrimsonText(Constants.LABEL_FONT_SIZE));
+        locationLabel.setFont(FontManager.getCrimsonTextRegular(Constants.LABEL_FONT_SIZE));
+        locationField.setFont(FontManager.getCrimsonTextRegular(Constants.LABEL_FONT_SIZE));
         gbc.gridx = 0;
         gbc.gridy = 0;
         inputPanel.add(locationLabel, gbc);
@@ -77,8 +77,8 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
 
         // Weather condition label and input
         JLabel weatherConditionLabel = new JLabel(DisplayCheckerViewModel.WEATHER_CONDITION_LABEL);
-        weatherConditionLabel.setFont(FontManager.getCrimsonText(Constants.LABEL_FONT_SIZE));
-        weatherConditionOptions.setFont(FontManager.getCrimsonText(Constants.LABEL_FONT_SIZE));
+        weatherConditionLabel.setFont(FontManager.getCrimsonTextRegular(Constants.LABEL_FONT_SIZE));
+        weatherConditionOptions.setFont(FontManager.getCrimsonTextRegular(Constants.LABEL_FONT_SIZE));
         gbc.gridx = 0;
         gbc.gridy = 1;
         inputPanel.add(weatherConditionLabel, gbc);
@@ -87,8 +87,8 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
 
         // Start checking label and input
         JLabel startCheckingLabel = new JLabel(DisplayCheckerViewModel.START_CHECKING_LABEL);
-        startCheckingLabel.setFont(FontManager.getCrimsonText(Constants.LABEL_FONT_SIZE));
-        startCheckingOptions.setFont(FontManager.getCrimsonText(Constants.LABEL_FONT_SIZE));
+        startCheckingLabel.setFont(FontManager.getCrimsonTextRegular(Constants.LABEL_FONT_SIZE));
+        startCheckingOptions.setFont(FontManager.getCrimsonTextRegular(Constants.LABEL_FONT_SIZE));
         gbc.gridx = 0;
         gbc.gridy = 2;
         inputPanel.add(startCheckingLabel, gbc);
@@ -97,14 +97,14 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
 
         // Add label "hour(s) from now"
         JLabel startCheckingDescription = new JLabel(DisplayCheckerViewModel.START_CHECKING_DESCRIPTION);
-        startCheckingDescription.setFont(FontManager.getCrimsonText(Constants.LABEL_FONT_SIZE));
+        startCheckingDescription.setFont(FontManager.getCrimsonTextRegular(Constants.LABEL_FONT_SIZE));
         gbc.gridx = 2;
         inputPanel.add(startCheckingDescription, gbc);
 
         // Stop checking label and input
         JLabel stopCheckingLabel = new JLabel(DisplayCheckerViewModel.STOP_CHECKING_LABEL);
-        stopCheckingLabel.setFont(FontManager.getCrimsonText(Constants.LABEL_FONT_SIZE));
-        stopCheckingOptions.setFont(FontManager.getCrimsonText(Constants.LABEL_FONT_SIZE));
+        stopCheckingLabel.setFont(FontManager.getCrimsonTextRegular(Constants.LABEL_FONT_SIZE));
+        stopCheckingOptions.setFont(FontManager.getCrimsonTextRegular(Constants.LABEL_FONT_SIZE));
         gbc.gridx = 0;
         gbc.gridy = 3;
         inputPanel.add(stopCheckingLabel, gbc);
@@ -113,13 +113,13 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
 
         // Add label "hour(s) from start time"
         JLabel stopCheckingDescription = new JLabel(DisplayCheckerViewModel.STOP_CHECKING_DESCRIPTION);
-        stopCheckingDescription.setFont(FontManager.getCrimsonText(Constants.LABEL_FONT_SIZE));
+        stopCheckingDescription.setFont(FontManager.getCrimsonTextRegular(Constants.LABEL_FONT_SIZE));
         gbc.gridx = 2;
         inputPanel.add(stopCheckingDescription, gbc);
 
         // Check button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        checkButton.setFont(FontManager.getCrimsonText(Constants.LABEL_FONT_SIZE));
+        checkButton.setFont(FontManager.getCrimsonTextRegular(Constants.LABEL_FONT_SIZE));
         buttonPanel.add(checkButton);
 
         // Add components to the content panel

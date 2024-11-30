@@ -96,7 +96,7 @@ public class WeatherDAO implements DisplayDailyWeatherDAI, DisplayCheckerDAI {
 
             final int cloudCover = (int) hourObject.getDouble("clouds");
 
-            final int precipitation = (int) hourObject.getDouble("pop");
+            final int precipitation = (int) (hourObject.getDouble("pop") * 100);
 
             final int humidity = (int) hourObject.getDouble("humidity");
 
@@ -117,6 +117,7 @@ public class WeatherDAO implements DisplayDailyWeatherDAI, DisplayCheckerDAI {
             hourWeatherDataList.add(hourWeatherData);
         }
     }
+
 
     /**
      * Returns a DailyWeatherData entity with updated weather data from the OpenWeather API.
@@ -172,7 +173,7 @@ public class WeatherDAO implements DisplayDailyWeatherDAI, DisplayCheckerDAI {
 
             final int cloudCover = (int) dayObject.getDouble("clouds");
 
-            final int precipitation = (int) dayObject.getDouble("pop");
+            final int precipitation = (int) (dayObject.getDouble("pop") * 100);
 
             final int humidity = (int) dayObject.getDouble("humidity");
 
@@ -192,6 +193,10 @@ public class WeatherDAO implements DisplayDailyWeatherDAI, DisplayCheckerDAI {
             DayWeatherData dayWeatherData = this.dayWeatherDataFactory.create(dayWeatherDataValues);
             dayWeatherDataList.add(dayWeatherData);
         }
+    }
+
+    public JSONObject getWeatherDataJSONObject(String city) throws APICallException {
+        return OpenWeatherWeatherDAO.apiRequest(city);
     }
 
 }

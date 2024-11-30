@@ -1,9 +1,8 @@
 package interface_adapter.display_daily;
 
 import constants.Constants;
-import entity.weather.day_weather.DayWeatherData;
-import org.jetbrains.annotations.NotNull;
 
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,35 +15,35 @@ public class DisplayDailyState {
     // list of the weekdays in the correct order
     private List<String> weekdays;
     // list of the temperatures in order of their corresponding weekdays
-    private List<Integer> temperatures;
+    private List<String> temperatures;
     // list of conditions in order of their corresponding weekdays
     private List<String> conditions;
     // selected weather details for the particular weekday
-    private int feelsLikeTemperature;
-    private int uvIndex;
-    private int windSpeed;
-    private int cloudCover;
-    private int precipitation;
-    private int humidity;
+    private String feelsLikeTemperature;
+    private String uvIndex;
+    private String windSpeed;
+    private String cloudCover;
+    private String precipitation;
+    private String humidity;
 
     public DisplayDailyState() {
-        this.city = "";
+        this.city = "Toronto";
 
         this.weekdays = new ArrayList<>(Constants.WEEK_SIZE);
         this.temperatures = new ArrayList<>(Constants.WEEK_SIZE);
         this.conditions = new ArrayList<>(Constants.WEEK_SIZE);
         for (int i = 0; i < Constants.WEEK_SIZE; i++) {
-            this.weekdays.add("");
-            this.temperatures.add(0);
-            this.conditions.add("");
+            this.weekdays.add(DayOfWeek.of(i + 1).toString());
+            this.temperatures.add("0°C");
+            this.conditions.add("Clear");
         }
 
-        this.feelsLikeTemperature = 0;
-        this.uvIndex = 0;
-        this.windSpeed = 0;
-        this.cloudCover = 0;
-        this.precipitation = 0;
-        this.humidity = 0;
+        this.feelsLikeTemperature = "0°C";
+        this.uvIndex = "0";
+        this.windSpeed = "0 m/s";
+        this.cloudCover = "0%";
+        this.precipitation = "0%";
+        this.humidity = "0%";
     }
 
     public String getCity() {
@@ -63,11 +62,11 @@ public class DisplayDailyState {
         this.weekdays = weekdays;
     }
 
-    public List<Integer> getTemperatures() {
+    public List<String> getTemperatures() {
         return temperatures;
     }
 
-    public void setTemperatures(List<Integer> temperatures) {
+    public void setTemperatures(List<String> temperatures) {
         this.temperatures = temperatures;
     }
 
@@ -79,51 +78,51 @@ public class DisplayDailyState {
         this.conditions = conditions;
     }
 
-    public int getFeelsLikeTemperature() {
+    public String getFeelsLikeTemperature() {
         return feelsLikeTemperature;
     }
 
-    public void setFeelsLikeTemperature(int feelsLikeTemperature) {
+    public void setFeelsLikeTemperature(String feelsLikeTemperature) {
         this.feelsLikeTemperature = feelsLikeTemperature;
     }
 
-    public int getUvIndex() {
+    public String getUvIndex() {
         return uvIndex;
     }
 
-    public void setUvIndex(int uvIndex) {
+    public void setUvIndex(String uvIndex) {
         this.uvIndex = uvIndex;
     }
 
-    public int getWindSpeed() {
+    public String getWindSpeed() {
         return windSpeed;
     }
 
-    public void setWindSpeed(int windSpeed) {
+    public void setWindSpeed(String windSpeed) {
         this.windSpeed = windSpeed;
     }
 
-    public int getCloudCover() {
+    public String getCloudCover() {
         return cloudCover;
     }
 
-    public void setCloudCover(int cloudCover) {
+    public void setCloudCover(String cloudCover) {
         this.cloudCover = cloudCover;
     }
 
-    public int getPrecipitation() {
+    public String getPrecipitation() {
         return precipitation;
     }
 
-    public void setPrecipitation(int precipitation) {
+    public void setPrecipitation(String precipitation) {
         this.precipitation = precipitation;
     }
 
-    public int getHumidity() {
+    public String getHumidity() {
         return humidity;
     }
 
-    public void setHumidity(int humidity) {
+    public void setHumidity(String humidity) {
         this.humidity = humidity;
     }
 

@@ -4,6 +4,7 @@ import constants.Constants;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,15 +17,15 @@ public class DisplayDailyOutputData {
     // list of the weekdays in the correct order
     private final List<String> weekdays;
     // list of the temperatures in order of the weekdays
-    private final List<Integer> temperatures;
+    private final List<String> temperatures;
     private final List<String> conditions;
     // selected weather details for the particular weekday
-    private final int feelsLikeTemperature;
-    private final int uvIndex;
-    private final int windSpeed;
-    private final int cloudCover;
-    private final int precipitation;
-    private final int humidity;
+    private final String feelsLikeTemperature;
+    private final String uvIndex;
+    private final String windSpeed;
+    private final String cloudCover;
+    private final String precipitation;
+    private final String humidity;
 
     public DisplayDailyOutputData(JSONObject outputDataPackage) {
         this.city = outputDataPackage.getString("city");
@@ -33,17 +34,17 @@ public class DisplayDailyOutputData {
         this.weekdays = parseJSONArray(weekdaysArray, String.class);
 
         JSONArray temperaturesArray = outputDataPackage.getJSONArray("temperatures");
-        this.temperatures = parseJSONArray(temperaturesArray, Integer.class);
+        this.temperatures = parseJSONArray(temperaturesArray, String.class);
 
         JSONArray conditionsArray = outputDataPackage.getJSONArray("conditions");
         this.conditions = parseJSONArray(conditionsArray, String.class);
 
-        this.feelsLikeTemperature = outputDataPackage.getInt("feelsLikeTemperature");
-        this.uvIndex = outputDataPackage.getInt("uvIndex");
-        this.windSpeed = outputDataPackage.getInt("windSpeed");
-        this.cloudCover = outputDataPackage.getInt("cloudCover");
-        this.precipitation = outputDataPackage.getInt("precipitation");
-        this.humidity = outputDataPackage.getInt("humidity");
+        this.feelsLikeTemperature = outputDataPackage.getString("feelsLikeTemperature");
+        this.uvIndex = outputDataPackage.getString("uvIndex");
+        this.windSpeed = outputDataPackage.getString("windSpeed");
+        this.cloudCover = outputDataPackage.getString("cloudCover");
+        this.precipitation = outputDataPackage.getString("precipitation");
+        this.humidity = outputDataPackage.getString("humidity");
     }
 
     /**
@@ -74,7 +75,7 @@ public class DisplayDailyOutputData {
         return weekdays;
     }
 
-    public List<Integer> getTemperatures() {
+    public List<String> getTemperatures() {
         return temperatures;
     }
 
@@ -82,27 +83,27 @@ public class DisplayDailyOutputData {
         return conditions;
     }
 
-    public int getFeelsLikeTemperature() {
+    public String getFeelsLikeTemperature() {
         return feelsLikeTemperature;
     }
 
-    public int getUvIndex() {
+    public String getUvIndex() {
         return uvIndex;
     }
 
-    public int getWindSpeed() {
+    public String getWindSpeed() {
         return windSpeed;
     }
 
-    public int getCloudCover() {
+    public String getCloudCover() {
         return cloudCover;
     }
 
-    public int getPrecipitation() {
+    public String getPrecipitation() {
         return precipitation;
     }
 
-    public int getHumidity() {
+    public String getHumidity() {
         return humidity;
     }
 

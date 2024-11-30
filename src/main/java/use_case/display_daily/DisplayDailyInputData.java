@@ -1,19 +1,17 @@
 package use_case.display_daily;
 
-import java.time.DayOfWeek;
-
 /**
  * The Input Data for the Display Daily Use Case.
  */
 public class DisplayDailyInputData {
 
-    private final DayOfWeek selectedWeekday;
+    private final String selectedWeekday;
 
-    public DisplayDailyInputData(DayOfWeek selectedWeekday) {
+    public DisplayDailyInputData(String selectedWeekday) {
         this.selectedWeekday = selectedWeekday;
     }
 
-    public DayOfWeek getWeekday() {
+    public String getWeekday() {
         return selectedWeekday;
     }
 

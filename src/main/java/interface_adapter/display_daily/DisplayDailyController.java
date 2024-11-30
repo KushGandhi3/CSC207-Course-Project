@@ -18,10 +18,10 @@ public class DisplayDailyController {
 
     /**
      * Executes the Display Daily Use Case.
-     * @param selectWeekday the selected weekday on the view
+     * @param selectedWeekday the selected weekday on the view
      */
-    public void execute(DayOfWeek selectWeekday) {
-        final DisplayDailyInputData displayDailyInputData = new DisplayDailyInputData(selectWeekday);
+    public void execute(String selectedWeekday) {
+        final DisplayDailyInputData displayDailyInputData = new DisplayDailyInputData(selectedWeekday);
 
         this.displayDailyInteractor.execute(displayDailyInputData);
     }
