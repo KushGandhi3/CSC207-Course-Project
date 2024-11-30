@@ -89,7 +89,7 @@ public class InMemoryWeatherDAO implements DisplayDailyWeatherDAI, DisplayChecke
             final JSONArray conditionArray = hourObject.getJSONArray("weather");
             final JSONObject conditionObject = conditionArray.getJSONObject(0);
             // main weather condition ("Rain", "Clouds", "Snow")
-            final String condition = conditionObject.getString("app");
+            final String condition = conditionObject.getString("main");
 
             final int temperature = (int) hourObject.getDouble("temp");
 
@@ -159,7 +159,7 @@ public class InMemoryWeatherDAO implements DisplayDailyWeatherDAI, DisplayChecke
             final JSONArray conditionArray = dayObject.getJSONArray("weather");
             final JSONObject conditionObject = conditionArray.getJSONObject(0);
             // main weather condition ("Rain", "Clouds", "Snow")
-            final String condition = conditionObject.getString("app");
+            final String condition = conditionObject.getString("main");
 
             // unpacking for temperature
             final JSONObject temperatureObject = dayObject.getJSONObject("temp");
