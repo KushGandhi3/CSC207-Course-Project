@@ -1,4 +1,4 @@
-package interface_adapter.display_hourly;
-
-public class DisplayHourlyController {
-}
+//package interface_adapter.display_hourly;
+//
+//public class DisplayHourlyController {
+//}
