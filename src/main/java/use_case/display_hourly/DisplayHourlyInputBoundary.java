@@ -1,4 +1,4 @@
-package use_case.display_hourly;
-
-public interface DisplayHourlyInputBoundary {
-}
+//package use_case.display_hourly;
+//
+//public interface DisplayHourlyInputBoundary {
+//}

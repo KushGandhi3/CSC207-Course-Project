@@ -26,7 +26,7 @@ import java.util.List;
  * In Memory Data Object for simulating the creation of weather data entities. Note that the only available cities are
  * Toronto, Vancouver, and Edmonton with weather data from a past forecast.
  */
-public class InMemoryWeatherDAO implements DisplayDailyWeatherDAI, DisplayCheckerDAI, DisplayHomeWeatherDAI {
+public class InMemoryWeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWeatherDAI, DisplayCheckerDAI {
 
     private static final String IN_MEMORY_WEATHER_DATA_PATH = "/data/InMemoryWeatherData.json";
 
