@@ -19,13 +19,13 @@ public class DisplayHourlyOutputData {
     // Weather Variables
     private final List<String> time;
     private final List<String> condition;
-    private final List<Integer> temperature;
-    private final int feelsLike;
-    private final int windSpeed;
-    private final int precipitation;
-    private final int uvIndex;
-    private final int cloudCover;
-    private final int humidity;
+    private final List<String> temperature;
+    private final String feelsLike;
+    private final String windSpeed;
+    private final String precipitation;
+    private final String uvIndex;
+    private final String cloudCover;
+    private final String humidity;
 
     /**
      * Constructs DisplayHourlyOutputData from a JSON object.
@@ -44,14 +44,14 @@ public class DisplayHourlyOutputData {
         this.condition = parseJSONArray(conditionArray, String.class);
 
         JSONArray temperatureArray = outputDataPackage.getJSONArray("temperature");
-        this.temperature = parseJSONArray(temperatureArray, Integer.class);
+        this.temperature = parseJSONArray(temperatureArray, String.class);
 
-        this.feelsLike = outputDataPackage.getInt("feelsLike");
-        this.windSpeed = outputDataPackage.getInt("windSpeed");
-        this.precipitation = outputDataPackage.getInt("precipitation");
-        this.uvIndex = outputDataPackage.getInt("uvIndex");
-        this.cloudCover = outputDataPackage.getInt("cloudCover");
-        this.humidity = outputDataPackage.getInt("humidity");
+        this.feelsLike = outputDataPackage.getString("feelsLike");
+        this.windSpeed = outputDataPackage.getString("windSpeed");
+        this.precipitation = outputDataPackage.getString("precipitation");
+        this.uvIndex = outputDataPackage.getString("uvIndex");
+        this.cloudCover = outputDataPackage.getString("cloudCover");
+        this.humidity = outputDataPackage.getString("humidity");
     }
 
     private <T> List<T> parseJSONArray(JSONArray jsonArray, Class<T> type) throws IllegalArgumentException {
@@ -88,31 +88,31 @@ public class DisplayHourlyOutputData {
         return condition;
     }
 
-    public List<Integer> getTemperature() {
+    public List<String> getTemperature() {
         return temperature;
     }
 
-    public int getFeelsLike() {
+    public String getFeelsLike() {
         return feelsLike;
     }
 
-    public int getWindSpeed() {
+    public String getWindSpeed() {
         return windSpeed;
     }
 
-    public int getPrecipitation() {
+    public String getPrecipitation() {
         return precipitation;
     }
 
-    public int getUvIndex() {
+    public String getUvIndex() {
         return uvIndex;
     }
 
-    public int getCloudCover() {
+    public String getCloudCover() {
         return cloudCover;
     }
 
-    public int getHumidity() {
+    public String getHumidity() {
         return humidity;
     }
 }
