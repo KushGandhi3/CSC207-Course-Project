@@ -21,7 +21,7 @@ import use_case.display_summarization.DisplaySummarizationRecentCitiesDAI;
 public class RecentCitiesDAO implements DisplayDailyRecentCitiesDAI, DisplaySummarizationRecentCitiesDAI,
         DisplayHistoryDAI {
 
-    private static final Path RECENT_CITIES_PATH = Path.of("src", "main", "data", "recent_cities.json");
+    private static final Path RECENT_CITIES_PATH = Path.of("src", "main", "resources", "data", "RecentCities.json");
     private final RecentCityDataFactory recentCityDataFactory;
 
     public RecentCitiesDAO(RecentCityDataFactory recentCityDataFactory) {
