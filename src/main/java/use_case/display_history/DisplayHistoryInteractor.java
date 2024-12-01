@@ -20,10 +20,9 @@ public class DisplayHistoryInteractor implements DisplayHistoryInputBoundary {
     /**
      * Executes the history use case with the chosen city.
      * @param displayHistoryInputData the selected city
-     * @throws RecentCitiesDataException if there is an error getting the list of cities.
      */
     @Override
-    public void execute(DisplayHistoryInputData displayHistoryInputData) throws RecentCitiesDataException {
+    public void execute(DisplayHistoryInputData displayHistoryInputData) {
 
         try {
             final RecentCityData recentCityData = displayHistoryDAO.getRecentCityData();
@@ -34,8 +33,6 @@ public class DisplayHistoryInteractor implements DisplayHistoryInputBoundary {
         catch (RecentCitiesDataException exception) {
             displayHistoryPresenter.prepareFailureView(exception.getMessage());
         }
-
-        // TODO: City Button Implementation
     }
 
     /**
@@ -43,6 +40,6 @@ public class DisplayHistoryInteractor implements DisplayHistoryInputBoundary {
      */
     @Override
     public void switchToHomeView() {
-
+        this.displayHistoryPresenter.switchToHomeView();
     }
 }

@@ -65,4 +65,14 @@ public class DisplayHomeInteractor implements DisplayHomeInputBoundary {
     public void switchToCheckerView() {
         displayHomePresenter.switchToCheckerView();
     }
+
+    @Override
+    public void switchToSummaryView() {
+        displayHomePresenter.switchToSummaryView();
+    }
+
+    @Override
+    public void switchToHistoryView() {
+        displayHomePresenter.switchToHistoryView();
+    }
 }

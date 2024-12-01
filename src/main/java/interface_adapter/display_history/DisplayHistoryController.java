@@ -18,9 +18,8 @@ public class DisplayHistoryController {
     /**
      * Executes the history use case with the chosen city.
      * @param city name of the chosen city.
-     * @throws RecentCitiesDataException if there is an error getting the recent cities.
      */
-    public void execute(String city) throws RecentCitiesDataException {
+    public void execute(String city) {
         final DisplayHistoryInputData displayHistoryInputData = new DisplayHistoryInputData(city);
         displayHistoryInteractor.execute(displayHistoryInputData);
     }

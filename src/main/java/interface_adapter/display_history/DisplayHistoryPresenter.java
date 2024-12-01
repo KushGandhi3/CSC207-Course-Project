@@ -1,6 +1,7 @@
 package interface_adapter.display_history;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.display_home.DisplayHomeViewModel;
 import use_case.display_history.DisplayHistoryOutputBoundary;
 import use_case.display_history.DisplayHistoryOutputData;
 
@@ -11,10 +12,13 @@ import use_case.display_history.DisplayHistoryOutputData;
 public class DisplayHistoryPresenter implements DisplayHistoryOutputBoundary {
 
     private final DisplayHistoryViewModel displayHistoryViewModel;
+    private final DisplayHomeViewModel displayHomeViewModel;
     private final ViewManagerModel viewManagerModel;
 
-    public DisplayHistoryPresenter(DisplayHistoryViewModel displayHistoryViewModel, ViewManagerModel viewManagerModel) {
+    public DisplayHistoryPresenter(DisplayHistoryViewModel displayHistoryViewModel,
+                                   DisplayHomeViewModel displayHomeViewModel, ViewManagerModel viewManagerModel) {
         this.displayHistoryViewModel = displayHistoryViewModel;
+        this.displayHomeViewModel = displayHomeViewModel;
         this.viewManagerModel = viewManagerModel;
     }
 
@@ -39,8 +43,7 @@ public class DisplayHistoryPresenter implements DisplayHistoryOutputBoundary {
      */
     @Override
     public void switchToHomeView() {
-        viewManagerModel.setState("home");
+        viewManagerModel.setState(displayHomeViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
-
     }
 }

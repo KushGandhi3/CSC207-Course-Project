@@ -143,16 +143,6 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
     }
 
     private void addActionListeners() {
-        hourlyButton.addActionListener(
-                evt -> {
-                    if (evt.getSource().equals(hourlyButton)) {
-                        // TODO: Implement hourly button
-//                        this.displayHomeController.executeHourly(
-//                                currentState.getWeekdays().getFirst()
-                    }
-                }
-        );
-
         dailyButton.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(dailyButton)) {
@@ -172,8 +162,7 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         historyButton.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(historyButton)) {
-                        // TODO: Implement the history button
-//                        this.displayHomeController.switchToHistoryView();
+                        this.displayHomeController.switchToHistoryView();
                     }
                 }
         );
@@ -181,8 +170,7 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         summaryButton.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(summaryButton)) {
-                        // TODO: Implement the summary button
-//                        this.displayHomeController.switchToSummaryView();
+                        this.displayHomeController.switchToSummaryView();
                     }
                 }
         );

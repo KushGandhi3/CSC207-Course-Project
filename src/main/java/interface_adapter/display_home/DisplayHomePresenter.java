@@ -5,6 +5,8 @@ import interface_adapter.display_checker.DisplayCheckerViewModel;
 import interface_adapter.display_daily.DisplayDailyController;
 import interface_adapter.display_daily.DisplayDailyState;
 import interface_adapter.display_daily.DisplayDailyViewModel;
+import interface_adapter.display_history.DisplayHistoryViewModel;
+import interface_adapter.display_summarization.DisplaySummarizationViewModel;
 import use_case.display_home.DisplayHomeOutputBoundary;
 import use_case.display_home.DisplayHomeOutputData;
 
@@ -15,16 +17,22 @@ public class DisplayHomePresenter implements DisplayHomeOutputBoundary {
 
     private final ViewManagerModel viewManagerModel;
     private final DisplayHomeViewModel displayHomeViewModel;
+    private final DisplaySummarizationViewModel displaySummarizationViewModel;
+    private final DisplayHistoryViewModel displayHistoryViewModel;
     private final DisplayDailyController displayDailyController;
     private final DisplayDailyViewModel displayDailyViewModel;
     private final DisplayCheckerViewModel displayCheckerViewModel;
 
     public DisplayHomePresenter(ViewManagerModel viewManagerModel, DisplayHomeViewModel displayHomeViewModel,
+                                DisplaySummarizationViewModel displaySummarizationViewModel,
+                                DisplayHistoryViewModel displayHistoryViewModel,
                                 DisplayDailyController displayDailyController,
                                 DisplayDailyViewModel displayDailyViewModel,
                                 DisplayCheckerViewModel displayCheckerViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.displayHomeViewModel = displayHomeViewModel;
+        this.displayHistoryViewModel = displayHistoryViewModel;
+        this.displaySummarizationViewModel = displaySummarizationViewModel;
         this.displayDailyViewModel = displayDailyViewModel;
         this.displayDailyController = displayDailyController;
         this.displayCheckerViewModel = displayCheckerViewModel;
@@ -65,6 +73,7 @@ public class DisplayHomePresenter implements DisplayHomeOutputBoundary {
 
     @Override
     public void switchToDailyView() {
+        // TODO: Use various propertychange events to achieve the same affect
         // execute the display daily use case with the current weekday as input
         DisplayDailyState state = displayDailyViewModel.getState();
         displayDailyController.execute(state.getWeekdays().getFirst());
@@ -76,6 +85,18 @@ public class DisplayHomePresenter implements DisplayHomeOutputBoundary {
     @Override
     public void switchToCheckerView() {
         viewManagerModel.setState(displayCheckerViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
+    }
+
+    @Override
+    public void switchToSummaryView() {
+        viewManagerModel.setState(displaySummarizationViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
+    }
+
+    @Override
+    public void switchToHistoryView() {
+        viewManagerModel.setState(displayHistoryViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }
 }

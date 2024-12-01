@@ -1,9 +1,12 @@
 package app;
 
 import data_access.recent_city.RecentCitiesDAO;
+import data_access.summarization.SummarizationSummaryDAO;
 import data_access.weather.WeatherDAO;
 import entity.recent_city.ConcreteRecentCityDataFactory;
 import entity.recent_city.RecentCityDataFactory;
+import entity.summarization.ConcreteSummarizationFactory;
+import entity.summarization.SummarizationFactory;
 import entity.weather.daily_weather.ConcreteDailyWeatherDataFactory;
 import entity.weather.daily_weather.DailyWeatherDataFactory;
 import entity.weather.day_weather.ConcreteDayWeatherDataFactory;
@@ -19,19 +22,27 @@ import interface_adapter.display_checker.DisplayCheckerViewModel;
 import interface_adapter.display_daily.DisplayDailyController;
 import interface_adapter.display_daily.DisplayDailyPresenter;
 import interface_adapter.display_daily.DisplayDailyViewModel;
+import interface_adapter.display_history.DisplayHistoryController;
+import interface_adapter.display_history.DisplayHistoryPresenter;
+import interface_adapter.display_history.DisplayHistoryViewModel;
 import interface_adapter.display_home.DisplayHomeController;
 import interface_adapter.display_home.DisplayHomePresenter;
 import interface_adapter.display_home.DisplayHomeViewModel;
+import interface_adapter.display_summarization.DisplaySummarizationController;
+import interface_adapter.display_summarization.DisplaySummarizationPresenter;
+import interface_adapter.display_summarization.DisplaySummarizationViewModel;
 import use_case.display_checker.DisplayCheckerDAI;
 import use_case.display_checker.DisplayCheckerInputBoundary;
 import use_case.display_checker.DisplayCheckerInteractor;
 import use_case.display_checker.DisplayCheckerOutputBoundary;
 import use_case.display_daily.*;
+import use_case.display_history.DisplayHistoryDAI;
+import use_case.display_history.DisplayHistoryInputBoundary;
+import use_case.display_history.DisplayHistoryInteractor;
+import use_case.display_history.DisplayHistoryOutputBoundary;
 import use_case.display_home.*;
-import view.CheckerView;
-import view.DailyView;
-import view.HomeView;
-import view.ViewManager;
+import use_case.display_summarization.*;
+import view.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -85,6 +96,7 @@ public class AppBuilder {
     private final DayWeatherDataFactory dayWeatherDataFactory = new ConcreteDayWeatherDataFactory();
     private final HourlyWeatherDataFactory hourlyWeatherDataFactory = new ConcreteHourlyWeatherDataFactory();
     private final HourWeatherDataFactory hourWeatherDataFactory = new ConcreteHourWeatherDataFactory();
+    private final SummarizationFactory summarizationFactory = new ConcreteSummarizationFactory();
 
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
@@ -100,6 +112,14 @@ public class AppBuilder {
     private final DisplayHomeRecentCitiesDAI displayHomeRecentCitiesDAO = new RecentCitiesDAO(recentCityDataFactory);
     private final DisplayHomeWeatherDAI displayHomeWeatherDAO = new WeatherDAO(dayWeatherDataFactory,
             dailyWeatherDataFactory, hourWeatherDataFactory, hourlyWeatherDataFactory);
+    // summarization DAI's
+    private final DisplaySummarizationRecentCitiesDAI displaySummarizationRecentCitiesDAO = new RecentCitiesDAO(recentCityDataFactory);
+    private final DisplaySummarizationWeatherDAI displaySummarizationWeatherDAO = new WeatherDAO(dayWeatherDataFactory,
+            dailyWeatherDataFactory, hourWeatherDataFactory, hourlyWeatherDataFactory);
+    private final DisplaySummarizationSummaryDAI displaySummarizationSummaryDAO =
+            new SummarizationSummaryDAO(summarizationFactory);
+    // history DAI's
+    private final DisplayHistoryDAI displayHistoryDAO = new RecentCitiesDAO(recentCityDataFactory);
 
     private DailyView dailyView;
     private DisplayDailyViewModel displayDailyViewModel;
@@ -110,10 +130,18 @@ public class AppBuilder {
     private HomeView homeView;
     private DisplayHomeViewModel displayHomeViewModel;
 
+    private SummarizationView summarizationView;
+    private DisplaySummarizationViewModel displaySummarizationViewModel;
+
+    private HistoryView historyView;
+    private DisplayHistoryViewModel displayHistoryViewModel;
+
     // controllers
     private DisplayHomeController displayHomeController;
     private DisplayDailyController displayDailyController;
     private DisplayCheckerController displayCheckerController;
+    private DisplaySummarizationController displaySummarizationController;
+    private DisplayHistoryController displayHistoryController;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -153,6 +181,28 @@ public class AppBuilder {
     }
 
     /**
+     * Adds the Summarization View to the application
+     * @return this builder
+     */
+    public AppBuilder addSummarizationView() {
+        displaySummarizationViewModel = new DisplaySummarizationViewModel();
+        summarizationView = new SummarizationView(displaySummarizationViewModel);
+        cardPanel.add(summarizationView, summarizationView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the History View to the application
+     * @return this builder
+     */
+    public AppBuilder addHistoryView() {
+        displayHistoryViewModel = new DisplayHistoryViewModel();
+        historyView = new HistoryView(displayHistoryViewModel);
+        cardPanel.add(historyView, historyView.getViewName());
+        return this;
+    }
+
+    /**
      * Adds the Display Daily Use Case to the application.
      * @return this builder
      */
@@ -184,12 +234,47 @@ public class AppBuilder {
     }
 
     /**
+     * Adds the Display Summarization Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addDisplaySummarizationUseCase() {
+        final DisplaySummarizationOutputBoundary displaySummarizationPresenter =
+                new DisplaySummarizationPresenter(displaySummarizationViewModel,
+                        displayHomeViewModel, viewManagerModel);
+        final DisplaySummarizationInputBoundary displaySummarizationInteractor =
+                new DisplaySummarizationInteractor(displaySummarizationRecentCitiesDAO, displaySummarizationWeatherDAO,
+                        displaySummarizationSummaryDAO, displaySummarizationPresenter);
+
+        displaySummarizationController =
+                new DisplaySummarizationController(displaySummarizationInteractor);
+        summarizationView.setController(displaySummarizationController);
+        return this;
+    }
+
+    /**
+     * Adds the Display History Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addDisplayHistoryUseCase() {
+        final DisplayHistoryOutputBoundary displayHistoryPresenter =
+                new DisplayHistoryPresenter(displayHistoryViewModel, displayHomeViewModel, viewManagerModel);
+        final DisplayHistoryInputBoundary displayHistoryInteractor =
+                new DisplayHistoryInteractor(displayHistoryDAO, displayHistoryPresenter);
+
+        displayHistoryController =
+                new DisplayHistoryController(displayHistoryInteractor);
+        historyView.setController(displayHistoryController);
+        return this;
+    }
+
+    /**
      * Adds the Display Home Use Case to the application.
      * @return this builder
      */
     public AppBuilder addDisplayHomeUseCase() {
         final DisplayHomeOutputBoundary displayHomePresenter =
-                new DisplayHomePresenter(viewManagerModel, displayHomeViewModel, displayDailyController,
+                new DisplayHomePresenter(viewManagerModel, displayHomeViewModel, displaySummarizationViewModel,
+                        displayHistoryViewModel, displayDailyController,
                         displayDailyViewModel, displayCheckerViewModel);
         final DisplayHomeInputBoundary displayHomeInteractor = new DisplayHomeInteractor(displayHomeWeatherDAO,
                 displayHomePresenter, displayHomeRecentCitiesDAO);

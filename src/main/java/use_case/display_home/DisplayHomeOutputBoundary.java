@@ -21,6 +21,7 @@ public interface DisplayHomeOutputBoundary {
      * Switches the view to the Daily View.
      */
     void switchToDailyView();
+
 //      /**
 //       * Switches the view to the Hourly View.
 //       */
@@ -31,14 +32,14 @@ public interface DisplayHomeOutputBoundary {
      */
     void switchToCheckerView();
 
-//    /**
-//     * Switches the view to the Summary View.
-//     */
-//    void switchToSummaryView();
+    /**
+     * Switches the view to the Summary View.
+     */
+    void switchToSummaryView();
 
-//    /**
-//     * Switches the view to the History View.
-//     */
-//    void switchToHistoryView();
+    /**
+     * Switches the view to the History View.
+     */
+    void switchToHistoryView();
 
 }

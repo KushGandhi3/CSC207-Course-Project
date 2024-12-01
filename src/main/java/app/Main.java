@@ -12,11 +12,15 @@ public class Main {
     public static void main(String[] args) {
         final AppBuilder appBuilder = new AppBuilder();
         final JFrame application = appBuilder
-                .addCheckerView()
+                .addSummarizationView()
                 .addHomeView()
                 .addDailyView()
-                .addDisplayCheckerUseCase()
+                .addHistoryView()
+                .addCheckerView()
+                .addDisplaySummarizationUseCase()
+                .addDisplayHistoryUseCase()
                 .addDisplayDailyUseCase()
+                .addDisplayCheckerUseCase()
                 .addDisplayHomeUseCase()
                 .build();
 

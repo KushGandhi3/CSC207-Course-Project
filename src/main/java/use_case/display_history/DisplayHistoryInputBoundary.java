@@ -12,7 +12,7 @@ public interface DisplayHistoryInputBoundary {
      * @param displayHistoryInputData the chosen city.
      * @throws RecentCitiesDataException if there is an error getting recent cities.
      */
-    void execute(DisplayHistoryInputData displayHistoryInputData) throws RecentCitiesDataException;
+    void execute(DisplayHistoryInputData displayHistoryInputData);
 
     /**
      * Executes the "Switch to home" use case.

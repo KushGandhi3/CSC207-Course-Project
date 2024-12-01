@@ -12,6 +12,7 @@ import entity.recent_city.RecentCityData;
 import entity.recent_city.RecentCityDataFactory;
 import exception.RecentCitiesDataException;
 import use_case.display_daily.DisplayDailyRecentCitiesDAI;
+import use_case.display_history.DisplayHistoryDAI;
 import use_case.display_home.DisplayHomeRecentCitiesDAI;
 import use_case.display_summarization.DisplaySummarizationRecentCitiesDAI;
 
@@ -19,8 +20,8 @@ import use_case.display_summarization.DisplaySummarizationRecentCitiesDAI;
  * DAO for accessing data about recently viewed cities.
  */
 // TODO: have RecentCitiesDAO implement DisplayHistoryDAI
-public class RecentCitiesDAO implements DisplayDailyRecentCitiesDAI, DisplayHomeRecentCitiesDAI, DisplaySummarizationRecentCitiesDAI
-        /*DisplayHistoryDAI*/ {
+public class RecentCitiesDAO implements DisplayDailyRecentCitiesDAI, DisplayHomeRecentCitiesDAI,
+        DisplaySummarizationRecentCitiesDAI, DisplayHistoryDAI {
 
 
     private static final Path RECENT_CITIES_PATH = Path.of("src", "main", "resources", "data", "RecentCities.json");

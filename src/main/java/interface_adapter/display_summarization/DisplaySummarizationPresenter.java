@@ -1,6 +1,7 @@
 package interface_adapter.display_summarization;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.display_home.DisplayHomeViewModel;
 import use_case.display_summarization.DisplaySummarizationOutputBoundary;
 import use_case.display_summarization.DisplaySummarizationOutputData;
 
@@ -10,11 +11,14 @@ import use_case.display_summarization.DisplaySummarizationOutputData;
 public class DisplaySummarizationPresenter implements DisplaySummarizationOutputBoundary {
 
     private final DisplaySummarizationViewModel displaySummarizationViewModel;
+    private final DisplayHomeViewModel displayHomeViewModel;
     private final ViewManagerModel viewManagerModel;
 
     public DisplaySummarizationPresenter(DisplaySummarizationViewModel displaySummarizationViewModel,
+                                         DisplayHomeViewModel displayHomeViewModel,
                                          ViewManagerModel viewManagerModel) {
         this.displaySummarizationViewModel = displaySummarizationViewModel;
+        this.displayHomeViewModel = displayHomeViewModel;
         this.viewManagerModel = viewManagerModel;
     }
 
@@ -47,7 +51,7 @@ public class DisplaySummarizationPresenter implements DisplaySummarizationOutput
 
     @Override
     public void switchToHomeView() {
-        viewManagerModel.setState("home");
+        viewManagerModel.setState(displayHomeViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }
 }

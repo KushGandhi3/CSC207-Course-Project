@@ -10,7 +10,7 @@ public class DisplayHistoryInputData {
         this.city = city;
     }
 
-    public String getLocation() {
+    public String getCity() {
         return city;
     }
 }
