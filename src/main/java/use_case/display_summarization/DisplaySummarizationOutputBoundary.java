@@ -18,8 +18,8 @@ public interface DisplaySummarizationOutputBoundary {
     void prepareFailureView(String errorMessage);
 
     /**
-     * Prepare to switch to the Home View.
+     *  Switch to the Home View.
      */
-    void prepareHomeView();
+    void switchToHomeView();
 
 }
