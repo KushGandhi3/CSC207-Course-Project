@@ -35,7 +35,6 @@ public class SummarizationSummaryDAO implements DisplaySummarizationSummaryDAI {
      * @throws RuntimeException if the request fails
      */
     public Summarization getSummarization(String prompt) throws APICallException {
-
         final OkHttpClient client = new OkHttpClient();
         final String apiurl = "https://api.openai.com/v1/chat/completions";
 
@@ -61,14 +60,17 @@ public class SummarizationSummaryDAO implements DisplaySummarizationSummaryDAI {
         // execute request
         try (okhttp3.Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                throw new APICallException("API call unsuccessful! " + response);
+                throw new IOException("API Call Unsuccessful.");
             }
             if (response.body() == null) {
-                throw new APICallException("API returned no response!");
+                throw new IOException("API Returned No Response.");
             }
 
             final JSONObject responseJson = new JSONObject(response.body().string());
             final JSONArray choices = responseJson.getJSONArray("choices");
+            if (choices.isEmpty()) {
+                throw new IOException("API Returned No Choices.");
+            }
             final JSONObject choice = choices.getJSONObject(0);
             final String completion = choice.getJSONObject("message").getString("content");
 
@@ -80,12 +82,8 @@ public class SummarizationSummaryDAO implements DisplaySummarizationSummaryDAI {
 
             // Create the Summarization object
             return this.summarizationFactory.createSummarization(weatherSummary, outfitSuggestion, travelAdvice);
-        }
-        catch (APICallException exception) {
-            throw new APICallException("Failed to get summarization!", exception);
-        }
-        catch (IOException exception) {
-            throw new RuntimeException(exception);
+        } catch (IOException exception) {
+            throw new APICallException("Failed To Get Summarization. " + exception.getMessage(), exception);
         }
     }
 }

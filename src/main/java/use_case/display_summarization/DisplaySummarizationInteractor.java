@@ -34,38 +34,28 @@ public class DisplaySummarizationInteractor implements DisplaySummarizationInput
         final HourlyWeatherData hourlyWeatherData;
         final Summarization summarization;
 
-        // Get the most recent city
         try {
             final RecentCityData recentCityData = recentCitiesDAO.getRecentCityData();
+            if (recentCityData.getRecentCityList().isEmpty()) {
+                throw new RecentCitiesDataException("No Cities To Display");
+            }
             city = recentCityData.getRecentCityList().getFirst();
-        }
-        catch (RecentCitiesDataException exception) {
-            displaySummarizationPresenter.prepareFailureView(exception.getMessage());
-            return;
-        }
 
-        // Get the hourly weather data
-        try {
             hourlyWeatherData = weatherDAO.getHourlyWeatherData(city);
-        }
-        catch (APICallException exception) {
-            displaySummarizationPresenter.prepareFailureView(exception.getMessage());
-            return;
-        }
 
-        // Get the summarization
-        try {
             summarization = summaryDAO.getSummarization(promptGenerator(hourlyWeatherData));
-        }
-        catch (APICallException exception) {
-            displaySummarizationPresenter.prepareFailureView(exception.getMessage());
-            return;
-        }
 
-        // Prepare the success view
-        final DisplaySummarizationOutputData response = new DisplaySummarizationOutputData(summarization
-                .getWeatherSummary(), summarization.getOutfitSuggestion(), summarization.getTravelAdvice());
-        displaySummarizationPresenter.prepareSuccessView(response);
+            // prepare the success view
+            final DisplaySummarizationOutputData response = new DisplaySummarizationOutputData(summarization
+                    .getWeatherSummary(), summarization.getOutfitSuggestion(), summarization.getTravelAdvice());
+            displaySummarizationPresenter.prepareSuccessView(response);
+        } catch (RecentCitiesDataException exception) {
+            exception.printStackTrace();
+            displaySummarizationPresenter.prepareFailureView("No Cities To Display.");
+        } catch (APICallException exception) {
+            exception.printStackTrace();
+            displaySummarizationPresenter.prepareFailureView("Weather Data Unavailable.");
+        }
     }
 
     private String promptGenerator(HourlyWeatherData hourlyWeatherData) {

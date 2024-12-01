@@ -12,18 +12,19 @@ import entity.recent_city.RecentCityData;
 import entity.recent_city.RecentCityDataFactory;
 import exception.RecentCitiesDataException;
 import use_case.display_daily.DisplayDailyRecentCitiesDAI;
+import use_case.display_history.DisplayHistoryDAI;
 import use_case.display_home.DisplayHomeRecentCitiesDAI;
 import use_case.display_summarization.DisplaySummarizationRecentCitiesDAI;
 
 /**
  * DAO for accessing data about recently viewed cities.
  */
-// TODO: have RecentCitiesDAO implement DisplayHistoryDAI
-public class RecentCitiesDAO implements DisplayDailyRecentCitiesDAI, DisplayHomeRecentCitiesDAI, DisplaySummarizationRecentCitiesDAI
-        /*DisplayHistoryDAI*/ {
+public class RecentCitiesDAO implements DisplayDailyRecentCitiesDAI, DisplayHomeRecentCitiesDAI,
+        DisplaySummarizationRecentCitiesDAI, DisplayHistoryDAI {
 
 
-    private static final Path RECENT_CITIES_PATH = Path.of("src", "main", "resources", "data", "RecentCities.json");
+    private static final Path RECENT_CITIES_PATH =
+            Path.of("src", "main", "resources", "data", "RecentCities.json");
     private final RecentCityDataFactory recentCityDataFactory;
 
     public RecentCitiesDAO(RecentCityDataFactory recentCityDataFactory) {
@@ -81,13 +82,13 @@ public class RecentCitiesDAO implements DisplayDailyRecentCitiesDAI, DisplayHome
             return new JSONArray(jsonString);
         }
         catch (IOException exception) {
-            throw new RecentCitiesDataException(
-                    "Failed to read file: " + RECENT_CITIES_PATH
+            throw new RecentCitiesDataException("Failed To Get Recent City Data. Failed To Read File: "
+                    + RECENT_CITIES_PATH + "."
             );
         }
         catch (org.json.JSONException exception) {
             throw new RecentCitiesDataException(
-                    "Failed to parse file: " + RECENT_CITIES_PATH
+                    "Failed To Get Recent City Data. Failed To Parse File: " + RECENT_CITIES_PATH + "."
             );
         }
     }
@@ -102,9 +103,8 @@ public class RecentCitiesDAO implements DisplayDailyRecentCitiesDAI, DisplayHome
             Files.writeString(RECENT_CITIES_PATH, recentCitiesArray.toString());
         }
         catch (IOException exception) {
-            throw new RecentCitiesDataException(
-                    "Failed to write to file: " + RECENT_CITIES_PATH + ". " + exception.getMessage()
-            );
+            throw new RecentCitiesDataException("Failed To Get Recent City Data. Failed To Write To File: "
+                    + RECENT_CITIES_PATH);
         }
     }
 }

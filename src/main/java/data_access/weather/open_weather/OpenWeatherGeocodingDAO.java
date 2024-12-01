@@ -45,13 +45,16 @@ public class OpenWeatherGeocodingDAO {
         try (Response response = client.newCall(request).execute()) {
 
             if (!response.isSuccessful()) {
-                throw new IOException("API call unsuccessful! " + response);
+                throw new IOException("API Call Unsuccessful.");
             }
             if (response.body() == null) {
-                throw new IOException("API returned no response!");
+                throw new IOException("API Returned No Response.");
             }
 
             JSONArray responseBody = new JSONArray(response.body().string());
+            if (responseBody.isEmpty()) {
+                throw new IOException("API Returned Empty Response.");
+            }
             // grab the top result
             JSONObject firstResult = responseBody.getJSONObject(0);
 
@@ -65,7 +68,7 @@ public class OpenWeatherGeocodingDAO {
             return coordinates;
 
         } catch (IOException exception) {
-            throw new APICallException("Failed to get geo-coordinates for " + city + "!",
+            throw new APICallException("Failed To Get Geo-Coordinates For " + city + ". " + exception.getMessage(),
                     exception);
         }
     }

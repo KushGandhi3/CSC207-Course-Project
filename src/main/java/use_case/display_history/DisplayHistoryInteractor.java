@@ -20,10 +20,28 @@ public class DisplayHistoryInteractor implements DisplayHistoryInputBoundary {
     /**
      * Executes the history use case with the chosen city.
      * @param displayHistoryInputData the selected city
-     * @throws RecentCitiesDataException if there is an error getting the list of cities.
      */
     @Override
-    public void execute(DisplayHistoryInputData displayHistoryInputData) throws RecentCitiesDataException {
+    public void execute(DisplayHistoryInputData displayHistoryInputData) {
+
+        try {
+            final String city = displayHistoryInputData.getCity();
+            // put the city at the most recent top of the list
+            displayHistoryDAO.addCity(city);
+
+            final RecentCityData recentCityData = displayHistoryDAO.getRecentCityData();
+            final DisplayHistoryOutputData displayHistoryOutputData = new DisplayHistoryOutputData(recentCityData
+                    .getRecentCityList());
+            displayHistoryPresenter.prepareSuccessView(displayHistoryOutputData);
+        }
+        catch (RecentCitiesDataException exception) {
+            exception.printStackTrace();
+            displayHistoryPresenter.prepareFailureView("City History Unavailable.");
+        }
+    }
+
+    @Override
+    public void execute() {
 
         try {
             final RecentCityData recentCityData = displayHistoryDAO.getRecentCityData();
@@ -32,10 +50,10 @@ public class DisplayHistoryInteractor implements DisplayHistoryInputBoundary {
             displayHistoryPresenter.prepareSuccessView(displayHistoryOutputData);
         }
         catch (RecentCitiesDataException exception) {
+            exception.printStackTrace();
             displayHistoryPresenter.prepareFailureView(exception.getMessage());
         }
 
-        // TODO: City Button Implementation
     }
 
     /**
@@ -43,6 +61,6 @@ public class DisplayHistoryInteractor implements DisplayHistoryInputBoundary {
      */
     @Override
     public void switchToHomeView() {
-
+        this.displayHistoryPresenter.switchToHomeView();
     }
 }

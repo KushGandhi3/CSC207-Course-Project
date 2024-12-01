@@ -3,6 +3,8 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -13,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import interface_adapter.display_daily.DisplayDailyState;
 import interface_adapter.display_summarization.DisplaySummarizationController;
 import interface_adapter.display_summarization.DisplaySummarizationState;
 import interface_adapter.display_summarization.DisplaySummarizationViewModel;
@@ -20,7 +23,7 @@ import interface_adapter.display_summarization.DisplaySummarizationViewModel;
 /**
  * The View for when the user wants to view the summarization of the data.
  */
-public class SummarizationView extends JPanel implements PropertyChangeListener {
+public class SummarizationView extends JPanel implements PropertyChangeListener, ActionListener {
 
     private static final Font CRIMSONTITLE = FontManager.getCrimsonTextBold(80);
     private static final Font CRIMSONSUBTITLE = FontManager.getCrimsonTextBold(24);
@@ -76,11 +79,13 @@ public class SummarizationView extends JPanel implements PropertyChangeListener 
         setTextLabels(viewModel.getState());
 
         // Back Button Action
-        backButton.addActionListener(evt -> {
-            if (evt.getSource().equals(backButton)) {
-                displaySummarizationController.switchToHomeView();
-            }
-        });
+        backButton.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(backButton)) {
+                        this.displaySummarizationController.switchToHomeView();
+                    }
+                }
+        );
     }
 
     private JPanel createCard(JLabel subtitle, JLabel body) {
@@ -107,8 +112,12 @@ public class SummarizationView extends JPanel implements PropertyChangeListener 
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        final DisplaySummarizationState currentState = (DisplaySummarizationState) evt.getNewValue();
-        setTextLabels(currentState);
+        if (evt.getPropertyName().equals("update_data")) {
+            displaySummarizationController.execute();
+        }else {
+            final DisplaySummarizationState currentState = (DisplaySummarizationState) evt.getNewValue();
+            setTextLabels(currentState);
+        }
     }
 
     public String getViewName() {
@@ -117,5 +126,10 @@ public class SummarizationView extends JPanel implements PropertyChangeListener 
 
     public void setController(DisplaySummarizationController controller) {
         this.displaySummarizationController = controller;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        //
     }
 }

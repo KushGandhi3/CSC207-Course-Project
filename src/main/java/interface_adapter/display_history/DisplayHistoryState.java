@@ -1,5 +1,6 @@
 package interface_adapter.display_history;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  */
 public class DisplayHistoryState {
 
-    private List<String> cities;
+    private List<String> cities = new ArrayList<>();
 
     public List<String> getCities() {
         return cities;

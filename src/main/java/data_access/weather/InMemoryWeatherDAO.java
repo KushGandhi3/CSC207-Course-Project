@@ -210,7 +210,7 @@ public class InMemoryWeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWe
     private JSONObject readInMemoryWeather() throws APICallException {
         try (InputStream inputStream = this.getClass().getResourceAsStream(IN_MEMORY_WEATHER_DATA_PATH)) {
             if (inputStream == null) {
-                throw new IOException("Resource not found: " + IN_MEMORY_WEATHER_DATA_PATH);
+                throw new IOException("Resource not found: " + IN_MEMORY_WEATHER_DATA_PATH + ".");
             }
             // read file data
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
@@ -223,7 +223,7 @@ public class InMemoryWeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWe
             // convert the weather data file to a JSON object
             return new JSONObject(jsonString.toString());
         } catch(IOException exception) {
-            throw new APICallException("Filed to load in memory weather data! " + exception);
+            throw new APICallException("Filed To Load In Memory Weather Data. " + exception);
         }
     }
 

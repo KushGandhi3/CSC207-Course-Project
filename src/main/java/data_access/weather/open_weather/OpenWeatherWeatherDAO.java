@@ -35,6 +35,10 @@ public class OpenWeatherWeatherDAO {
         final Map<String, Double> coordinates =
                 OpenWeatherGeocodingDAO.getCoordinates(city);
 
+        if (API_KEY == null) {
+            throw new APICallException("API Key Not Set.");
+        }
+
         final String url = buildAPIURL(coordinates);
 
         // build http request
@@ -45,16 +49,16 @@ public class OpenWeatherWeatherDAO {
         // executeDisplayHome request
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                throw new IOException("API call unsuccessful! " + response);
+                throw new IOException("API Call Unsuccessful.");
             }
             if (response.body() == null) {
-                throw new IOException("API returned no response!");
+                throw new IOException("API Returned No Response.");
             }
 
             return new JSONObject(response.body().string());
 
         } catch (IOException exception) {
-            throw new APICallException("Failed to get weather data for " + city + "!", exception);
+            throw new APICallException("Failed To Get Weather For: " + city + ". " + exception.getMessage(), exception);
         }
     }
 
@@ -64,15 +68,10 @@ public class OpenWeatherWeatherDAO {
      *                    will be requested for.
      * @return the OpenWeather Weather API URL for requesting
      * weather for the city.
-     * @throws APICallException if the API Key is not set
      */
-    private static String buildAPIURL(Map<String, Double> coordinates) throws APICallException {
+    private static String buildAPIURL(Map<String, Double> coordinates) {
         final int latitude = coordinates.get("latitude").intValue();
         final int longitude = coordinates.get("longitude").intValue();
-
-        if (API_KEY == null) {
-            throw new APICallException("Failed to get weather data. API Key not set!");
-        }
 
         return API_URL
                 .replaceFirst("\\{lat}", String.valueOf(latitude))

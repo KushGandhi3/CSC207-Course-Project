@@ -17,28 +17,30 @@ public class DisplayHistoryViewModel extends ViewModel<DisplayHistoryState> {
     public static final String TITLE_LABEL = "City History";
 
     public static final ImageIcon BACK_BUTTON_ICON;
-    public static final int BACK_BUTTON_WIDTH = 34;
-    public static final int BACK_BUTTON_HEIGHT = 24;
+    public static final int BACK_BUTTON_WIDTH = 30;
+    public static final int BACK_BUTTON_HEIGHT = 20;
 
     static {
-        BACK_BUTTON_ICON = resizeIcon();
+        BACK_BUTTON_ICON = resizeIcon("assets/Buttons/BackButton.png", BACK_BUTTON_WIDTH, BACK_BUTTON_HEIGHT);
     }
 
     public DisplayHistoryViewModel() {
-        super("History");
+        super("History View");
         setState(new DisplayHistoryState());
     }
 
     /**
      * Resizes the back button image.
+     * @param path the resources file path
+     * @param width the desired width of the image
+     * @param height the desired height of the image
      * @return a resized Image Icon
      */
-    private static ImageIcon resizeIcon() {
+    private static ImageIcon resizeIcon(String path, int width, int height) {
         final ImageIcon originalDailyForecastBox = new ImageIcon(Objects.requireNonNull(
-                DisplayHistoryViewModel.class.getClassLoader().getResource("images/back_button.png")));
+                DisplayHistoryViewModel.class.getClassLoader().getResource(path)));
         final Image resizedDailyForecastBox = originalDailyForecastBox.getImage()
-                .getScaledInstance(DisplayHistoryViewModel.BACK_BUTTON_WIDTH, DisplayHistoryViewModel
-                        .BACK_BUTTON_HEIGHT, Image.SCALE_SMOOTH);
+                .getScaledInstance(width, height, Image.SCALE_SMOOTH);
         return new ImageIcon(resizedDailyForecastBox);
     }
 }

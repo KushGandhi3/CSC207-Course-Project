@@ -5,12 +5,12 @@ package interface_adapter.display_home;
  */
 public class DisplayHomeState {
 
-    private String city = "Toronto";
-    private String lowTemperature = "0°C";
-    private String highTemperature = "0°C";
-    private String temperature = "0°C";
-    private String condition = "Clouds";
-    private String date = "Wednesday, July 16";
+    private String city = "";
+    private String lowTemperature = "-°C";
+    private String highTemperature = "-°C";
+    private String temperature = "-°C";
+    private String condition = "-";
+    private String date = "-, - -";
 
     public String getCity() {
         return this.city;

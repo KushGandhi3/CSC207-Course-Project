@@ -12,6 +12,11 @@ public interface DisplayDailyInputBoundary {
     void execute(DisplayDailyInputData displayDailyInputData);
 
     /**
+     * Executes the display daily use case without input data.
+     */
+    void execute();
+
+    /**
      * Switches to home view.
      */
     void switchToHomeView();

@@ -2,7 +2,6 @@ package interface_adapter.display_home;
 
 import use_case.display_home.DisplayHomeInputBoundary;
 import use_case.display_home.DisplayHomeInputData;
-//import use_case.display_summarization.DisplaySummarizationInputBoundary;
 
 /**
  * The controller for the Display Home Use Case.
@@ -25,28 +24,27 @@ public class DisplayHomeController {
 
         displayHomeInteractor.execute(displayHomeInputData);
     }
+    /**
+     * Executes the Display Home Use Case.
+     */
+    public void execute() {
+        displayHomeInteractor.execute();
+    }
 
     public void switchToDailyView() {
         this.displayHomeInteractor.switchToDailyView();
     }
 
-    // TODO: Implement switchToHourlyView()
-//    public void switchToHourlyView() {
-//        this.displayHomeInteractor.switchToHourlyView();
-//    }
-
     public void switchToCheckerView() {
         this.displayHomeInteractor.switchToCheckerView();
     }
 
-    // TODO: Implement switchToSummaryView()
-//    public void switchToSummaryView() {
-//        this.displayHomeInteractor.switchToSummaryView();
-//    }
+    public void switchToSummaryView() {
+        this.displayHomeInteractor.switchToSummaryView();
+    }
 
-    // TODO: Implement switchToHistoryView()
-//    public void switchToHistoryView() {
-//        this.displayHomeInteractor.switchToHistoryView();
-//    }
+    public void switchToHistoryView() {
+        this.displayHomeInteractor.switchToHistoryView();
+    }
 
 }

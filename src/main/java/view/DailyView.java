@@ -286,8 +286,13 @@ public class DailyView extends JPanel implements PropertyChangeListener, ActionL
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        final DisplayDailyState currentState = (DisplayDailyState) evt.getNewValue();
-        setLabels(currentState);
+        if (evt.getPropertyName().equals("update_data")) {
+            // execute the Display Daily Weather Use Case on the current weekday
+            displayDailyController.execute();
+        } else {
+            final DisplayDailyState currentState = (DisplayDailyState) evt.getNewValue();
+            setLabels(currentState);
+        }
     }
 
     private void setLabels(DisplayDailyState state) {
