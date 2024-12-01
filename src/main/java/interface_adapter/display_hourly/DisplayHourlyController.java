@@ -3,8 +3,6 @@ package interface_adapter.display_hourly;
 import use_case.display_hourly.DisplayHourlyInputBoundary;
 import use_case.display_hourly.DisplayHourlyInputData;
 
-import java.time.LocalTime;
-
 /**
  * Controller for handling hourly weather display actions.
  * It acts as the interface between the user input and the use case interactor.
@@ -26,7 +24,7 @@ public class DisplayHourlyController {
      *
      * @param selectTime the selected time for hourly weather
      */
-    public void execute(LocalTime selectTime) {
+    public void execute(String selectTime) {
         final DisplayHourlyInputData displayHourlyInputData = new DisplayHourlyInputData(selectTime);
         this.displayHourlyInputBoundary.execute(displayHourlyInputData);
     }

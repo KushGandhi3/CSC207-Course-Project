@@ -70,6 +70,10 @@ public class DisplayHourlyInteractor implements DisplayHourlyInputBoundary {
         final List<Integer> temperatures = new ArrayList<>(Constants.TIME_SIZE);
         final List<String> conditions = new ArrayList<>(Constants.TIME_SIZE);
 
+//        final ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of(hourlyWeatherData.getTimezone()));
+//        final int currentTime = zonedDateTime.getHour();
+//        final List<HourWeatherData> hourWeatherDataList = hourlyWeatherData.getHourWeatherDataList();
+
         final ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of(hourlyWeatherData.getTimezone()));
         final LocalTime currentTime = zonedDateTime.toLocalTime();
 
