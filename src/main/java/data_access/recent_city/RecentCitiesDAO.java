@@ -6,6 +6,7 @@ import exception.RecentCitiesDataException;
 import org.json.JSONArray;
 import use_case.display_daily.DisplayDailyRecentCitiesDAI;
 import use_case.display_summarization.DisplaySummarizationRecentCitiesDAI;
+import use_case.display_history.DisplayHistoryDAI;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -128,6 +129,16 @@ public class RecentCitiesDAO implements DisplayDailyRecentCitiesDAI, DisplaySumm
             }
         }
         return exists;
+    }
+
+    /**
+     * Set the chosen location.
+     * @param location the wanted location
+     */
+    @Override
+    public void setChosenLocation(String location) {
+        // TODO implement the logic here
+
     }
 
 }

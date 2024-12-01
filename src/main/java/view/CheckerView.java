@@ -277,6 +277,7 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
     public void setCheckerController(DisplayCheckerController displayCheckerController) {
         this.displayCheckerController = displayCheckerController;
     }
+
 }
 
 
