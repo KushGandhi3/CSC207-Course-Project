@@ -16,4 +16,29 @@ public interface DisplayHomeOutputBoundary {
      * @param errorMessage the explanation of the failure.
      */
     void prepareFailView(String errorMessage);
+
+    /**
+     * Switches the view to the Daily View.
+     */
+    void switchToDailyView();
+//      /**
+//       * Switches the view to the Hourly View.
+//       */
+////    void switchToHourlyView();
+
+    /**
+     * Switches the view to the Checker View.
+     */
+    void switchToCheckerView();
+
+//    /**
+//     * Switches the view to the Summary View.
+//     */
+//    void switchToSummaryView();
+
+//    /**
+//     * Switches the view to the History View.
+//     */
+//    void switchToHistoryView();
+
 }

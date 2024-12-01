@@ -1,17 +1,17 @@
 package interface_adapter.display_home;
 
 /**
- * The state for the Home View Model Use Case.
+ * The state for the Display Home Use Case.
  */
 public class DisplayHomeState {
 
-    private String city = "";
-    private String temperature = "";
-    private String highTemperature = "";
-    private String lowTemperature = "";
-    private String condition = "";
+    private String city = "Toronto";
+    private String lowTemperature = "0°C";
+    private String highTemperature = "0°C";
+    private String temperature = "0°C";
+    private String condition = "Clouds";
+    private String date = "Wednesday, July 16";
 
-    // Public getter methods
     public String getCity() {
         return this.city;
     }
@@ -32,7 +32,6 @@ public class DisplayHomeState {
         return this.condition;
     }
 
-    // Public setter methods
     public void setCity(String city) {
         this.city = city;
     }
@@ -51,5 +50,13 @@ public class DisplayHomeState {
 
     public void setCondition(String condition) {
         this.condition = condition;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
