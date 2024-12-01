@@ -7,6 +7,7 @@ import entity.weather.hour_weather.HourWeatherData;
 import exception.APICallException;
 import exception.RecentCitiesDataException;
 import org.json.JSONObject;
+import use_case.display_daily.DisplayDailyInputBoundary;
 
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -19,20 +20,20 @@ import java.util.List;
  * Interactor for the hourly forecast use case.
  * Contains the business logic for processing hourly weather data.
  */
-public class DisplayHourlyInteractor {
+public class DisplayHourlyInteractor implements DisplayHourlyInputBoundary {
     private final DisplayHourlyRecentCitiesDAI recentCitiesDAO;
     private final DisplayHourlyWeatherDAI weatherDataAccessObject;
     private final DisplayHourlyOutputBoundary displayHourlyPresenter;
 
     public DisplayHourlyInteractor(DisplayHourlyRecentCitiesDAI recentCitiesDAO,
-                                  DisplayHourlyWeatherDAI weatherDataAccessObject,
-                                  DisplayHourlyOutputBoundary displayHourlyPresenter) {
+                                   DisplayHourlyWeatherDAI weatherDataAccessObject,
+                                   DisplayHourlyOutputBoundary displayHourlyPresenter) {
         this.recentCitiesDAO = recentCitiesDAO;
         this.weatherDataAccessObject = weatherDataAccessObject;
         this.displayHourlyPresenter = displayHourlyPresenter;
     }
 
-    @Override
+    //    @Override
     public void execute(DisplayHourlyInputData displayHourlyInputData) {
         final String city;
 
@@ -47,7 +48,7 @@ public class DisplayHourlyInteractor {
 
         try {
             final HourlyWeatherData hourlyWeatherData = this.weatherDataAccessObject.getHourlyWeatherData(city);
-            final LocalTime selectedTime = displayHourlyInputData.getWeekday();
+            final LocalTime selectedTime = LocalTime.parse(displayHourlyInputData.getSelectedTime());
             final JSONObject outputDataPackage = packageOutputData(hourlyWeatherData, selectedTime, city);
             final DisplayHourlyOutputData displayHourlyOutputData = new DisplayHourlyOutputData(outputDataPackage);
             displayHourlyPresenter.prepareSuccessView(displayHourlyOutputData);
@@ -68,10 +69,6 @@ public class DisplayHourlyInteractor {
         final List<Integer> times = new ArrayList<>(Constants.TIME_SIZE);
         final List<Integer> temperatures = new ArrayList<>(Constants.TIME_SIZE);
         final List<String> conditions = new ArrayList<>(Constants.TIME_SIZE);
-
-//        final ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of(hourlyWeatherData.getTimezone()));
-//        final int currentTime = zonedDateTime.getHour();
-//        final List<HourWeatherData> hourWeatherDataList = hourlyWeatherData.getHourWeatherDataList();
 
         final ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of(hourlyWeatherData.getTimezone()));
         final LocalTime currentTime = zonedDateTime.toLocalTime();
@@ -122,7 +119,7 @@ public class DisplayHourlyInteractor {
         return outputDataPackage;
     }
 
-    @Override
+    //    @Override
     public void switchToHomeView() {
         displayHourlyPresenter.switchToHomeView();
     }
