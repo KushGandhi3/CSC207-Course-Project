@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapter.display_daily.DisplayDailyController;
 import interface_adapter.display_hourly.DisplayHourlyController;
 import interface_adapter.display_hourly.DisplayHourlyViewModel;
 
@@ -146,6 +147,14 @@ public class HourlyView extends JPanel implements PropertyChangeListener {
         highTemperature.setBounds(10, 80, 100, 20);
         forecast.setBounds(10, 120, 100, 20);
         details.setBounds(10, 160, 100, 20);
+    }
+
+    public String getViewName() {
+        return viewName;
+    }
+
+    public void setDisplayHourlyController(DisplayHourlyController displayHourlyController) {
+        this.displayHourlyController = displayHourlyController;
     }
 
     @Override
