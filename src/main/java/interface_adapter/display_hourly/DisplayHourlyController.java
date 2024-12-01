@@ -28,4 +28,8 @@ public class DisplayHourlyController {
         final DisplayHourlyInputData displayHourlyInputData = new DisplayHourlyInputData(selectTime);
         this.displayHourlyInputBoundary.execute(displayHourlyInputData);
     }
+
+    public void switchToHomeView() {
+        this.displayHourlyInputBoundary.switchToHomeView();
+    }
 }
