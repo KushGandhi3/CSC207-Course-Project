@@ -190,7 +190,6 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
                 final DisplayHomeState currentState = displayHomeViewModel.getState();
                 currentState.setCity(locationField.getText());
                 displayHomeViewModel.setState(currentState);
-                displayHomeViewModel.firePropertyChanged();
             }
 
             @Override
