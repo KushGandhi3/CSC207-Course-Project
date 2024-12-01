@@ -1,29 +1,29 @@
 package data_access.recent_city;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+
 import entity.recent_city.RecentCityData;
 import entity.recent_city.RecentCityDataFactory;
 import exception.RecentCitiesDataException;
-import org.json.JSONArray;
 import use_case.display_daily.DisplayDailyRecentCitiesDAI;
-import use_case.display_home.DisplayHomeRecentCitiesDAI;
-
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+import use_case.display_history.DisplayHistoryDAI;
+import use_case.display_summarization.DisplaySummarizationRecentCitiesDAI;
 
 /**
  * DAO for accessing data about recently viewed cities.
  */
-public class RecentCitiesDAO implements DisplayDailyRecentCitiesDAI, DisplayHomeRecentCitiesDAI {
 
-    // the path to the data resource
-    private static final String RESOURCES_FOLDER_PATH = "src/main/resources/";
-    private static final String RECENT_CITIES_PATH = "/data/RecentCities.json";
+public class RecentCitiesDAO implements DisplayDailyRecentCitiesDAI, DisplaySummarizationRecentCitiesDAI,
+        DisplayHistoryDAI {
 
+
+    private static final Path RECENT_CITIES_PATH = Path.of("src", "main", "resources", "data", "RecentCities.json");
     private final RecentCityDataFactory recentCityDataFactory;
 
     public RecentCitiesDAO(RecentCityDataFactory recentCityDataFactory) {
@@ -37,33 +37,32 @@ public class RecentCitiesDAO implements DisplayDailyRecentCitiesDAI, DisplayHome
      */
     @Override
     public void addCity(String city) throws RecentCitiesDataException {
-        JSONArray recentCitiesArray = readRecentCities();
-        // check if the city is already in the array
-        if (!cityExists(city, recentCitiesArray)) {
-            // add the new city at the front of the JSON array
-            List<String> recentCitiesList = new ArrayList<>();
-            recentCitiesList.add(city);
-            for (int i = 0; i < recentCitiesArray.length(); i++) {
-                recentCitiesList.add(recentCitiesArray.getString(i));
-            }
-            recentCitiesArray = new JSONArray(recentCitiesList);
+        final JSONArray recentCitiesArray = readRecentCities();
+        final List<String> recentCitiesList = new ArrayList<>();
 
-            // write to the RecentCities file
-            writeToRecentCities(recentCitiesArray);
+        // Add the city to the front and remove duplicates
+        recentCitiesList.add(city);
+        for (int i = 0; i < recentCitiesArray.length(); i++) {
+            final String existingCity = recentCitiesArray.getString(i);
+            if (!existingCity.equals(city)) {
+                recentCitiesList.add(existingCity);
+            }
         }
+
+        // Update the JSON Array and write to the file
+        writeToRecentCities(new JSONArray(recentCitiesList));
     }
 
     /**
      * Reads the recent cities from the JSON file and returns the corresponding RecentCityData entity.
      * @return a list of recent city names
-     * @throws RecentCitiesDataException when there is an issue reading or parsing the data
      */
     @Override
     public RecentCityData getRecentCityData() throws RecentCitiesDataException {
-        JSONArray recentCitiesArray = readRecentCities();
+        final JSONArray recentCitiesArray = readRecentCities();
 
         // create an array list of the city names
-        List<String> cityList = new ArrayList<>(recentCitiesArray.length());
+        final List<String> cityList = new ArrayList<>(recentCitiesArray.length());
         for (int i = 0; i < recentCitiesArray.length(); i++) {
             cityList.add(recentCitiesArray.getString(i));
         }
@@ -76,58 +75,36 @@ public class RecentCitiesDAO implements DisplayDailyRecentCitiesDAI, DisplayHome
      * @return JSONArray containing the recent cities
      * @throws RecentCitiesDataException when the RecentCities json file is not found
      */
-    private JSONArray readRecentCities() throws RecentCitiesDataException{
-        try (InputStream inputStream = this.getClass().getResourceAsStream(RECENT_CITIES_PATH)) {
-            if (inputStream == null) {
-                throw new IOException("Resource not found: " + RECENT_CITIES_PATH);
-            }
-            // read file data
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            StringBuilder jsonString = new StringBuilder();
-            BufferedReader reader = new BufferedReader(inputStreamReader);
-            String line;
-            while ((line = reader.readLine()) != null) {
-                jsonString.append(line);
-            }
-            // convert the recent cities file data to a JSON array
-            return new JSONArray(jsonString.toString());
-        } catch(IOException exception) {
-            throw new RecentCitiesDataException("Failed to load recent city data! " + exception);
+    private JSONArray readRecentCities() throws RecentCitiesDataException {
+        try {
+            final String jsonString = Files.readString(RECENT_CITIES_PATH);
+            return new JSONArray(jsonString);
         }
-    }
-
-    /**
-     * Write the recent cities array to the RecentCities JSON file
-     * @param recentCitiesArray the array of cities to write to the JSON file
-     * @throws RecentCitiesDataException when the RecentCities file cannot be found or written to
-     */
-    private void writeToRecentCities(JSONArray recentCitiesArray) throws RecentCitiesDataException {
-        // open writing object to write to the file
-        try (PrintWriter writer = new PrintWriter(RESOURCES_FOLDER_PATH + RECENT_CITIES_PATH)) {
-            // write the new json data to the file
-            writer.println(recentCitiesArray);
-        } catch(IOException exception) {
+        catch (IOException exception) {
             throw new RecentCitiesDataException(
-                    "Failed to write to file: " + RESOURCES_FOLDER_PATH + RECENT_CITIES_PATH
+                    "Failed to read file: " + RECENT_CITIES_PATH
+            );
+        }
+        catch (org.json.JSONException exception) {
+            throw new RecentCitiesDataException(
+                    "Failed to parse file: " + RECENT_CITIES_PATH
             );
         }
     }
 
     /**
-     * Check whether a provided city is already in a JSON Array.
-     * @param city the city to look for
-     * @param recentCitiesArray the array to look for the city in
-     * @return true when the city is in the array & false when the city is not in the array
+     * Write the recent cities array to the RecentCities JSON file.
+     * @param recentCitiesArray the array of cities to write to the JSON file
+     * @throws RecentCitiesDataException when the RecentCities file cannot be found or written to
      */
-    private boolean cityExists(String city, JSONArray recentCitiesArray) {
-        boolean exists = false;
-        for (int i = 0; i < recentCitiesArray.length(); i++) {
-            String savedCityName = recentCitiesArray.getString(i);
-            if (savedCityName.equals(city)) {
-                exists = true;
-            }
+    private void writeToRecentCities(JSONArray recentCitiesArray) throws RecentCitiesDataException {
+        try {
+            Files.writeString(RECENT_CITIES_PATH, recentCitiesArray.toString());
         }
-        return exists;
+        catch (IOException exception) {
+            throw new RecentCitiesDataException(
+                    "Failed to write to file: " + RECENT_CITIES_PATH + ". " + exception.getMessage()
+            );
+        }
     }
-
 }
