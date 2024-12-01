@@ -36,6 +36,9 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
         final String city;
         try {
             final RecentCityData recentCityData = this.recentCitiesDAO.getRecentCityData();
+            if (recentCityData.getRecentCityList().isEmpty()) {
+                throw new RecentCitiesDataException("No recent cities found");
+            }
             city = recentCityData.getRecentCityList().getFirst();
         } catch(RecentCitiesDataException exception) {
             displayDailyPresenter.prepareFailView(exception.getMessage());

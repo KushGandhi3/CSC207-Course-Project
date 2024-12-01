@@ -1,9 +1,14 @@
 package interface_adapter.display_daily;
 
+import constants.Constants;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.display_home.DisplayHomeViewModel;
 import use_case.display_daily.DisplayDailyOutputBoundary;
 import use_case.display_daily.DisplayDailyOutputData;
+
+import java.time.DayOfWeek;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Presenter for the Display Daily Use Case.
@@ -38,16 +43,38 @@ public class DisplayDailyPresenter implements DisplayDailyOutputBoundary {
 
         this.displayDailyViewModel.setState(displayDailyState);
         this.displayDailyViewModel.firePropertyChanged();
-
-        this.viewManagerModel.setState(this.displayDailyViewModel.getViewName());
-        this.viewManagerModel.firePropertyChanged();
     }
 
     @Override
     public void prepareFailView(String errorMessage) {
-        // TODO: implement the fail view
         final DisplayDailyState displayDailyState = this.displayDailyViewModel.getState();
-        displayDailyState.setCity(displayDailyState.getCity());
+        displayDailyState.setCity(errorMessage);
+        // prepare default view
+        final List<String> weekdays = new ArrayList<>(Constants.WEEK_SIZE);
+        final List<String> temperatures = new ArrayList<>(Constants.WEEK_SIZE);
+        final List<String> conditions = new ArrayList<>(Constants.WEEK_SIZE);
+        for (int i = 0; i < Constants.WEEK_SIZE; i++) {
+            weekdays.add(DayOfWeek.of(i + 1).toString());
+            temperatures.add("---");
+            conditions.add("----");
+        }
+        final String feelsLikeTemperature = "---";
+        final String uvIndex = "-";
+        final String windSpeed = "-----";
+        final String cloudCover = "--";
+        final String precipitation = "--";
+        final String humidity = "--";
+        displayDailyState.setWeekdays(weekdays);
+        displayDailyState.setTemperatures(temperatures);
+        displayDailyState.setConditions(conditions);
+        displayDailyState.setFeelsLikeTemperature(feelsLikeTemperature);
+        displayDailyState.setUvIndex(uvIndex);
+        displayDailyState.setWindSpeed(windSpeed);
+        displayDailyState.setCloudCover(cloudCover);
+        displayDailyState.setPrecipitation(precipitation);
+        displayDailyState.setHumidity(humidity);
+
+        this.displayDailyViewModel.setState(displayDailyState);
         this.displayDailyViewModel.firePropertyChanged();
     }
 

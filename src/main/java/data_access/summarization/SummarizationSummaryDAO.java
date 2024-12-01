@@ -60,10 +60,10 @@ public class SummarizationSummaryDAO implements DisplaySummarizationSummaryDAI {
         // execute request
         try (okhttp3.Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                throw new APICallException("API call unsuccessful! " + response);
+                throw new IOException("API call unsuccessful! " + response);
             }
             if (response.body() == null) {
-                throw new APICallException("API returned no response!");
+                throw new IOException("API returned no response!");
             }
 
             final JSONObject responseJson = new JSONObject(response.body().string());
@@ -79,13 +79,8 @@ public class SummarizationSummaryDAO implements DisplaySummarizationSummaryDAI {
 
             // Create the Summarization object
             return this.summarizationFactory.createSummarization(weatherSummary, outfitSuggestion, travelAdvice);
-        }
-        catch (APICallException exception) {
-            exception.printStackTrace();
+        } catch (IOException exception) {
             throw new APICallException("Failed to get summarization!", exception);
-        }
-        catch (IOException exception) {
-            throw new RuntimeException(exception);
         }
     }
 }

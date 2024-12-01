@@ -51,12 +51,8 @@ public class DisplayHomePresenter implements DisplayHomeOutputBoundary {
 
         this.displayHomeViewModel.setState(state);
         this.displayHomeViewModel.firePropertyChanged();
-
-        this.viewManagerModel.setState(this.displayHomeViewModel.getViewName());
-        this.viewManagerModel.firePropertyChanged();
     }
 
-    // TODO: implement fail view for home
     @Override
     public void prepareFailView(String error) {
         // In case of an error, set the error state

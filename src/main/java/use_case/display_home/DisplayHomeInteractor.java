@@ -43,6 +43,9 @@ public class DisplayHomeInteractor implements DisplayHomeInputBoundary {
     public void execute() {
         try {
             RecentCityData recentCityData = recentCitiesDataAccessObject.getRecentCityData();
+            if (recentCityData.getRecentCityList().isEmpty()) {
+                throw new RecentCitiesDataException("Recent cities not found");
+            }
             String recentCity = recentCityData.getRecentCityList().getFirst();
 
             DisplayHomeOutputData displayHomeOutputData = getOutputData(recentCity);

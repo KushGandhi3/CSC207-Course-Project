@@ -45,6 +45,7 @@ public class DisplaySummarizationPresenter implements DisplaySummarizationOutput
         displaySummarizationState.setWeather(errorMessage);
         displaySummarizationState.setOutfit(errorMessage);
         displaySummarizationState.setTravel(errorMessage);
+
         displaySummarizationViewModel.setState(displaySummarizationState);
         displaySummarizationViewModel.firePropertyChanged();
     }

@@ -7,6 +7,10 @@ import interface_adapter.display_summarization.DisplaySummarizationViewModel;
 import use_case.display_history.DisplayHistoryOutputBoundary;
 import use_case.display_history.DisplayHistoryOutputData;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * DisplayHistoryPresenter manages the preparation and presentation of the
  * historical view of cities in the application.
@@ -48,7 +52,13 @@ public class DisplayHistoryPresenter implements DisplayHistoryOutputBoundary {
 
     @Override
     public void prepareFailureView(String errorMessage) {
-        // TODO: Implement the failure view.
+        final DisplayHistoryState displayHistoryState = displayHistoryViewModel.getState();
+        final List<String> cities = new ArrayList<>();
+        cities.add(errorMessage);
+        displayHistoryState.setCities(cities);
+
+        displayHistoryViewModel.setState(displayHistoryState);
+        displayHistoryViewModel.firePropertyChanged();
     }
 
     /**
