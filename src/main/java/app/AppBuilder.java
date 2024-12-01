@@ -136,13 +136,6 @@ public class AppBuilder {
     private HistoryView historyView;
     private DisplayHistoryViewModel displayHistoryViewModel;
 
-    // controllers
-    private DisplayHomeController displayHomeController;
-    private DisplayDailyController displayDailyController;
-    private DisplayCheckerController displayCheckerController;
-    private DisplaySummarizationController displaySummarizationController;
-    private DisplayHistoryController displayHistoryController;
-
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
     }
@@ -213,7 +206,7 @@ public class AppBuilder {
                 new DisplayDailyInteractor(displayDailyRecentCitiesDAO, displayDailyWeatherDAO,
                         displayDailyPresenter);
 
-        displayDailyController = new DisplayDailyController(displayDailyInteractor);
+        final DisplayDailyController displayDailyController = new DisplayDailyController(displayDailyInteractor);
         dailyView.setDisplayDailyController(displayDailyController);
         return this;
     }
@@ -228,7 +221,7 @@ public class AppBuilder {
         final DisplayCheckerInputBoundary displayCheckerInteractor = new DisplayCheckerInteractor(
                 displayCheckerWeatherDAO, displayCheckerPresenter);
 
-        displayCheckerController = new DisplayCheckerController(displayCheckerInteractor);
+        final DisplayCheckerController displayCheckerController = new DisplayCheckerController(displayCheckerInteractor);
         checkerView.setCheckerController(displayCheckerController);
         return this;
     }
@@ -245,7 +238,7 @@ public class AppBuilder {
                 new DisplaySummarizationInteractor(displaySummarizationRecentCitiesDAO, displaySummarizationWeatherDAO,
                         displaySummarizationSummaryDAO, displaySummarizationPresenter);
 
-        displaySummarizationController =
+        final DisplaySummarizationController displaySummarizationController =
                 new DisplaySummarizationController(displaySummarizationInteractor);
         summarizationView.setController(displaySummarizationController);
         return this;
@@ -257,11 +250,12 @@ public class AppBuilder {
      */
     public AppBuilder addDisplayHistoryUseCase() {
         final DisplayHistoryOutputBoundary displayHistoryPresenter =
-                new DisplayHistoryPresenter(displayHistoryViewModel, displayHomeViewModel, viewManagerModel);
+                new DisplayHistoryPresenter(displayHistoryViewModel, displayHomeViewModel,
+                        displayDailyViewModel, displaySummarizationViewModel, viewManagerModel);
         final DisplayHistoryInputBoundary displayHistoryInteractor =
                 new DisplayHistoryInteractor(displayHistoryDAO, displayHistoryPresenter);
 
-        displayHistoryController =
+        final DisplayHistoryController displayHistoryController =
                 new DisplayHistoryController(displayHistoryInteractor);
         historyView.setController(displayHistoryController);
         return this;
@@ -274,12 +268,11 @@ public class AppBuilder {
     public AppBuilder addDisplayHomeUseCase() {
         final DisplayHomeOutputBoundary displayHomePresenter =
                 new DisplayHomePresenter(viewManagerModel, displayHomeViewModel, displaySummarizationViewModel,
-                        displayHistoryViewModel, displayDailyController,
-                        displayDailyViewModel, displayCheckerViewModel);
+                        displayHistoryViewModel, displayDailyViewModel, displayCheckerViewModel);
         final DisplayHomeInputBoundary displayHomeInteractor = new DisplayHomeInteractor(displayHomeWeatherDAO,
                 displayHomePresenter, displayHomeRecentCitiesDAO);
 
-        displayHomeController =
+        final DisplayHomeController displayHomeController =
                 new DisplayHomeController(displayHomeInteractor);
         homeView.setDisplayHomeController(displayHomeController);
         return this;
@@ -296,9 +289,6 @@ public class AppBuilder {
         application.setResizable(false);
 
         application.add(cardPanel);
-
-        // set immediate values to display with a default city
-        displayHomeController.execute(DEFAULT_CITY);
 
         // set Home View as default view
         viewManagerModel.setState(homeView.getViewName());

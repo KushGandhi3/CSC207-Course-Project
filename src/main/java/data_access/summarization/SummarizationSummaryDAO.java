@@ -35,7 +35,6 @@ public class SummarizationSummaryDAO implements DisplaySummarizationSummaryDAI {
      * @throws RuntimeException if the request fails
      */
     public Summarization getSummarization(String prompt) throws APICallException {
-
         final OkHttpClient client = new OkHttpClient();
         final String apiurl = "https://api.openai.com/v1/chat/completions";
 
@@ -82,6 +81,7 @@ public class SummarizationSummaryDAO implements DisplaySummarizationSummaryDAI {
             return this.summarizationFactory.createSummarization(weatherSummary, outfitSuggestion, travelAdvice);
         }
         catch (APICallException exception) {
+            exception.printStackTrace();
             throw new APICallException("Failed to get summarization!", exception);
         }
         catch (IOException exception) {

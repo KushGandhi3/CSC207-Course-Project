@@ -25,6 +25,13 @@ public class DisplayHistoryController {
     }
 
     /**
+     * Executes the history use case with no chosen city.
+     */
+    public void execute() {
+        displayHistoryInteractor.execute();
+    }
+
+    /**
      * Executes the "Switch to home" use case.
      */
     public void switchToHomeView() {

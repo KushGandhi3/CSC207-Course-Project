@@ -216,9 +216,13 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        final DisplayHomeState currentState = (DisplayHomeState) evt.getNewValue();
+        if (evt.getPropertyName().equals("update_data")) {
+            displayHomeController.execute();
+        } else {
+            final DisplayHomeState currentState = (DisplayHomeState) evt.getNewValue();
 
-        setLabels(currentState);
+            setLabels(currentState);
+        }
     }
 
     private void setLabels(DisplayHomeState currentState) {

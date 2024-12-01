@@ -133,25 +133,8 @@ public class CheckerView extends JPanel implements ActionListener, PropertyChang
         add(titlePanel, BorderLayout.PAGE_START);
         add(contentPanel, BorderLayout.CENTER);
 
-        // setting default value
-        setDefaultValues();
-
         // add action and document listeners
         addEventListeners();
-
-    }
-
-    // set the default values for the state and location field
-    private void setDefaultValues() {
-        DisplayCheckerState displayCheckerState = displayCheckerViewModel.getState();
-        displayCheckerState.setLocation("Toronto");
-        displayCheckerState.setWeatherConditionOptions("Clear");
-        displayCheckerState.setStartChecking(0);
-        displayCheckerState.setStopChecking(1);
-        displayCheckerViewModel.setState(displayCheckerState);
-
-        // set the default value for the location field
-        locationField.setText(displayCheckerState.getLocation());
     }
 
     private void addEventListeners() {

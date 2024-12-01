@@ -24,6 +24,12 @@ public class DisplayHomeController {
 
         displayHomeInteractor.execute(displayHomeInputData);
     }
+    /**
+     * Executes the Display Home Use Case.
+     */
+    public void execute() {
+        displayHomeInteractor.execute();
+    }
 
     public void switchToDailyView() {
         this.displayHomeInteractor.switchToDailyView();

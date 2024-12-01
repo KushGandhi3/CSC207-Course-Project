@@ -25,6 +25,10 @@ public class DisplayHistoryInteractor implements DisplayHistoryInputBoundary {
     public void execute(DisplayHistoryInputData displayHistoryInputData) {
 
         try {
+            final String city = displayHistoryInputData.getCity();
+            // put the city at the most recent top of the list
+            displayHistoryDAO.addCity(city);
+
             final RecentCityData recentCityData = displayHistoryDAO.getRecentCityData();
             final DisplayHistoryOutputData displayHistoryOutputData = new DisplayHistoryOutputData(recentCityData
                     .getRecentCityList());
@@ -33,6 +37,21 @@ public class DisplayHistoryInteractor implements DisplayHistoryInputBoundary {
         catch (RecentCitiesDataException exception) {
             displayHistoryPresenter.prepareFailureView(exception.getMessage());
         }
+    }
+
+    @Override
+    public void execute() {
+
+        try {
+            final RecentCityData recentCityData = displayHistoryDAO.getRecentCityData();
+            final DisplayHistoryOutputData displayHistoryOutputData = new DisplayHistoryOutputData(recentCityData
+                    .getRecentCityList());
+            displayHistoryPresenter.prepareSuccessView(displayHistoryOutputData);
+        }
+        catch (RecentCitiesDataException exception) {
+            displayHistoryPresenter.prepareFailureView(exception.getMessage());
+        }
+
     }
 
     /**

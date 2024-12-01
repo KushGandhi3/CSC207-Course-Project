@@ -11,6 +11,11 @@ public interface DisplayHomeInputBoundary {
     void execute(DisplayHomeInputData displayHomeInputData);
 
     /**
+     * Executes the DisplayHome use case.
+     */
+    void execute();
+
+    /**
      * Switches the view to the Daily View.
      */
     void switchToDailyView();
