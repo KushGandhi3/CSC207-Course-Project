@@ -21,17 +21,12 @@ public class DisplaySummarizationViewModel extends ViewModel<DisplaySummarizatio
     public static final int BACK_BUTTON_WIDTH = 34;
     public static final int BACK_BUTTON_HEIGHT = 24;
 
-    public static final ImageIcon BACK_RECTANGLE_ICON;
-    public static final int BACK_RECTANGLE_WIDTH = 256;
-    public static final int BACK_RECTANGLE_HEIGHT = 312;
-
     static {
-        BACK_BUTTON_ICON = resizeIcon("images/back_button.png", BACK_BUTTON_WIDTH, BACK_BUTTON_HEIGHT);
-        BACK_RECTANGLE_ICON = resizeIcon("images/back_rectangle.png", BACK_RECTANGLE_WIDTH, BACK_RECTANGLE_HEIGHT);
+        BACK_BUTTON_ICON = resizeIcon("assets/Buttons/BackButton.png", BACK_BUTTON_WIDTH, BACK_BUTTON_HEIGHT);
     }
 
     public DisplaySummarizationViewModel() {
-        super("summarization");
+        super("Summarization View");
         setState(new DisplaySummarizationState());
     }
 

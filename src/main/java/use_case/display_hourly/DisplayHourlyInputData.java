@@ -1,4 +1,4 @@
-package use_case.display_hourly;
-
-public class DisplayHourlyInputData {
-}
+//package use_case.display_hourly;
+//
+//public class DisplayHourlyInputData {
+//}

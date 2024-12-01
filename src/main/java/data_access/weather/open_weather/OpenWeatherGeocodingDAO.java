@@ -52,6 +52,9 @@ public class OpenWeatherGeocodingDAO {
             }
 
             JSONArray responseBody = new JSONArray(response.body().string());
+            if (responseBody.isEmpty()) {
+                throw new IOException("API returned empty response!");
+            }
             // grab the top result
             JSONObject firstResult = responseBody.getJSONObject(0);
 

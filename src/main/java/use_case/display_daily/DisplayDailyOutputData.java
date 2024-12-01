@@ -1,10 +1,8 @@
 package use_case.display_daily;
 
-import constants.Constants;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 

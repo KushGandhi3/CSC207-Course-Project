@@ -1,55 +1,56 @@
 package interface_adapter.display_home;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.display_home.DisplayHomeState;
-import interface_adapter.display_home.DisplayHomeViewModel;
+import interface_adapter.display_checker.DisplayCheckerViewModel;
+import interface_adapter.display_daily.DisplayDailyState;
+import interface_adapter.display_daily.DisplayDailyViewModel;
+import interface_adapter.display_history.DisplayHistoryViewModel;
+import interface_adapter.display_summarization.DisplaySummarizationViewModel;
 import use_case.display_home.DisplayHomeOutputBoundary;
 import use_case.display_home.DisplayHomeOutputData;
-import entity.weather.hourly_weather.HourlyWeatherData;
-import entity.weather.hour_weather.HourWeatherData;
 
 /**
  * The Presenter for the Display Home Use Case.
  */
 public class DisplayHomePresenter implements DisplayHomeOutputBoundary {
 
-    private final DisplayHomeViewModel displayHomeViewModel;
     private final ViewManagerModel viewManagerModel;
+    private final DisplayHomeViewModel displayHomeViewModel;
+    private final DisplaySummarizationViewModel displaySummarizationViewModel;
+    private final DisplayHistoryViewModel displayHistoryViewModel;
+    private final DisplayDailyViewModel displayDailyViewModel;
+    private final DisplayCheckerViewModel displayCheckerViewModel;
 
-    public DisplayHomePresenter(ViewManagerModel viewManagerModel,
-                                DisplayHomeViewModel displayHomeViewModel) {
+    public DisplayHomePresenter(ViewManagerModel viewManagerModel, DisplayHomeViewModel displayHomeViewModel,
+                                DisplaySummarizationViewModel displaySummarizationViewModel,
+                                DisplayHistoryViewModel displayHistoryViewModel,
+                                DisplayDailyViewModel displayDailyViewModel,
+                                DisplayCheckerViewModel displayCheckerViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.displayHomeViewModel = displayHomeViewModel;
+        this.displayHistoryViewModel = displayHistoryViewModel;
+        this.displaySummarizationViewModel = displaySummarizationViewModel;
+        this.displayDailyViewModel = displayDailyViewModel;
+        this.displayCheckerViewModel = displayCheckerViewModel;
     }
 
     @Override
-    public void prepareSuccessView(DisplayHomeOutputData response) {
+    public void prepareSuccessView(DisplayHomeOutputData displayHomeOutputData) {
         // On success, update the state with hourly weather data.
         DisplayHomeState state = displayHomeViewModel.getState();
 
-        // Get HourlyWeatherData from the response
-        HourlyWeatherData hourlyWeatherData = response.getHourlyWeatherData();
+        state.setCity(displayHomeOutputData.getCity());
+        state.setCondition(displayHomeOutputData.getCondition());
+        state.setTemperature(displayHomeOutputData.getTemperature());
+        state.setHighTemperature(displayHomeOutputData.getHighTemperature());
+        state.setLowTemperature(displayHomeOutputData.getLowTemperature());
+        state.setDate(displayHomeOutputData.getDate());
 
-        // Set the general weather details
-        state.setCity(hourlyWeatherData.getCity());
-        state.setCondition(hourlyWeatherData.getTimezone());  // Assuming the timezone can be shown as condition here
-        state.setHighTemperature(hourlyWeatherData.getHighTemperature());
-        state.setLowTemperature(hourlyWeatherData.getLowTemperature());
+        // update the weather data in other use cases
+        this.displayDailyViewModel.firePropertyChanged();
 
-        // Retrieve the first hourly data (you can decide how to display this)
-        if (!hourlyWeatherData.getHourWeatherDataList().isEmpty()) {
-            HourWeatherData firstHourData = hourlyWeatherData.getHourWeatherDataList().getFirst();
-            // Update state with the first hour's data (or choose an appropriate time range)
-            state.setTemperature(firstHourData.getTemperature());
-            state.setCondition(firstHourData.getCondition());  // Assuming condition refers to weather condition at that hour
-        }
-
-        // Notify the view model that data has been updated
-        displayHomeViewModel.firePropertyChanged();
-
-        // Update the view manager state to "DisplayHome"
-        this.viewManagerModel.setState("DisplayHome");
-        this.viewManagerModel.firePropertyChanged();
+        this.displayHomeViewModel.setState(state);
+        this.displayHomeViewModel.firePropertyChanged();
     }
 
     @Override
@@ -60,5 +61,37 @@ public class DisplayHomePresenter implements DisplayHomeOutputBoundary {
 
         // Notify the view model that data has been updated
         displayHomeViewModel.firePropertyChanged();
+    }
+
+    @Override
+    public void switchToDailyView() {
+        // execute the Display Daily Weather Use Case
+        displayDailyViewModel.firePropertyChanged("update_data");
+
+        // switch the view to the DailyView
+        viewManagerModel.setState(displayDailyViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
+    }
+
+    @Override
+    public void switchToCheckerView() {
+        viewManagerModel.setState(displayCheckerViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
+    }
+
+    @Override
+    public void switchToSummaryView() {
+        displaySummarizationViewModel.firePropertyChanged("update_data");
+
+        viewManagerModel.setState(displaySummarizationViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
+    }
+
+    @Override
+    public void switchToHistoryView() {
+        displayHistoryViewModel.firePropertyChanged("update_data");
+
+        viewManagerModel.setState(displayHistoryViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
     }
 }

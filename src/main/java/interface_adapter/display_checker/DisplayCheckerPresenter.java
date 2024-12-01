@@ -1,7 +1,8 @@
 package interface_adapter.display_checker;
 
-import use_case.display_checker.DisplayCheckerOutputBoundary;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.display_home.DisplayHomeViewModel;
+import use_case.display_checker.DisplayCheckerOutputBoundary;
 
 /**
  * Presenter for the checker use case.
@@ -9,10 +10,14 @@ import interface_adapter.ViewManagerModel;
 public class DisplayCheckerPresenter implements DisplayCheckerOutputBoundary {
 
     private final DisplayCheckerViewModel displayCheckerViewModel;
+    private final DisplayHomeViewModel displayHomeViewModel;
     private final ViewManagerModel viewManagerModel;
 
-    public DisplayCheckerPresenter(DisplayCheckerViewModel displayCheckerViewModel, ViewManagerModel viewManagerModel) {
+    public DisplayCheckerPresenter(DisplayCheckerViewModel displayCheckerViewModel,
+                                   DisplayHomeViewModel displayHomeViewModel,
+                                   ViewManagerModel viewManagerModel) {
         this.displayCheckerViewModel = displayCheckerViewModel;
+        this.displayHomeViewModel = displayHomeViewModel;
         this.viewManagerModel = viewManagerModel;
     }
 
@@ -24,8 +29,8 @@ public class DisplayCheckerPresenter implements DisplayCheckerOutputBoundary {
 
         DisplayCheckerState displayCheckerState = displayCheckerViewModel.getState();
         displayCheckerState.setMessage("exist");
-        displayCheckerViewModel.setState(displayCheckerState);
 
+        displayCheckerViewModel.setState(displayCheckerState);
         displayCheckerViewModel.firePropertyChanged();
     }
 
@@ -37,8 +42,8 @@ public class DisplayCheckerPresenter implements DisplayCheckerOutputBoundary {
 
         DisplayCheckerState displayCheckerState = displayCheckerViewModel.getState();
         displayCheckerState.setMessage("nonexist");
-        displayCheckerViewModel.setState(displayCheckerState);
 
+        displayCheckerViewModel.setState(displayCheckerState);
         displayCheckerViewModel.firePropertyChanged();
     }
 
@@ -47,13 +52,9 @@ public class DisplayCheckerPresenter implements DisplayCheckerOutputBoundary {
      */
     @Override
     public void prepareHomeView() {
-        // Reset the state of the checker view to default state
-        DisplayCheckerState displayCheckerState = displayCheckerViewModel.getState();
-        displayCheckerViewModel.setState(displayCheckerState);
-
         // switch and update to home view
-        viewManagerModel.setState("home");
-        displayCheckerViewModel.firePropertyChanged();
+        viewManagerModel.setState(displayHomeViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
     }
 
     /**
@@ -73,6 +74,8 @@ public class DisplayCheckerPresenter implements DisplayCheckerOutputBoundary {
     public void prepareInvalidLocationView() {
         DisplayCheckerState displayCheckerState = displayCheckerViewModel.getState();
         displayCheckerState.setMessage("invalid");
+
+        displayCheckerViewModel.setState(displayCheckerState);
         displayCheckerViewModel.firePropertyChanged();
     }
 }

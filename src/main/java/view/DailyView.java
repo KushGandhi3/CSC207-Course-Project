@@ -8,6 +8,8 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -16,13 +18,13 @@ import java.util.List;
 /**
  * The view for the daily weather use-case.
  */
-public class DailyView extends JPanel implements PropertyChangeListener {
+public class DailyView extends JPanel implements PropertyChangeListener, ActionListener {
     private static final Font crimsonText70 = FontManager.getCrimsonTextRegular(70);
     private static final Font interTextBold12 = FontManager.getCrimsonTextBold(12);
     private static final Font interTextBold15 = FontManager.getCrimsonTextBold(15);
     private static final Font interTextBold18 = FontManager.getCrimsonTextBold(18);
 
-    private final String viewName = "Weekly Forecast";
+    private final String viewName = "Daily Forecast";
 
     private final DisplayDailyViewModel displayDailyViewModel;
     private DisplayDailyController displayDailyController;
@@ -101,12 +103,7 @@ public class DailyView extends JPanel implements PropertyChangeListener {
         backButton.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(backButton)) {
-                        final DisplayDailyState currentState = this.displayDailyViewModel.getState();
-
-                        // TODO: Implement the back button
-                        this.displayDailyController.execute(
-                                currentState.getWeekdays().getFirst()
-                        );
+                        this.displayDailyController.switchToHomeView();
                     }
                 }
         );
@@ -121,10 +118,6 @@ public class DailyView extends JPanel implements PropertyChangeListener {
         box.add(forecastBox);
         box.add(detailsBox);
         this.add(box);
-
-        // set default state
-        DisplayDailyState state = displayDailyViewModel.getState();
-        setLabels(state);
     }
 
     /**
@@ -205,7 +198,8 @@ public class DailyView extends JPanel implements PropertyChangeListener {
     private JPanel getBackButton() {
         backButton.setIcon(DisplayDailyViewModel.BACK_BUTTON_IMAGE);
         // style the back button
-        backButton.setBorder(null);
+        backButton.setBorder(BorderFactory.createEmptyBorder());
+        backButton.setContentAreaFilled(false);
         // back button panel
         JPanel backButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
@@ -268,12 +262,15 @@ public class DailyView extends JPanel implements PropertyChangeListener {
 
             // remove the border of the button
             weekdays.get(i).setBorder(BorderFactory.createEmptyBorder());
+            weekdays.get(i).setContentAreaFilled(false);
             dayPanel.add(weekdays.get(i));
 
             conditions.get(i).setBorder(BorderFactory.createEmptyBorder());
+            conditions.get(i).setContentAreaFilled(false);
             dayPanel.add(conditions.get(i));
 
             temperatures.get(i).setBorder(BorderFactory.createEmptyBorder());
+            temperatures.get(i).setContentAreaFilled(false);
             dayPanel.add(temperatures.get(i));
 
             dailyPanel.add(dayPanel);
@@ -289,8 +286,13 @@ public class DailyView extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        final DisplayDailyState currentState = (DisplayDailyState) evt.getNewValue();
-        setLabels(currentState);
+        if (evt.getPropertyName().equals("update_data")) {
+            // execute the Display Daily Weather Use Case on the current weekday
+            displayDailyController.execute();
+        } else {
+            final DisplayDailyState currentState = (DisplayDailyState) evt.getNewValue();
+            setLabels(currentState);
+        }
     }
 
     private void setLabels(DisplayDailyState state) {
@@ -332,4 +334,12 @@ public class DailyView extends JPanel implements PropertyChangeListener {
         };
     }
 
+    /**
+     * Invoked when an action occurs.
+     * @param event the event to be processed
+     */
+    @Override
+    public void actionPerformed(ActionEvent event) {
+        // do nothing
+    }
 }

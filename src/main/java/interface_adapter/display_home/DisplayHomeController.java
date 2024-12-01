@@ -8,29 +8,43 @@ import use_case.display_home.DisplayHomeInputData;
  */
 public class DisplayHomeController {
 
-    private final DisplayHomeInputBoundary displayHomeUseCaseInteractor;
+    private final DisplayHomeInputBoundary displayHomeInteractor;
 
-    public DisplayHomeController(DisplayHomeInputBoundary displayHomeUseCaseInteractor) {
-        this.displayHomeUseCaseInteractor = displayHomeUseCaseInteractor;
+    public DisplayHomeController(DisplayHomeInputBoundary displayHomeInteractor) {
+        this.displayHomeInteractor = displayHomeInteractor;
     }
 
     /**
      * Executes the Display Home Use Case.
      * @param cityName the name of the city to fetch weather data for
-     * @param daily whether the user wants the daily weather
-     * @param weekly whether the user wants the weekly weather
-     * @param checker whether the user wants a weather checker
-     * @param outfit whether the user wants outfit suggestions
-     * @param map whether the user wants to see a map
      */
-    public void execute(String cityName, boolean daily, boolean weekly, boolean checker, boolean outfit, boolean map) {
+    public void execute(String cityName) {
         // Create the input data for the use case
-        final DisplayHomeInputData displayHomeInputData = new DisplayHomeInputData(
-                cityName, daily, weekly, checker, outfit, map
-        );
+        final DisplayHomeInputData displayHomeInputData = new DisplayHomeInputData(cityName);
 
-        // Execute the Interactor
-        displayHomeUseCaseInteractor.execute(displayHomeInputData);
+        displayHomeInteractor.execute(displayHomeInputData);
+    }
+    /**
+     * Executes the Display Home Use Case.
+     */
+    public void execute() {
+        displayHomeInteractor.execute();
+    }
+
+    public void switchToDailyView() {
+        this.displayHomeInteractor.switchToDailyView();
+    }
+
+    public void switchToCheckerView() {
+        this.displayHomeInteractor.switchToCheckerView();
+    }
+
+    public void switchToSummaryView() {
+        this.displayHomeInteractor.switchToSummaryView();
+    }
+
+    public void switchToHistoryView() {
+        this.displayHomeInteractor.switchToHistoryView();
     }
 
 }

@@ -36,6 +36,9 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
         final String city;
         try {
             final RecentCityData recentCityData = this.recentCitiesDAO.getRecentCityData();
+            if (recentCityData.getRecentCityList().isEmpty()) {
+                throw new RecentCitiesDataException("No recent cities found");
+            }
             city = recentCityData.getRecentCityList().getFirst();
         } catch(RecentCitiesDataException exception) {
             displayDailyPresenter.prepareFailView(exception.getMessage());
@@ -45,6 +48,37 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
         try {
             final DailyWeatherData dailyWeatherData = this.weatherDataAccessObject.getDailyWeatherData(city);
             final DayOfWeek selectedWeekday = DayOfWeek.valueOf(displayDailyInputData.getWeekday().toUpperCase());
+            // package data for DisplayDailyOutputData constructor
+            final JSONObject outputDataPackage = packageOutputData(dailyWeatherData, selectedWeekday, city);
+
+            final DisplayDailyOutputData displayDailyOutputData = new DisplayDailyOutputData(outputDataPackage);
+
+            displayDailyPresenter.prepareSuccessView(displayDailyOutputData);
+        } catch (APICallException exception) {
+            displayDailyPresenter.prepareFailView(exception.getMessage());
+        }
+    }
+
+    @Override
+    public void execute() {
+        // get the name of the last city requested from the user
+        final String city;
+        try {
+            final RecentCityData recentCityData = this.recentCitiesDAO.getRecentCityData();
+            if (recentCityData.getRecentCityList().isEmpty()) {
+                throw new RecentCitiesDataException("No recent cities found");
+            }
+            city = recentCityData.getRecentCityList().getFirst();
+        } catch(RecentCitiesDataException exception) {
+            displayDailyPresenter.prepareFailView(exception.getMessage());
+            return;
+        }
+
+        try {
+            final DailyWeatherData dailyWeatherData = this.weatherDataAccessObject.getDailyWeatherData(city);
+            // choose the current day of the week
+            final ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of(dailyWeatherData.getTimezone()));
+            final DayOfWeek selectedWeekday = zonedDateTime.getDayOfWeek();
             // package data for DisplayDailyOutputData constructor
             final JSONObject outputDataPackage = packageOutputData(dailyWeatherData, selectedWeekday, city);
 

@@ -42,7 +42,7 @@ public class OpenWeatherWeatherDAO {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
-        // execute request
+        // executeDisplayHome request
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
                 throw new IOException("API call unsuccessful! " + response);
