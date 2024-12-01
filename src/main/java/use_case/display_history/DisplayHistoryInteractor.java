@@ -35,7 +35,8 @@ public class DisplayHistoryInteractor implements DisplayHistoryInputBoundary {
             displayHistoryPresenter.prepareSuccessView(displayHistoryOutputData);
         }
         catch (RecentCitiesDataException exception) {
-            displayHistoryPresenter.prepareFailureView(exception.getMessage());
+            exception.printStackTrace();
+            displayHistoryPresenter.prepareFailureView("City History Unavailable.");
         }
     }
 
@@ -49,6 +50,7 @@ public class DisplayHistoryInteractor implements DisplayHistoryInputBoundary {
             displayHistoryPresenter.prepareSuccessView(displayHistoryOutputData);
         }
         catch (RecentCitiesDataException exception) {
+            exception.printStackTrace();
             displayHistoryPresenter.prepareFailureView(exception.getMessage());
         }
 

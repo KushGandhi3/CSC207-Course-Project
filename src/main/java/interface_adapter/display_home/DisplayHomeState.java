@@ -5,7 +5,7 @@ package interface_adapter.display_home;
  */
 public class DisplayHomeState {
 
-    private String city = "-";
+    private String city = "";
     private String lowTemperature = "-°C";
     private String highTemperature = "-°C";
     private String temperature = "-°C";

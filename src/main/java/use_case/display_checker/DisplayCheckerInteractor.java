@@ -49,6 +49,7 @@ public class DisplayCheckerInteractor implements DisplayCheckerInputBoundary {
                 displayCheckerOutputBoundary.prepareCondNotMetView();
             }
         } catch (InvalidLocationException e) {
+            e.printStackTrace();
             displayCheckerOutputBoundary.prepareInvalidLocationView();
         }
     }
@@ -80,6 +81,7 @@ public class DisplayCheckerInteractor implements DisplayCheckerInputBoundary {
                 }
             }
         } catch (APICallException e) {
+            e.printStackTrace();
             // Throw exception for API-related errors
             throw new InvalidLocationException("API error for location: " + location, e);
         }
