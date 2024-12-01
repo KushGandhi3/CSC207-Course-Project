@@ -27,23 +27,23 @@ public class DisplayDailyState {
     private String humidity;
 
     public DisplayDailyState() {
-        this.city = "Toronto";
+        this.city = "-";
 
         this.weekdays = new ArrayList<>(Constants.WEEK_SIZE);
         this.temperatures = new ArrayList<>(Constants.WEEK_SIZE);
         this.conditions = new ArrayList<>(Constants.WEEK_SIZE);
         for (int i = 0; i < Constants.WEEK_SIZE; i++) {
             this.weekdays.add(DayOfWeek.of(i + 1).toString());
-            this.temperatures.add("0°C");
-            this.conditions.add("Clear");
+            this.temperatures.add("---");
+            this.conditions.add("----");
         }
 
-        this.feelsLikeTemperature = "0°C";
-        this.uvIndex = "0";
-        this.windSpeed = "0 m/s";
-        this.cloudCover = "0%";
-        this.precipitation = "0%";
-        this.humidity = "0%";
+        this.feelsLikeTemperature = "---";
+        this.uvIndex = "-";
+        this.windSpeed = "-----";
+        this.cloudCover = "--";
+        this.precipitation = "--";
+        this.humidity = "--";
     }
 
     public String getCity() {

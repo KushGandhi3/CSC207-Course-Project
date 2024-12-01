@@ -24,6 +24,13 @@ public class DisplayDailyController {
         this.displayDailyInteractor.execute(displayDailyInputData);
     }
 
+    /**
+     * Executes the Display Daily Use Case without a selected weekday.
+     */
+    public void execute() {
+        this.displayDailyInteractor.execute();
+    }
+
     public void switchToHomeView() {
         this.displayDailyInteractor.switchToHomeView();
     }

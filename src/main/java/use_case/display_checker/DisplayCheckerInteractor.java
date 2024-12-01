@@ -3,6 +3,7 @@ package use_case.display_checker;
 import entity.weather.hour_weather.HourWeatherData;
 import entity.weather.hourly_weather.HourlyWeatherData;
 import exception.APICallException;
+import exception.InvalidLocationException;
 
 import java.util.List;
 
@@ -84,17 +85,6 @@ public class DisplayCheckerInteractor implements DisplayCheckerInputBoundary {
         }
         // If no matching condition is found
         return false;
-    }
-
-    // Create a new custom exception for invalid locations
-    private static class InvalidLocationException extends Exception {
-        public InvalidLocationException(String message) {
-            super(message);
-        }
-
-        public InvalidLocationException(String message, Throwable cause) {
-            super(message, cause);
-        }
     }
 }
 

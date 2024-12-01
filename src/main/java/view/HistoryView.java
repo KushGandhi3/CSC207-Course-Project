@@ -19,6 +19,7 @@ import javax.swing.border.EmptyBorder;
 import interface_adapter.display_history.DisplayHistoryController;
 import interface_adapter.display_history.DisplayHistoryState;
 import interface_adapter.display_history.DisplayHistoryViewModel;
+import interface_adapter.display_summarization.DisplaySummarizationState;
 
 /**
  * The View for when the user wants to see previous cities.
@@ -38,7 +39,7 @@ public class HistoryView extends JPanel implements PropertyChangeListener {
     private final JPanel cityListPanel = new JPanel();
 
     public HistoryView(DisplayHistoryViewModel displayHistoryViewModel) {
-        this.viewModel = new DisplayHistoryViewModel();
+        this.viewModel = displayHistoryViewModel;
         this.viewModel.addPropertyChangeListener(this);
 
         // Configure Main Panel
@@ -103,6 +104,10 @@ public class HistoryView extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals("update_data")) {
+            // execute the Display History Use Case with no city specified
+            displayHistoryController.execute();
+        }
         final DisplayHistoryState currentState = (DisplayHistoryState) evt.getNewValue();
         setCityLabels(currentState);
     }

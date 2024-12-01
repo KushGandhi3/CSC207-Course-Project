@@ -29,8 +29,8 @@ public class DisplayCheckerPresenter implements DisplayCheckerOutputBoundary {
 
         DisplayCheckerState displayCheckerState = displayCheckerViewModel.getState();
         displayCheckerState.setMessage("exist");
-        displayCheckerViewModel.setState(displayCheckerState);
 
+        displayCheckerViewModel.setState(displayCheckerState);
         displayCheckerViewModel.firePropertyChanged();
     }
 
@@ -42,8 +42,8 @@ public class DisplayCheckerPresenter implements DisplayCheckerOutputBoundary {
 
         DisplayCheckerState displayCheckerState = displayCheckerViewModel.getState();
         displayCheckerState.setMessage("nonexist");
-        displayCheckerViewModel.setState(displayCheckerState);
 
+        displayCheckerViewModel.setState(displayCheckerState);
         displayCheckerViewModel.firePropertyChanged();
     }
 
@@ -74,6 +74,8 @@ public class DisplayCheckerPresenter implements DisplayCheckerOutputBoundary {
     public void prepareInvalidLocationView() {
         DisplayCheckerState displayCheckerState = displayCheckerViewModel.getState();
         displayCheckerState.setMessage("invalid");
+
+        displayCheckerViewModel.setState(displayCheckerState);
         displayCheckerViewModel.firePropertyChanged();
     }
 }

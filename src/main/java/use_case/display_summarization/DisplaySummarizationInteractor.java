@@ -37,6 +37,9 @@ public class DisplaySummarizationInteractor implements DisplaySummarizationInput
         // Get the most recent city
         try {
             final RecentCityData recentCityData = recentCitiesDAO.getRecentCityData();
+            if (recentCityData.getRecentCityList().isEmpty()) {
+                throw new RecentCitiesDataException("No recent cities found");
+            }
             city = recentCityData.getRecentCityList().getFirst();
         }
         catch (RecentCitiesDataException exception) {

@@ -10,9 +10,13 @@ public interface DisplayHistoryInputBoundary {
     /**
      * Executes the history use case with the chosen city.
      * @param displayHistoryInputData the chosen city.
-     * @throws RecentCitiesDataException if there is an error getting recent cities.
      */
-    void execute(DisplayHistoryInputData displayHistoryInputData) throws RecentCitiesDataException;
+    void execute(DisplayHistoryInputData displayHistoryInputData);
+
+    /**
+     * Executes the history use case with no city specified.
+     */
+    void execute();
 
     /**
      * Executes the "Switch to home" use case.
