@@ -15,10 +15,6 @@ public class DisplayHourlyViewModel extends ViewModel<DisplayHourlyState> {
     /**
      * Constructs a DisplayHourlyViewModel with an initial state for the hourly forecast.
      */
-//    public DisplayHourlyViewModel() {
-//        super("Hourly Forecast");
-//        setState(new DisplayHourlyState());
-//    }
     public static final String CLEAR = "Clear";
     public static final String CLOUDS = "Clouds";
     public static final String RAIN = "Rain";
@@ -78,7 +74,7 @@ public class DisplayHourlyViewModel extends ViewModel<DisplayHourlyState> {
      */
     private static ImageIcon resizeIcon(String path, int width, int height) {
         final ImageIcon originalHourlyForecastBox = new ImageIcon(Objects.requireNonNull(
-                DisplayCheckerViewModel.class.getClassLoader().getResource(path)));
+                DisplayHourlyViewModel.class.getClassLoader().getResource(path)));
         final Image resizedHourlyForecastBox = originalHourlyForecastBox.getImage()
                 .getScaledInstance(width, height, Image.SCALE_SMOOTH);
         return new ImageIcon(resizedHourlyForecastBox);

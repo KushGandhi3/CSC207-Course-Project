@@ -7,6 +7,8 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -19,7 +21,7 @@ import constants.Constants;
  * View for displaying hourly weather data.
  * Updates dynamically based on the ViewModel's state.
  */
-public class HourlyView extends JPanel implements PropertyChangeListener {
+public class HourlyView extends JPanel implements PropertyChangeListener, ActionListener {
     // Fonts
     private static final Font crimsonText70 = FontManager.getCrimsonTextRegular(70);
     private static final Font interTextBold12 = FontManager.getCrimsonTextBold(12);
@@ -37,12 +39,10 @@ public class HourlyView extends JPanel implements PropertyChangeListener {
     private final JLabel city = new JLabel();
     private final JLabel lowTemperature = new JLabel();
     private final JLabel highTemperature = new JLabel();
-    private final JLabel forecast = new JLabel();
-    private final JLabel details = new JLabel();
 
     // Weather Labels
-    private final List<JButton> condition = new ArrayList<>(Constants.WEEK_SIZE);
-    private final List<JButton> temperature = new ArrayList<>(Constants.WEEK_SIZE);
+    private final List<JButton> condition = new ArrayList<>(Constants.TIME_SIZE);
+    private final List<JButton> temperature = new ArrayList<>(Constants.TIME_SIZE);
     private final JLabel feelsLike = new JLabel();
     private final JLabel windSpeed = new JLabel();
     private final JLabel precipitation = new JLabel();
@@ -81,6 +81,11 @@ public class HourlyView extends JPanel implements PropertyChangeListener {
                     evt -> {
                         if (evt.getSource().equals(timeButton)) {
                             final DisplayHourlyState currentState = this.displayHourlyViewModel.getState();
+                            if (currentState != null && currentState.getTime() != null && index < currentState.getTime().size()) {
+                                this.displayHourlyController.execute(currentState.getTime().get(index));
+                            } else {
+                                System.err.println("Invalid state or time data: " + currentState);
+                            }
                             this.displayHourlyController.execute(
                                     currentState.getTime().get(index)
                             );
@@ -116,7 +121,7 @@ public class HourlyView extends JPanel implements PropertyChangeListener {
                         final DisplayHourlyState currentState = this.displayHourlyViewModel.getState();
                         // TODO: Implement the back button
                         this.displayHourlyController.execute(
-                                currentState.getTime().getFirst()
+                                currentState.getTime().get(0)
                         );
                     }
                 }
@@ -246,7 +251,7 @@ public class HourlyView extends JPanel implements PropertyChangeListener {
             temperature.add(new JButton());
             times.add(new JButton());
 
-            // Style Weekday Buttons
+            // Style Time Buttons
             times.get(i).setFont(interTextBold12);
 
             // Style Temperature Buttons
@@ -316,7 +321,7 @@ public class HourlyView extends JPanel implements PropertyChangeListener {
 
     private void setLabels(DisplayHourlyState state) {
         city.setText(state.getCity());
-        for (int i = 0; i < Constants.WEEK_SIZE; i++) {
+        for (int i = 0; i < Constants.TIME_SIZE; i++) {
             temperature.get(i).setText(state.getTemperature().get(i));
             condition.get(i).setIcon(chooseWeatherIcon(state.getCondition().get(i)));
             times.get(i).setText(state.getTime().get(i));
@@ -351,5 +356,17 @@ public class HourlyView extends JPanel implements PropertyChangeListener {
             case DisplayHourlyViewModel.SNOW -> DisplayHourlyViewModel.SNOW_IMAGE;
             default -> DisplayHourlyViewModel.CLEAR_IMAGE;
         };
+    }
+
+    /**
+     * Invoked when an action occurs.
+     * @param event the event to be processed
+     */
+    @Override
+    public void actionPerformed(ActionEvent event) {
+        System.out.println("Action command: " + event.getActionCommand());
+        System.out.println("Action source: " + event.getSource());
+        DisplayHourlyState currentState = this.displayHourlyViewModel.getState();
+        this.displayHourlyController.execute(currentState.getTime().get(0));
     }
 }

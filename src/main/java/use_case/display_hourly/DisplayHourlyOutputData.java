@@ -54,14 +54,26 @@ public class DisplayHourlyOutputData {
         this.humidity = outputDataPackage.getString("humidity");
     }
 
-    private <T> List<T> parseJSONArray(JSONArray jsonArray, Class<T> type) throws IllegalArgumentException {
+    /**
+     * Parses a JSONArray that contains elements of generic type. Returns a list containing the parsed data in order.
+     * @param jsonArray the JSONArray to parse
+     * @param type the type of the data being parsed
+     * @param <T> the type class of the data being parsed
+     * @throws IllegalArgumentException when data to be parsed is not of type <T>
+     */
+    private <T> List<T> parseJSONArray(JSONArray jsonArray, Class<T> type) {
         List<T> dataValues = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             Object value = jsonArray.get(i);
             if (type.isInstance(value)) {
                 dataValues.add(type.cast(value));
             } else {
-                throw new IllegalArgumentException("Element at index " + i + " is not of type " + type.getSimpleName() + ".");
+                // Attempt type conversion if possible
+                if (type == String.class) {
+                    dataValues.add(type.cast(value.toString()));
+                } else {
+                    throw new IllegalArgumentException("Element at index " + i + " is not of type " + type.getSimpleName() + ".");
+                }
             }
         }
         return dataValues;

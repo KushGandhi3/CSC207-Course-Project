@@ -12,7 +12,7 @@ public class DisplayHourlyInputData {
      * @param selectedTime the selected time
      */
     public DisplayHourlyInputData(String selectedTime) {
-        this.selectedTime = selectedTime.toString();
+        this.selectedTime = selectedTime;
     }
 
     /**

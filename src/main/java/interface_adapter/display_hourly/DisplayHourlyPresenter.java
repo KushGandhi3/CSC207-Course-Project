@@ -46,6 +46,9 @@ public class DisplayHourlyPresenter implements DisplayHourlyOutputBoundary {
         displayHourlyState.setCloudCover(displayHourlyOutputData.getCloudCover());
         displayHourlyState.setHumidity(displayHourlyOutputData.getHumidity());
 
+        this.displayHourlyViewModel.setState(displayHourlyState);
+        this.displayHourlyViewModel.firePropertyChanged();
+
         this.viewManagerModel.setState(this.displayHourlyViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }

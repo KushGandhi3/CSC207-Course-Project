@@ -48,26 +48,6 @@ public class DisplayHourlyState {
         this.uvIndex = "0";
         this.cloudCover = "0%";
         this.humidity = "0%";
-//        city = "";
-//        lowTemperature = 0;
-//        highTemperature = 0;
-//
-//        this.time = new ArrayList<>(Constants.TIME_SIZE);
-//        this.condition = new ArrayList<>(Constants.TIME_SIZE);
-//        this.temperature = new ArrayList<>(Constants.TIME_SIZE);
-//
-//        for (int i = 0; i < Constants.TIME_SIZE; i++) {
-//            this.time.add("");
-//            this.condition.add("");
-//            this.temperature.add(0);
-//        }
-//
-//        this.feelsLike = 0;
-//        this.windSpeed = 0;
-//        this.precipitation = 0;
-//        this.uvIndex = 0;
-//        this.cloudCover = 0;
-//        this.humidity = 0;
     }
 
     // Getters

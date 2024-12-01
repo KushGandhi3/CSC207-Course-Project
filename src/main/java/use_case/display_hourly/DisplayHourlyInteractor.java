@@ -7,7 +7,6 @@ import entity.weather.hour_weather.HourWeatherData;
 import exception.APICallException;
 import exception.RecentCitiesDataException;
 import org.json.JSONObject;
-import use_case.display_daily.DisplayDailyInputBoundary;
 
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -33,7 +32,7 @@ public class DisplayHourlyInteractor implements DisplayHourlyInputBoundary {
         this.displayHourlyPresenter = displayHourlyPresenter;
     }
 
-    //    @Override
+    @Override
     public void execute(DisplayHourlyInputData displayHourlyInputData) {
         final String city;
 
@@ -69,17 +68,8 @@ public class DisplayHourlyInteractor implements DisplayHourlyInputBoundary {
         final List<Integer> times = new ArrayList<>(Constants.TIME_SIZE);
         final List<Integer> temperatures = new ArrayList<>(Constants.TIME_SIZE);
         final List<String> conditions = new ArrayList<>(Constants.TIME_SIZE);
-
-//        final ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of(hourlyWeatherData.getTimezone()));
-//        final int currentTime = zonedDateTime.getHour();
-//        final List<HourWeatherData> hourWeatherDataList = hourlyWeatherData.getHourWeatherDataList();
-
         final ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of(hourlyWeatherData.getTimezone()));
         final LocalTime currentTime = zonedDateTime.toLocalTime();
-
-        final int totalSteps = Constants.TIME_SIZE;
-        final int selectedTimeIndex = (int) ((ChronoUnit.HOURS.between(currentTime, selectedTime) + totalSteps) % totalSteps);
-
         final List<HourWeatherData> hourWeatherDataList = hourlyWeatherData.getHourWeatherDataList();
 
         for (int i = 0; i < Constants.TIME_SIZE; i++) {
@@ -90,13 +80,8 @@ public class DisplayHourlyInteractor implements DisplayHourlyInputBoundary {
             conditions.add(hourWeatherData.getCondition());
         }
 
-//        final int selectedTimeIndex;
-//        if (selectedTime.ordinal() >= currentTime.ordinal()) {
-//            selectedTimeIndex = selectedTime.ordinal() - currentTime.ordinal();
-//        } else {
-//            selectedTimeIndex =
-//                    Constants.TIME_SIZE + selectedTime.ordinal() - currentTime.ordinal();
-//        }
+        final int totalSteps = Constants.TIME_SIZE;
+        final int selectedTimeIndex = (int) ((ChronoUnit.HOURS.between(currentTime, selectedTime) + totalSteps) % totalSteps);
 
         final HourWeatherData selectedHourWeatherData = hourWeatherDataList.get(selectedTimeIndex);
         final int feelsLikeTemperature = selectedHourWeatherData.getFeelsLikeTemperature();
@@ -123,7 +108,7 @@ public class DisplayHourlyInteractor implements DisplayHourlyInputBoundary {
         return outputDataPackage;
     }
 
-    //    @Override
+    @Override
     public void switchToHomeView() {
         displayHourlyPresenter.switchToHomeView();
     }
