@@ -18,8 +18,10 @@ import use_case.display_summarization.DisplaySummarizationRecentCitiesDAI;
 /**
  * DAO for accessing data about recently viewed cities.
  */
+
 public class RecentCitiesDAO implements DisplayDailyRecentCitiesDAI, DisplaySummarizationRecentCitiesDAI,
         DisplayHistoryDAI {
+
 
     private static final Path RECENT_CITIES_PATH = Path.of("src", "main", "resources", "data", "RecentCities.json");
     private final RecentCityDataFactory recentCityDataFactory;

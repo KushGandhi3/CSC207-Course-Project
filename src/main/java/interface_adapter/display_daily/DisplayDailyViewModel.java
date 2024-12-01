@@ -1,7 +1,6 @@
 package interface_adapter.display_daily;
 
 import interface_adapter.ViewModel;
-import interface_adapter.display_checker.DisplayCheckerViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -70,11 +69,11 @@ public class DisplayDailyViewModel extends ViewModel<DisplayDailyState> {
      * @return a resized Image Icon
      */
     private static ImageIcon resizeIcon(String path, int width, int height) {
-        final ImageIcon originalDailyForecastBox = new ImageIcon(Objects.requireNonNull(
-                DisplayCheckerViewModel.class.getClassLoader().getResource(path)));
-        final Image resizedDailyForecastBox = originalDailyForecastBox.getImage()
+        final ImageIcon original = new ImageIcon(Objects.requireNonNull(
+                DisplayDailyViewModel.class.getClassLoader().getResource(path)));
+        final Image resized = original.getImage()
                 .getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        return new ImageIcon(resizedDailyForecastBox);
+        return new ImageIcon(resized);
     }
 
 }

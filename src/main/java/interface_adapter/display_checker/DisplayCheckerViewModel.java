@@ -1,8 +1,8 @@
 package interface_adapter.display_checker;
 
-import  interface_adapter.ViewModel;
+import interface_adapter.ViewModel;
 
-import javax.swing.ImageIcon;
+import javax.swing.*;
 import java.util.Objects;
 
 public class DisplayCheckerViewModel extends ViewModel<DisplayCheckerState> {

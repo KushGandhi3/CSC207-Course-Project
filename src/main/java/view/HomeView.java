@@ -1,203 +1,275 @@
 package view;
 
-import interface_adapter.display_home.DisplayHomePresenter;
+import interface_adapter.display_home.DisplayHomeController;
+import interface_adapter.display_home.DisplayHomeState;
 import interface_adapter.display_home.DisplayHomeViewModel;
+import org.jetbrains.annotations.NotNull;
 
-import java.awt.Component;
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
-import interface_adapter.display_home.DisplayHomeController;
-import interface_adapter.display_home.DisplayHomeState;
-import interface_adapter.display_home.DisplayHomeViewModel;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * The View for the Display Home Use Case.
  */
 
-public class HomeView extends JPanel implements ActionListener,PropertyChangeListener {
+public class HomeView extends JPanel implements ActionListener, PropertyChangeListener {
+    private static final Font crimsonTextBold65 = FontManager.getCrimsonTextBold(65);
+    private static final Font crimsonTextBold75 = FontManager.getCrimsonTextBold(75);
+    private static final Font interTextBold12 = FontManager.getCrimsonTextBold(12);
+    private static final Font interTextBold15 = FontManager.getCrimsonTextBold(15);
+    private static final Font interTextBold35 = FontManager.getCrimsonTextBold(35);
+    private static final Font interTextBold50 = FontManager.getCrimsonTextBold(50);
 
-    // View Model
-    private final DisplayHomeViewModel homeViewModel;
+    private final String viewName = "Home";
 
-    // View Name
-    public final String viewName = "Home";
+    private final DisplayHomeViewModel displayHomeViewModel;
+    private DisplayHomeController displayHomeController;
 
-    // Weather Data Labels
-    private final JLabel temperatureLabel;
-    private final JLabel highTemperatureLabel;
-    private final JLabel lowTemperatureLabel;
-    private final JLabel conditionLabel;
+    private final JTextField locationField = new JTextField(10);
 
-    // City Label
-    private JLabel cityLabel; // TODO: This needs to be a input field later on
+    private final JLabel dateLabel = new JLabel();
+    private final JLabel temperatureLabel = new JLabel();
+    // the info label displays high temperature, low temperature, and condition
+    private final JLabel infoLabel = new JLabel();
 
-    // Time Label
-    private JLabel timeLabel;
+    private final JButton hourlyButton = new JButton();
+    private final JButton dailyButton = new JButton();
+    private final JButton checkerButton = new JButton();
+    private final JButton summaryButton = new JButton();
+    private final JButton historyButton = new JButton();
+    private final JButton refreshButton = new JButton();
 
-    // Buttons
-    private final JButton DailyButton;
-    private final JButton WeeklyButton;
-    private final JButton CheckerButton;
-    private final JButton OutfitButton;
-    private final JButton MapButton;
+    // scheduler used to update the clock
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-    public HomeView(DisplayHomeViewModel homeViewModel) {
-        this.homeViewModel = homeViewModel;
-        this.homeViewModel.addPropertyChangeListener(this);
+    public HomeView(DisplayHomeViewModel displayHomeViewModel) {
+        this.displayHomeViewModel = displayHomeViewModel;
+        this.displayHomeViewModel.addPropertyChangeListener(this);
 
-        // Set the layout
-        this.setLayout(null); // Absolute positioning
+        componentStyling();
 
-        // Create the city label
-        cityLabel = new JLabel("Toronto");
+        JPanel buttonPanel = getButtonPanel();
 
-        // Create the weather data labels
-        temperatureLabel = new JLabel("5 C");
-        highTemperatureLabel = new JLabel("High: 10 C");
-        lowTemperatureLabel = new JLabel("Low: 0 C");
-        conditionLabel = new JLabel("Cloudy");
+        addActionListeners();
 
-        // Create the time label
-        timeLabel = new JLabel("12:00 PM");
+        // set the layout and border of the main panel
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Create the buttons
-        DailyButton = new JButton("Daily");
-        WeeklyButton = new JButton("Weekly");
-        CheckerButton = new JButton("Checker");
-        OutfitButton = new JButton("Outfit");
-        MapButton = new JButton("Map");
+        Box box = Box.createVerticalBox();
+        box.add(locationField);
+        box.add(dateLabel);
+        box.add(temperatureLabel);
+        box.add(infoLabel);
+        box.add(Box.createVerticalStrut(50));
+        box.add(buttonPanel);
+        box.add(Box.createVerticalStrut(50));
+        box.add(refreshButton);
+        box.add(Box.createVerticalStrut(50));
+        this.add(box);
 
-        // Add the components to the view
-        this.add(cityLabel);
-        this.add(temperatureLabel);
-        this.add(highTemperatureLabel);
-        this.add(lowTemperatureLabel);
-        this.add(conditionLabel);
-        this.add(timeLabel);
-
-        this.add(DailyButton);
-        this.add(WeeklyButton);
-        this.add(CheckerButton);
-        this.add(OutfitButton);
-        this.add(MapButton);
-
-        // Set the bounds of the components
-        cityLabel.setBounds(461, 216, 278, 68);
-        temperatureLabel.setBounds(502, 316, 196, 125);
-        highTemperatureLabel.setBounds(567, 430, 87, 42);
-        lowTemperatureLabel.setBounds(670, 430, 80, 42);
-        conditionLabel.setBounds(476, 430, 79, 42);
-        timeLabel.setBounds(544, 288, 112, 42);
+        // set default values
+        DisplayHomeState currentState = displayHomeViewModel.getState();
+        setLabels(currentState);
     }
-    // Setup listeners for button clicks
 
-    private void setupListeners() {
-        // Listener for the 'Daily' button
-        DailyButton.addActionListener(new ActionListener() {
+    /**
+     * Add the buttons to a horizontal JPanel and return the JPanel.
+     * @return the button JPanel
+     */
+    @NotNull
+    private JPanel getButtonPanel() {
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridLayout(1, 5, 0, 0));
+        buttonPanel.add(hourlyButton);
+        buttonPanel.add(dailyButton);
+        buttonPanel.add(checkerButton);
+        buttonPanel.add(summaryButton);
+        buttonPanel.add(historyButton);
+
+        return buttonPanel;
+    }
+
+    /**
+     * Set the button icons and style them.
+     */
+    private void componentStyling() {
+        hourlyButton.setIcon(DisplayHomeViewModel.HOURLY_BUTTON);
+        hourlyButton.setBorder(BorderFactory.createEmptyBorder());
+        hourlyButton.setContentAreaFilled(false);
+
+        dailyButton.setIcon(DisplayHomeViewModel.DAILY_BUTTON);
+        dailyButton.setBorder(BorderFactory.createEmptyBorder());
+        dailyButton.setContentAreaFilled(false);
+
+        checkerButton.setIcon(DisplayHomeViewModel.CHECKER_BUTTON);
+        checkerButton.setBorder(BorderFactory.createEmptyBorder());
+        checkerButton.setContentAreaFilled(false);
+
+        summaryButton.setIcon(DisplayHomeViewModel.SUMMARY_BUTTON);
+        summaryButton.setBorder(BorderFactory.createEmptyBorder());
+        summaryButton.setContentAreaFilled(false);
+
+        historyButton.setIcon(DisplayHomeViewModel.HISTORY_BUTTON);
+        historyButton.setBorder(BorderFactory.createEmptyBorder());
+        historyButton.setContentAreaFilled(false);
+
+        refreshButton.setIcon(DisplayHomeViewModel.REFRESH_BUTTON);
+        refreshButton.setBorder(BorderFactory.createEmptyBorder());
+        refreshButton.setContentAreaFilled(false);
+        refreshButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
+
+        locationField.setFont(crimsonTextBold65);
+        locationField.setBackground(new Color(0, 0, 0, 0));
+        locationField.setBorder(BorderFactory.createEmptyBorder());
+        locationField.setHorizontalAlignment(JTextField.CENTER);
+
+        dateLabel.setFont(interTextBold35);
+        dateLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        temperatureLabel.setFont(interTextBold35);
+        temperatureLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        infoLabel.setFont(interTextBold35);
+        infoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    }
+
+    private void addActionListeners() {
+        hourlyButton.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(hourlyButton)) {
+                        // TODO: Implement hourly button
+//                        this.displayHomeController.executeHourly(
+//                                currentState.getWeekdays().getFirst()
+                    }
+                }
+        );
+
+        dailyButton.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(dailyButton)) {
+                        this.displayHomeController.switchToDailyView();
+                    }
+                }
+        );
+
+        checkerButton.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(checkerButton)) {
+                        this.displayHomeController.switchToCheckerView();
+                    }
+                }
+        );
+
+        historyButton.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(historyButton)) {
+                        // TODO: Implement the history button
+//                        this.displayHomeController.switchToHistoryView();
+                    }
+                }
+        );
+
+        summaryButton.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(summaryButton)) {
+                        // TODO: Implement the summary button
+//                        this.displayHomeController.switchToSummaryView();
+                    }
+                }
+        );
+
+        refreshButton.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(refreshButton)) {
+                        DisplayHomeState displayHomeState = this.displayHomeViewModel.getState();
+                        this.displayHomeController.execute(displayHomeState.getCity());
+                    }
+                }
+        );
+
+        // add document listeners to the location field
+        locationField.getDocument().addDocumentListener(new DocumentListener() {
+            private void documentListenerHelper() {
+                final DisplayHomeState currentState = displayHomeViewModel.getState();
+                currentState.setCity(locationField.getText());
+                displayHomeViewModel.setState(currentState);
+                displayHomeViewModel.firePropertyChanged();
+            }
+
             @Override
-            public void actionPerformed(ActionEvent e) {
-                onDailyButtonClicked();
+            public void insertUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                documentListenerHelper();
             }
         });
-
-        // Listener for the 'Weekly' button
-        WeeklyButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onWeeklyButtonClicked();
-            }
-        });
-
-        // Listener for the 'Checker' button
-        CheckerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onCheckerButtonClicked();
-            }
-        });
-
-        // Listener for the 'Outfit' button
-        OutfitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onOutfitButtonClicked();
-            }
-        });
-
-        // Listener for the 'Map' button
-        MapButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onMapButtonClicked();
-            }
-        });
     }
 
-    // Action when "Daily" button is clicked
-    private void onDailyButtonClicked() {
-        DisplayHomePresenter.handleDailyWeatherRequest();
-    }
-
-    // Action when "Weekly" button is clicked
-    private void onWeeklyButtonClicked() {
-        DisplayHomePresenter.handleWeeklyWeatherRequest();
-    }
-
-    // Action when "Checker" button is clicked
-    private void onCheckerButtonClicked() {
-        DisplayHomePresenter.handleWeatherCheckerRequest();
-    }
-
-    // Action when "Outfit" button is clicked
-    private void onOutfitButtonClicked() {
-        DisplayHomePresenter.handleOutfitSuggestionsRequest();
-    }
-
-    // Action when "Map" button is clicked
-    private void onMapButtonClicked() {
-        DisplayHomePresenter.handleMapRequest();
-    }
-
-    // Method to update the temperature label
-    public void setTemperatureLabel(String text) {
-        temperatureLabel.setText(text);
-    }
-
-    // Method to update the high temperature label
-    public void setHighTemperatureLabel(String text) {
-        highTemperatureLabel.setText(text);
-    }
-
-    // Method to update the low temperature label
-    public void setLowTemperatureLabel(String text) {
-        lowTemperatureLabel.setText(text);
-    }
-
-    // Method to update the condition label
-    public void setConditionLabel(String text) {
-        conditionLabel.setText(text);
+    public String getViewName() {
+        return viewName;
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        // TODO: Implement property change events
+        final DisplayHomeState currentState = (DisplayHomeState) evt.getNewValue();
 
+        setLabels(currentState);
     }
 
+    private void setLabels(DisplayHomeState currentState) {
+        temperatureLabel.setText(currentState.getTemperature());
+        // set the info label
+        final String infoLabelString = (getWeatherString(currentState.getCondition()) + " "
+                + DisplayHomeViewModel.highLabel + currentState.getHighTemperature() + DisplayHomeViewModel.divider
+                + DisplayHomeViewModel.lowLabel + currentState.getLowTemperature());
+        infoLabel.setText(infoLabelString);
+        dateLabel.setText(currentState.getDate());
+    }
+
+    /**
+     * Invoked when an action occurs.
+     * @param event the event to be processed
+     */
     @Override
-    public void actionPerformed(ActionEvent e) {
-        //TODO
+    public void actionPerformed(ActionEvent event) {
+        // do nothing
     }
-}
 
+    public void setDisplayHomeController(DisplayHomeController displayHomeController) {
+        this.displayHomeController = displayHomeController;
+    }
+
+    /**
+     * Chooses the corresponding condition String based on the String code.
+     * @param condition the weather condition
+     * @return the corresponding weather condition String
+     */
+    private String getWeatherString(String condition) {
+        return switch (condition) {
+            case DisplayHomeViewModel.CLOUDS -> "Cloudy";
+            case DisplayHomeViewModel.CLEAR -> "Sunny";
+            case DisplayHomeViewModel.DRIZZLE, DisplayHomeViewModel.THUNDERSTORM, DisplayHomeViewModel.RAIN,
+                 DisplayHomeViewModel.MIST -> "Rainy";
+            case DisplayHomeViewModel.SNOW -> "Snowy";
+            default -> "Cloudy";
+        };
+    }
+
+}
