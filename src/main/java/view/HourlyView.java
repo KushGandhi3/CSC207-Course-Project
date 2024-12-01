@@ -1,17 +1,17 @@
 package view;
 
-import interface_adapter.display_daily.DisplayDailyController;
+import interface_adapter.display_hourly.DisplayHourlyState;
 import interface_adapter.display_hourly.DisplayHourlyController;
 import interface_adapter.display_hourly.DisplayHourlyViewModel;
+import org.jetbrains.annotations.NotNull;
 
-import java.awt.Component;
-import java.awt.Font;
+import javax.swing.*;
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import java.util.ArrayList;
+import java.util.List;
 
 import constants.Constants;
 
@@ -20,6 +20,11 @@ import constants.Constants;
  * Updates dynamically based on the ViewModel's state.
  */
 public class HourlyView extends JPanel implements PropertyChangeListener {
+    // Fonts
+    private static final Font crimsonText70 = FontManager.getCrimsonTextRegular(70);
+    private static final Font interTextBold12 = FontManager.getCrimsonTextBold(12);
+    private static final Font interTextBold15 = FontManager.getCrimsonTextBold(15);
+    private static final Font interTextBold18 = FontManager.getCrimsonTextBold(18);
 
     // View Name
     private final String viewName = "Hourly Forecast";
@@ -29,33 +34,25 @@ public class HourlyView extends JPanel implements PropertyChangeListener {
     private DisplayHourlyController displayHourlyController;
 
     // City Labels
-    private final JLabel city;
-    private final JLabel lowTemperature;
-    private final JLabel highTemperature;
-    private final JLabel time;
-    private final JLabel forecast;
-    private final JLabel details;
+    private final JLabel city = new JLabel();
+    private final JLabel lowTemperature = new JLabel();
+    private final JLabel highTemperature = new JLabel();
+    private final JLabel forecast = new JLabel();
+    private final JLabel details = new JLabel();
 
     // Weather Labels
-    private final JLabel[] condition = new JLabel[Constants.TIME_SIZE];
-    private final JLabel[] temperature = new JLabel[Constants.TIME_SIZE];
-    private final JLabel[] feelsLike = new JLabel[Constants.TIME_SIZE];
-    private final JLabel[] windSpeed = new JLabel[Constants.TIME_SIZE];
-    private final JLabel[] precipitation = new JLabel[Constants.TIME_SIZE];
-    private final JLabel[] uvIndex = new JLabel[Constants.TIME_SIZE];
-    private final JLabel[] cloudCover = new JLabel[Constants.TIME_SIZE];
-    private final JLabel[] humidity = new JLabel[Constants.TIME_SIZE];
+    private final List<JButton> condition = new ArrayList<>(Constants.WEEK_SIZE);
+    private final List<JButton> temperature = new ArrayList<>(Constants.WEEK_SIZE);
+    private final JLabel feelsLike = new JLabel();
+    private final JLabel windSpeed = new JLabel();
+    private final JLabel precipitation = new JLabel();
+    private final JLabel uvIndex = new JLabel();
+    private final JLabel cloudCover = new JLabel();
+    private final JLabel humidity = new JLabel();
 
     // Buttons
-    private final JButton hourOne;
-    private final JButton hourTwo;
-    private final JButton hourThree;
-    private final JButton hourFour;
-    private final JButton hourFive;
-    private final JButton hourSix;
-    private final JButton hourSeven;
-    private final JButton hourEight;
-    private final JButton homeButton;
+    private final List<JButton> times = new ArrayList<>(Constants.TIME_SIZE);
+    private final JButton backButton = new JButton();
 
     /**
      * Constructs an HourlyView with a specific ViewModel.
@@ -66,87 +63,270 @@ public class HourlyView extends JPanel implements PropertyChangeListener {
         this.displayHourlyViewModel = displayHourlyViewModel;
         this.displayHourlyViewModel.addPropertyChangeListener(this);
 
-        // Set Layout
-        this.setLayout(null);
+        // City Label
+        setCityLabel();
 
-        // Create City Labels
-        this.city = new JLabel("Toronto");
-        this.lowTemperature = new JLabel("Low: 17 C");
-        this.highTemperature = new JLabel("High: 23 C");
-        this.time = new JLabel("9:00");
-        this.forecast = new JLabel("Today's Forecast");
-        this.details = new JLabel("Weather Details");
+        // Hourly Forecast Xox
+        JPanel forecastBox = getForecastBox();
 
-        // Create Weather Labels
-        for (int i = 0; i < Constants.TIME_SIZE; i++) {
-            this.condition[i] = new JLabel("Condition: Sunny");
-        }
-        for (int i = 0; i < Constants.TIME_SIZE; i++) {
-            this.temperature[i] = new JLabel("Temperature: 18 C");
-        }
-        for (int i = 0; i < Constants.TIME_SIZE; i++) {
-            this.feelsLike[i] = new JLabel("Feels Like: 20 C");
-        }
-        for (int i = 0; i < Constants.TIME_SIZE; i++) {
-            this.windSpeed[i] = new JLabel("Wind Speed: 8 km/h SE");
-        }
-        for (int i = 0; i < Constants.TIME_SIZE; i++) {
-            this.precipitation[i] = new JLabel("Precipitation: 0''");
-        }
-        for (int i = 0; i < Constants.TIME_SIZE; i++) {
-            this.uvIndex[i] = new JLabel("UV Index: 2");
-        }
-        for (int i = 0; i < Constants.TIME_SIZE; i++) {
-            this.cloudCover[i] = new JLabel("Air Quality: 96");
-        }
-        for (int i = 0; i < Constants.TIME_SIZE; i++) {
-            this.humidity[i] = new JLabel("Humidity: 76%");
-        }
+        // Hour Details Box
+        JPanel detailsBox = getDetailsBox();
 
-        // Create Buttons
-        this.hourOne = new JButton("");
-        this.hourTwo = new JButton("");
-        this.hourThree = new JButton("");
-        this.hourFour = new JButton("");
-        this.hourFive = new JButton("");
-        this.hourSix = new JButton("");
-        this.hourSeven = new JButton("");
-        this.hourEight = new JButton("");
-        this.homeButton = new JButton("Home");
-
-        // Add Components
-        this.add(city);
-        this.add(lowTemperature);
-        this.add(highTemperature);
-        this.add(forecast);
-        this.add(details);
+        JPanel backButtonPanel = getBackButton();
 
         for (int i = 0; i < Constants.TIME_SIZE; i++) {
-            this.add(condition[i]);
-            this.add(temperature[i]);
-            this.add(feelsLike[i]);
-            this.add(windSpeed[i]);
-            this.add(uvIndex[i]);
-            this.add(cloudCover[i]);
-            this.add(humidity[i]);
+            final int index = i;
+            final JButton timeButton = times.get(i);
+            timeButton.addActionListener(
+                    evt -> {
+                        if (evt.getSource().equals(timeButton)) {
+                            final DisplayHourlyState currentState = this.displayHourlyViewModel.getState();
+                            this.displayHourlyController.execute(
+                                    currentState.getTime().get(index)
+                            );
+                        }
+                    }
+            );
+            final JButton conditionButton = condition.get(index);
+            conditionButton.addActionListener(
+                    evt -> {
+                        if (evt.getSource().equals(timeButton)) {
+                            final DisplayHourlyState currentState = this.displayHourlyViewModel.getState();
+                            this.displayHourlyController.execute(
+                                    currentState.getTime().get(index)
+                            );
+                        }
+                    }
+            );
+            final JButton temperatureButton = temperature.get(index);
+            temperatureButton.addActionListener(
+                    evt -> {
+                        if (evt.getSource().equals(temperatureButton)) {
+                            final DisplayHourlyState currentState = this.displayHourlyViewModel.getState();
+                            this.displayHourlyController.execute(
+                                    currentState.getTime().get(index)
+                            );
+                        }
+                    }
+            );
+        }
+        backButton.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(backButton)) {
+                        final DisplayHourlyState currentState = this.displayHourlyViewModel.getState();
+                        // TODO: Implement the back button
+                        this.displayHourlyController.execute(
+                                currentState.getTime().getFirst()
+                        );
+                    }
+                }
+        );
+
+        this.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        Box box = Box.createVerticalBox();
+        box.add(backButtonPanel);
+        box.add(city);
+        box.add(forecastBox);
+        box.add(detailsBox);
+        this.add(box);
+
+        // Set Default State
+        DisplayHourlyState state = displayHourlyViewModel.getState();
+        setLabels(state);
+    }
+
+    /**
+     * Gets the details box, overlays the details data, and styles the resulting JPanel.
+     * @return the details box JPanel object
+     */
+    @NotNull
+    private JPanel getDetailsBox() {
+        // Set Fonts
+        feelsLike.setFont(interTextBold18);
+        windSpeed.setFont(interTextBold18);
+        precipitation.setFont(interTextBold18);
+        uvIndex.setFont(interTextBold18);
+        cloudCover.setFont(interTextBold18);
+        humidity.setFont(interTextBold18);
+
+        // Hourly Details Box
+        JPanel detailsBox = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                final int forecastBoxX = (this.getWidth() - DisplayHourlyViewModel.HOURLY_DETAILS_BOX
+                        .getImage().getWidth(this)) / 2 + 4;
+                final int forecastBoxY = 0;
+                g.drawImage(DisplayHourlyViewModel.HOURLY_DETAILS_BOX.getImage(), forecastBoxX,
+                        forecastBoxY, this);
+            }
+        };
+
+        // Details Panel Shifted
+        JPanel shiftedDetailsPanel = new JPanel();
+        shiftedDetailsPanel.setLayout(new BoxLayout(shiftedDetailsPanel, BoxLayout.X_AXIS));
+        shiftedDetailsPanel.setOpaque(false);
+
+        // Details Panel
+        JPanel detailsPanel = new JPanel();
+        detailsPanel.setLayout(new GridLayout(1, 3, 195, 0));
+        detailsPanel.setOpaque(false);
+
+        // Column 1
+        JPanel detailsPanel1 = new JPanel();
+        detailsPanel1.setLayout(new GridLayout(2, 1, 0, 55));
+        detailsPanel1.setOpaque(false);
+        detailsPanel1.add(feelsLike);
+        detailsPanel1.add(uvIndex);
+
+        // Column 2
+        JPanel detailsPanel2 = new JPanel();
+        detailsPanel2.setLayout(new GridLayout(2, 1, 0, 55));
+        detailsPanel2.setOpaque(false);
+        detailsPanel2.add(windSpeed);
+        detailsPanel2.add(cloudCover);
+
+        // Column 3
+        JPanel detailsPanel3 = new JPanel();
+        detailsPanel3.setLayout(new GridLayout(2, 1, 0, 55));
+        detailsPanel3.setOpaque(false);
+        detailsPanel3.add(precipitation);
+        detailsPanel3.add(humidity);
+
+        // Add Columns
+        detailsPanel.add(detailsPanel1);
+        detailsPanel.add(detailsPanel2);
+        detailsPanel.add(detailsPanel3);
+
+        // Shift Shifted Details Panel
+        shiftedDetailsPanel.add(detailsPanel);
+        shiftedDetailsPanel.add(Box.createHorizontalStrut(135));
+
+        // Padding
+        detailsBox.add(Box.createVerticalStrut(220));
+
+        // Add Details Panel
+        detailsBox.add(shiftedDetailsPanel);
+
+        return detailsBox;
+    }
+
+    /**
+     * Gets the back button JPanel and styles it
+     * @return a back button JPanel
+     */
+    @NotNull
+    private JPanel getBackButton() {
+        backButton.setIcon(DisplayHourlyViewModel.BACK_BUTTON_IMAGE);
+        backButton.setBorder(BorderFactory.createEmptyBorder());
+        backButton.setContentAreaFilled(false);
+        JPanel backButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        backButtonPanel.add(backButton);
+        return backButtonPanel;
+    }
+
+    /**
+     * Styles the current instance of the city label.
+     */
+    private void setCityLabel() {
+        city.setFont(crimsonText70);
+        city.setAlignmentX(Component.CENTER_ALIGNMENT);
+    }
+
+    /**
+     * Gets the hourly forecast box and fills it with the weather.
+     * @return the hourly forecast box as a JPanel
+     */
+    @NotNull
+    private JPanel getForecastBox() {
+        for (int i = 0; i < Constants.TIME_SIZE; i++) {
+            condition.add(new JButton());
+            temperature.add(new JButton());
+            times.add(new JButton());
+
+            // Style Weekday Buttons
+            times.get(i).setFont(interTextBold12);
+
+            // Style Temperature Buttons
+            times.get(i).setFont(interTextBold15);
         }
 
-        this.add(hourOne);
-        this.add(hourTwo);
-        this.add(hourThree);
-        this.add(hourFour);
-        this.add(hourFive);
-        this.add(hourSix);
-        this.add(hourSeven);
-        this.add(hourEight);
-        this.add(homeButton);
+        // Place Hourly Forecast Box Image
+        JPanel forecastBox = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                final int forecastBoxX = (this.getWidth() - DisplayHourlyViewModel.HOURLY_FORECAST_BOX
+                        .getImage().getWidth(this)) / 2 + 4;
+                final int forecastBoxY = 0;
+                g.drawImage(DisplayHourlyViewModel.HOURLY_FORECAST_BOX.getImage(), forecastBoxX,
+                        forecastBoxY, this);
+            }
+        };
 
-        // Set Bounds
-        city.setBounds(10, 10, 100, 20);
-        lowTemperature.setBounds(10, 40, 100, 20);
-        highTemperature.setBounds(10, 80, 100, 20);
-        forecast.setBounds(10, 120, 100, 20);
-        details.setBounds(10, 160, 100, 20);
+        // Hourly Content Panel
+        JPanel hourlyPanel = new JPanel();
+        hourlyPanel.setLayout(new GridLayout(1, Constants.TIME_SIZE, 15, 0));
+
+        // Padding
+        hourlyPanel.add(Box.createHorizontalStrut(15));
+
+        // Make Hourly Panel Invisible
+        hourlyPanel.setOpaque(false);
+
+        for(int i = 0; i < Constants.TIME_SIZE; i++) {
+            // Panel For Each Hour
+            final JPanel hourPanel = new JPanel();
+            hourPanel.setLayout(new GridLayout(3, 1, 0, 0));
+            hourPanel.setOpaque(false);
+
+            // Remove Button Border
+            times.get(i).setBorder(BorderFactory.createEmptyBorder());
+            times.get(i).setContentAreaFilled(false);
+            hourPanel.add(times.get(i));
+
+            condition.get(i).setBorder(BorderFactory.createEmptyBorder());
+            condition.get(i).setContentAreaFilled(false);
+            hourPanel.add(condition.get(i));
+
+            temperature.get(i).setBorder(BorderFactory.createEmptyBorder());
+            temperature.get(i).setContentAreaFilled(false);
+            hourPanel.add(temperature.get(i));
+
+            hourlyPanel.add(hourPanel);
+        }
+
+        // Add Padding
+        hourlyPanel.add(Box.createHorizontalStrut(15));
+
+        // Vertical Spacing
+        forecastBox.add(Box.createVerticalStrut(150));
+        forecastBox.add(hourlyPanel);
+
+        return forecastBox;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        final DisplayHourlyState currentState = (DisplayHourlyState) evt.getNewValue();
+        setLabels(currentState);
+    }
+
+    private void setLabels(DisplayHourlyState state) {
+        city.setText(state.getCity());
+        for (int i = 0; i < Constants.WEEK_SIZE; i++) {
+            temperature.get(i).setText(state.getTemperature().get(i));
+            condition.get(i).setIcon(chooseWeatherIcon(state.getCondition().get(i)));
+            times.get(i).setText(state.getTime().get(i));
+        }
+        feelsLike.setText(state.getFeelsLike());
+        uvIndex.setText(state.getUvIndex());
+        windSpeed.setText(state.getWindSpeed());
+        cloudCover.setText(state.getCloudCover());
+        precipitation.setText(state.getPrecipitation());
+        humidity.setText(state.getHumidity());
     }
 
     public String getViewName() {
@@ -157,8 +337,19 @@ public class HourlyView extends JPanel implements PropertyChangeListener {
         this.displayHourlyController = displayHourlyController;
     }
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        // TODO: Implement method
+    /**
+     * Chooses the corresponding weather icon based on the String code.
+     * @param condition the weather condition
+     * @return the corresponding weather image icon
+     */
+    private ImageIcon chooseWeatherIcon(String condition) {
+        return switch (condition) {
+            case DisplayHourlyViewModel.CLOUDS -> DisplayHourlyViewModel.CLOUDS_IMAGE;
+            case DisplayHourlyViewModel.CLEAR -> DisplayHourlyViewModel.CLEAR_IMAGE;
+            case DisplayHourlyViewModel.DRIZZLE, DisplayHourlyViewModel.THUNDERSTORM, DisplayHourlyViewModel.RAIN,
+                 DisplayHourlyViewModel.MIST -> DisplayHourlyViewModel.RAIN_IMAGE;
+            case DisplayHourlyViewModel.SNOW -> DisplayHourlyViewModel.SNOW_IMAGE;
+            default -> DisplayHourlyViewModel.CLEAR_IMAGE;
+        };
     }
 }

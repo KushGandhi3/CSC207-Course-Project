@@ -1,7 +1,5 @@
 package use_case.display_hourly;
 
-import java.time.LocalTime;
-
 /**
  * Data object representing the input data for the hourly forecast use case.
  */
@@ -13,7 +11,7 @@ public class DisplayHourlyInputData {
      *
      * @param selectedTime the selected time
      */
-    public DisplayHourlyInputData(LocalTime selectedTime) {
+    public DisplayHourlyInputData(String selectedTime) {
         this.selectedTime = selectedTime.toString();
     }
 
