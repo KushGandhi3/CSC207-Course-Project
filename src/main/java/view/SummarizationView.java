@@ -43,8 +43,10 @@ public class SummarizationView extends JPanel implements PropertyChangeListener 
         this.viewModel = displaySummarizationViewModel;
         this.viewModel.addPropertyChangeListener(this);
         setLayout(new BorderLayout());
+        this.setBackground(Color.WHITE);
 
         // Top Panel
+        backButton.setBorder(null);
         final JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.add(backButton, BorderLayout.WEST);
         topPanel.add(title, BorderLayout.CENTER);
