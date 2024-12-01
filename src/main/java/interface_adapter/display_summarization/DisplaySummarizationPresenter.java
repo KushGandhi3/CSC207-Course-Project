@@ -46,7 +46,7 @@ public class DisplaySummarizationPresenter implements DisplaySummarizationOutput
     }
 
     @Override
-    public void prepareHomeView() {
+    public void switchToHomeView() {
         viewManagerModel.setState("home");
         viewManagerModel.firePropertyChanged();
     }

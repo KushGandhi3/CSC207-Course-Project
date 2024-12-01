@@ -5,6 +5,7 @@ import entity.recent_city.RecentCityDataFactory;
 import exception.RecentCitiesDataException;
 import org.json.JSONArray;
 import use_case.display_daily.DisplayDailyRecentCitiesDAI;
+import use_case.display_summarization.DisplaySummarizationRecentCitiesDAI;
 import use_case.display_history.DisplayHistoryDAI;
 
 import java.io.InputStream;
@@ -18,7 +19,7 @@ import java.util.List;
 /**
  * DAO for accessing data about recently viewed cities.
  */
-public class RecentCitiesDAO implements DisplayDailyRecentCitiesDAI, DisplayHistoryDAI {
+public class RecentCitiesDAO implements DisplayDailyRecentCitiesDAI, DisplaySummarizationRecentCitiesDAI {
 
     // the path to the data resource
     private static final String RESOURCES_FOLDER_PATH = "src/main/resources/";
