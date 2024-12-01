@@ -13,9 +13,11 @@ public class Main {
         final AppBuilder appBuilder = new AppBuilder();
         final JFrame application = appBuilder
                 .addCheckerView()
-                .addDisplayCheckerUseCase()
+                .addHomeView()
                 .addDailyView()
+                .addDisplayCheckerUseCase()
                 .addDisplayDailyUseCase()
+                .addDisplayHomeUseCase()
                 .build();
 
         application.pack();

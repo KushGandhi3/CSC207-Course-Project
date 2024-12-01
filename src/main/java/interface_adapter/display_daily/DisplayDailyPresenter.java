@@ -17,8 +17,8 @@ public class DisplayDailyPresenter implements DisplayDailyOutputBoundary {
     public DisplayDailyPresenter(DisplayDailyViewModel displayDailyViewModel, DisplayHomeViewModel displayHomeViewModel,
                                  ViewManagerModel viewManagerModel) {
         this.displayDailyViewModel = displayDailyViewModel;
-        this.displayHomeViewModel = displayHomeViewModel;
         this.viewManagerModel = viewManagerModel;
+        this.displayHomeViewModel = displayHomeViewModel;
     }
 
     @Override
@@ -35,6 +35,7 @@ public class DisplayDailyPresenter implements DisplayDailyOutputBoundary {
         displayDailyState.setCloudCover(displayDailyOutputData.getCloudCover());
         displayDailyState.setPrecipitation(displayDailyOutputData.getPrecipitation());
         displayDailyState.setHumidity(displayDailyOutputData.getHumidity());
+
         this.displayDailyViewModel.setState(displayDailyState);
         this.displayDailyViewModel.firePropertyChanged();
 
@@ -52,7 +53,7 @@ public class DisplayDailyPresenter implements DisplayDailyOutputBoundary {
 
     @Override
     public void switchToHomeView() {
-        viewManagerModel.setState(this.displayHomeViewModel.getViewName());
+        viewManagerModel.setState(displayHomeViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }
 

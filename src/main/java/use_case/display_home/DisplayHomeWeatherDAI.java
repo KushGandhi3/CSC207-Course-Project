@@ -4,9 +4,9 @@ import entity.weather.hourly_weather.HourlyWeatherData;
 import exception.APICallException;
 
 /**
- * The interface of the DAO for the weather data used by all use cases.
+ * The data access interface for the Display Home Use Case used for grabbing weather data.
  */
-public interface DisplayHomeDAI {
+public interface DisplayHomeWeatherDAI {
 
     /**
      * Get Weather data from the API.
@@ -16,5 +16,4 @@ public interface DisplayHomeDAI {
      */
     HourlyWeatherData getHourlyWeatherData(String location) throws APICallException;
 
-    HourlyWeatherData getWeatherData(String cityName);
 }

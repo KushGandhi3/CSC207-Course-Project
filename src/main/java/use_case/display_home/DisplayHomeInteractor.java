@@ -1,53 +1,68 @@
 package use_case.display_home;
 
-import exception.APICallException;
-import entity.weather.hourly_weather.HourlyWeatherData;
-import entity.weather.hourly_weather.HourlyWeatherDataFactory;
 import entity.weather.hour_weather.HourWeatherData;
+import entity.weather.hourly_weather.HourlyWeatherData;
+import exception.APICallException;
+import exception.RecentCitiesDataException;
 
-import java.util.List;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
- * The DisplayHome Interactor.
+ * The Interactor for the Display Home Use Case.
  */
 public class DisplayHomeInteractor implements DisplayHomeInputBoundary {
 
-    private final DisplayHomeDAI dataAccessObject;
-    private final DisplayHomeOutputBoundary userPresenter;
-    private final HourlyWeatherDataFactory weatherDataFactory;
+    private final DisplayHomeWeatherDAI weatherDataAccessObject;
+    private final DisplayHomeRecentCitiesDAI recentCitiesDataAccessObject;
+    private final DisplayHomeOutputBoundary displayHomePresenter;
 
-    public DisplayHomeInteractor(DisplayHomeDAI dataAccessObject,
-                                 DisplayHomeOutputBoundary userPresenter,
-                                 HourlyWeatherDataFactory weatherDataFactory) {
-        this.dataAccessObject = dataAccessObject;
-        this.userPresenter = userPresenter;
-        this.weatherDataFactory = weatherDataFactory;
+    public DisplayHomeInteractor(DisplayHomeWeatherDAI weatherDataAccessObject,
+                                 DisplayHomeOutputBoundary displayHomePresenter,
+                                 DisplayHomeRecentCitiesDAI recentCitiesDataAccessObject) {
+        this.weatherDataAccessObject = weatherDataAccessObject;
+        this.displayHomePresenter = displayHomePresenter;
+        this.recentCitiesDataAccessObject = recentCitiesDataAccessObject;
     }
 
     @Override
     public void execute(DisplayHomeInputData displayHomeInputData) {
-        // Fetch hourly weather data for the city
-        HourlyWeatherData hourlyWeatherData = dataAccessObject.getWeatherData(displayHomeInputData.getCityName());
+        final String city = displayHomeInputData.getCityName();
+        try {
+            recentCitiesDataAccessObject.addCity(city);
+            final HourlyWeatherData hourlyWeatherData = weatherDataAccessObject
+                    .getHourlyWeatherData(city);
 
-        if (hourlyWeatherData == null) {
-            userPresenter.prepareFailView("Unable to fetch weather data.");
-            return;
+            final String timezone = hourlyWeatherData.getTimezone();
+            final String lowTemperature = hourlyWeatherData.getLowTemperature() + "°C";
+            final String highTemperature = hourlyWeatherData.getHighTemperature() + "°C";
+
+            // weather data for the most recent hour
+            final HourWeatherData hourWeatherData = hourlyWeatherData.getHourWeatherDataList().getFirst();
+            final String temperature = hourWeatherData.getTemperature() + "°C";
+            final String condition = hourWeatherData.getCondition();
+
+            // get the date
+            ZonedDateTime zonedDateTime = ZonedDateTime.now();
+            // formatter for the date pattern
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM d");
+            String date = zonedDateTime.format(formatter);
+
+            DisplayHomeOutputData outputData = new DisplayHomeOutputData(city, lowTemperature, highTemperature,
+                    temperature, condition, date);
+            this.displayHomePresenter.prepareSuccessView(outputData);
+        } catch(APICallException | RecentCitiesDataException exception) {
+            displayHomePresenter.prepareFailView(exception.getMessage());
         }
+    }
 
-        // Retrieve the relevant data from the HourlyWeatherData object
-        String city = displayHomeInputData.getCityName();
-        String timezone = hourlyWeatherData.getTimezone();
-        int lowTemperature = Integer.parseInt(hourlyWeatherData.getLowTemperature());  // This should be set correctly in your data model
-        String highTemperature = hourlyWeatherData.getHighTemperature();  // Same as above
-        List<HourWeatherData> hourlyWeatherDataList = hourlyWeatherData.getHourWeatherDataList();
+    @Override
+    public void switchToDailyView() {
+        displayHomePresenter.switchToDailyView();
+    }
 
-        // Use the factory to create HourlyWeatherData object (if needed)
-        HourlyWeatherData createdHourlyWeatherData = weatherDataFactory.create(
-                hourlyWeatherDataList, timezone, city, lowTemperature, Integer.parseInt(highTemperature));
-
-        // Prepare the success view with the weather data
-        DisplayHomeOutputData outputData = new DisplayHomeOutputData(createdHourlyWeatherData, false);
-        userPresenter.prepareSuccessView(outputData);
-
+    @Override
+    public void switchToCheckerView() {
+        displayHomePresenter.switchToCheckerView();
     }
 }
