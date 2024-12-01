@@ -1,19 +1,19 @@
-//package use_case.display_history;
-//
-//import java.util.List;
-//
-///**
-// * Output data for the display history use case
-// */
-//public class DisplayHistoryOutputData {
-//
-//    private final String selectedLocation;
-//
-//    public DisplayHistoryOutputData(String selectedLocation) {
-//        this.selectedLocation = selectedLocation;
-//    }
-//
-//    public String getSelectedLocation() {
-//        return selectedLocation;
-//    }
-//}
+package use_case.display_history;
+
+import java.util.List;
+
+/**
+ * Output data for the display history use case.
+ */
+public class DisplayHistoryOutputData {
+
+    private final List<String> cities;
+
+    public DisplayHistoryOutputData(List<String> cities) {
+        this.cities = cities;
+    }
+
+    public List<String> getCities() {
+        return cities;
+    }
+}

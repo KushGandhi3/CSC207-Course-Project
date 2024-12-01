@@ -1,13 +1,16 @@
-//package use_case.display_history;
-//
-//public class DisplayHistoryInputData {
-//    private String location;
-//
-//    public DisplayHistoryInputData(String location) {
-//        this.location = location;
-//    }
-//
-//    public String getLocation() {
-//        return location;
-//    }
-//}
+package use_case.display_history;
+
+/**
+ * Represents the input data for the display history use case, encapsulating the city information.
+ */
+public class DisplayHistoryInputData {
+    private final String city;
+
+    public DisplayHistoryInputData(String city) {
+        this.city = city;
+    }
+
+    public String getLocation() {
+        return city;
+    }
+}
