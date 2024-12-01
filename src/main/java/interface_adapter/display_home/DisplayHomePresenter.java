@@ -46,20 +46,23 @@ public class DisplayHomePresenter implements DisplayHomeOutputBoundary {
         state.setLowTemperature(displayHomeOutputData.getLowTemperature());
         state.setDate(displayHomeOutputData.getDate());
 
-        // update the weather data in other use cases
-        this.displayDailyViewModel.firePropertyChanged();
-
         this.displayHomeViewModel.setState(state);
         this.displayHomeViewModel.firePropertyChanged();
     }
 
     @Override
     public void prepareFailView(String error) {
-        // In case of an error, set the error state
-        DisplayHomeState state = displayHomeViewModel.getState();
-        state.setCondition(error); // Using the condition to store the error message
+        // set error state
+        DisplayHomeState state = this.displayHomeViewModel.getState();
 
-        // Notify the view model that data has been updated
+        state.setCity("");
+        state.setCondition("-");
+        state.setTemperature("-°C");
+        state.setLowTemperature("-°C");
+        state.setHighTemperature("-°C");
+        state.setDate("-, - -");
+
+        this.displayHomeViewModel.setState(state);
         displayHomeViewModel.firePropertyChanged();
     }
 

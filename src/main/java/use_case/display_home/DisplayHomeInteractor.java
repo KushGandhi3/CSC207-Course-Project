@@ -29,14 +29,19 @@ public class DisplayHomeInteractor implements DisplayHomeInputBoundary {
 
     @Override
     public void execute(DisplayHomeInputData displayHomeInputData) {
-        final String city = displayHomeInputData.getCityName();
         try {
+            final String city = displayHomeInputData.getCityName();
+            if (city == null) {
+                throw new APICallException("No City Name Provided.");
+            }
+
             recentCitiesDataAccessObject.addCity(city);
 
             DisplayHomeOutputData displayHomeOutputData = getOutputData(city);
             this.displayHomePresenter.prepareSuccessView(displayHomeOutputData);
         } catch(APICallException | RecentCitiesDataException exception) {
-            displayHomePresenter.prepareFailView(exception.getMessage());
+            exception.printStackTrace();
+            displayHomePresenter.prepareFailView("No Cities To Display.");
         }
     }
 
@@ -51,6 +56,7 @@ public class DisplayHomeInteractor implements DisplayHomeInputBoundary {
             DisplayHomeOutputData displayHomeOutputData = getOutputData(recentCity);
             this.displayHomePresenter.prepareSuccessView(displayHomeOutputData);
         } catch(APICallException | RecentCitiesDataException exception) {
+            exception.printStackTrace();
             displayHomePresenter.prepareFailView(exception.getMessage());
         }
     }

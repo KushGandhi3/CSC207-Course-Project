@@ -27,7 +27,7 @@ public class DisplayDailyState {
     private String humidity;
 
     public DisplayDailyState() {
-        this.city = "-";
+        this.city = "";
 
         this.weekdays = new ArrayList<>(Constants.WEEK_SIZE);
         this.temperatures = new ArrayList<>(Constants.WEEK_SIZE);

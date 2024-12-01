@@ -42,9 +42,6 @@ public class DisplayHistoryPresenter implements DisplayHistoryOutputBoundary {
     public void prepareSuccessView(DisplayHistoryOutputData cities) {
         final DisplayHistoryState displayHistoryState = displayHistoryViewModel.getState();
         displayHistoryState.setCities(cities.getCities());
-        displayDailyViewModel.firePropertyChanged("update_data");
-        displayHomeViewModel.firePropertyChanged("update_data");
-        displaySummarizationViewModel.firePropertyChanged("update_data");
 
         displayHistoryViewModel.setState(displayHistoryState);
         displayHistoryViewModel.firePropertyChanged();
@@ -66,6 +63,8 @@ public class DisplayHistoryPresenter implements DisplayHistoryOutputBoundary {
      */
     @Override
     public void switchToHomeView() {
+        displayHomeViewModel.firePropertyChanged("update_data");
+
         viewManagerModel.setState(displayHomeViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }

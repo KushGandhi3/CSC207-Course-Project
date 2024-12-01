@@ -1,7 +1,5 @@
 package app;
 
-// TODO: Implement the Main class [TEAM]
-
 import javax.swing.*;
 
 public class Main {
