@@ -3,17 +3,17 @@ package use_case.display_history;
 import java.util.List;
 
 /**
- * Output data for the display history use case
+ * Output data for the display history use case.
  */
 public class DisplayHistoryOutputData {
 
-    private final String selectedLocation;
+    private final List<String> cities;
 
-    public DisplayHistoryOutputData(String selectedLocation) {
-        this.selectedLocation = selectedLocation;
+    public DisplayHistoryOutputData(List<String> cities) {
+        this.cities = cities;
     }
 
-    public String getSelectedLocation() {
-        return selectedLocation;
+    public List<String> getCities() {
+        return cities;
     }
 }

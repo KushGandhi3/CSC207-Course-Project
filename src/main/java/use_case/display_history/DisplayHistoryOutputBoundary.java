@@ -1,15 +1,24 @@
 package use_case.display_history;
 
+/**
+ * Interface representing the output boundary for displaying history in the application.
+ */
 public interface DisplayHistoryOutputBoundary {
 
     /**
-     * Prepare the success view for the history use case
-     * @param locations the locations to display
+     * Prepare the success view for the history use case.
+     * @param cities the locations to display
      */
-    void prepareSuccessView(DisplayHistoryOutputData locations);
+    void prepareSuccessView(DisplayHistoryOutputData cities);
 
     /**
-     * Prepare the switch to home view
+     * Prepares the failure view for the history use case.
+     * @param errorMessage the explanation of the failure.
      */
-    void prepareHomeView();
+    void prepareFailureView(String errorMessage);
+
+    /**
+     * Switch to home view.
+     */
+    void switchToHomeView();
 }
