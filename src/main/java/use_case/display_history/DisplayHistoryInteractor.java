@@ -34,6 +34,8 @@ public class DisplayHistoryInteractor implements DisplayHistoryInputBoundary {
         catch (RecentCitiesDataException exception) {
             displayHistoryPresenter.prepareFailureView(exception.getMessage());
         }
+
+        // TODO: City Button Implementation
     }
 
     /**
