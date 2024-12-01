@@ -35,7 +35,20 @@ public class RecentCitiesDAO implements DisplayDailyRecentCitiesDAI, DisplaySumm
      */
     @Override
     public void addCity(String city) throws RecentCitiesDataException {
-        updateCityList(city);
+        final JSONArray recentCitiesArray = readRecentCities();
+        final List<String> recentCitiesList = new ArrayList<>();
+
+        // Add the city to the front and remove duplicates
+        recentCitiesList.add(city);
+        for (int i = 0; i < recentCitiesArray.length(); i++) {
+            final String existingCity = recentCitiesArray.getString(i);
+            if (!existingCity.equals(city)) {
+                recentCitiesList.add(existingCity);
+            }
+        }
+
+        // Update the JSON Array and write to the file
+        writeToRecentCities(new JSONArray(recentCitiesList));
     }
 
     /**
@@ -91,50 +104,5 @@ public class RecentCitiesDAO implements DisplayDailyRecentCitiesDAI, DisplaySumm
                     "Failed to write to file: " + RECENT_CITIES_PATH + ". " + exception.getMessage()
             );
         }
-    }
-
-    /**
-     * Updates the list of recently viewed cities by adding a new city to the front
-     * and removing any duplicates from the list, then writes the updated list to
-     * the recent city data file.
-     *
-     * @param city the city to be added to the recently viewed cities list
-     * @throws RecentCitiesDataException when there is an issue reading or writing
-     *                                   the recent city data
-     */
-    private void updateCityList(String city) throws RecentCitiesDataException {
-        final JSONArray recentCitiesArray = readRecentCities();
-        final List<String> recentCitiesList = new ArrayList<>();
-
-        // Add the city to the front and remove duplicates
-        recentCitiesList.add(city);
-        for (int i = 0; i < recentCitiesArray.length(); i++) {
-            final String existingCity = recentCitiesArray.getString(i);
-            if (!existingCity.equals(city)) {
-                recentCitiesList.add(existingCity);
-            }
-        }
-
-        // Update the JSON Array and write to the file
-        writeToRecentCities(new JSONArray(recentCitiesList));
-    }
-
-    /**
-     * Check whether a provided city is already in a JSON Array.
-     * @param city the city to look for
-     * @param recentCitiesArray the array to look for the city in
-     * @return true when the city is in the array & false when the city is not in the array
-     */
-    private boolean cityExists(String city, JSONArray recentCitiesArray) {
-        return recentCitiesArray.toList().contains(city);
-    }
-
-    /**
-     * Set the chosen location.
-     * @param city the wanted location
-     */
-    @Override
-    public void setChosenCity(String city) throws RecentCitiesDataException {
-        updateCityList(city);
     }
 }
