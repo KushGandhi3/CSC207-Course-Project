@@ -23,7 +23,7 @@ import interface_adapter.display_summarization.DisplaySummarizationViewModel;
 public class SummarizationView extends JPanel implements PropertyChangeListener {
 
     private static final Font CRIMSONTITLE = FontManager.getCrimsonTextBold(80);
-    private static final Font CRIMSONSUBTITLE = FontManager.getCrimsonTextBold(40);
+    private static final Font CRIMSONSUBTITLE = FontManager.getCrimsonTextBold(24);
 
     private final String viewName = "Summarization View";
     private final DisplaySummarizationViewModel viewModel;
