@@ -5,6 +5,7 @@ import entity.recent_city.RecentCityDataFactory;
 import exception.RecentCitiesDataException;
 import org.json.JSONArray;
 import use_case.display_daily.DisplayDailyRecentCitiesDAI;
+import use_case.display_history.DisplayHistoryDAI;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -17,7 +18,7 @@ import java.util.List;
 /**
  * DAO for accessing data about recently viewed cities.
  */
-public class RecentCitiesDAO implements DisplayDailyRecentCitiesDAI {
+public class RecentCitiesDAO implements DisplayDailyRecentCitiesDAI, DisplayHistoryDAI {
 
     // the path to the data resource
     private static final String RESOURCES_FOLDER_PATH = "src/main/resources/";
@@ -127,6 +128,16 @@ public class RecentCitiesDAO implements DisplayDailyRecentCitiesDAI {
             }
         }
         return exists;
+    }
+
+    /**
+     * Set the chosen location.
+     * @param location the wanted location
+     */
+    @Override
+    public void setChosenLocation(String location) {
+        // TODO implement the logic here
+
     }
 
 }
