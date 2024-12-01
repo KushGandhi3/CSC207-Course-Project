@@ -108,4 +108,12 @@ public class SummarizationView extends JPanel implements PropertyChangeListener 
         final DisplaySummarizationState currentState = (DisplaySummarizationState) evt.getNewValue();
         setTextLabels(currentState);
     }
+
+    public String getViewName() {
+        return viewName;
+    }
+
+    public void setController(DisplaySummarizationController controller) {
+        this.displaySummarizationController = controller;
+    }
 }
