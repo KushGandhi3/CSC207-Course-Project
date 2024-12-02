@@ -128,7 +128,6 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         refreshButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 
         locationField.setFont(crimsonTextBold65);
-        locationField.setBackground(new Color(0, 0, 0, 0));
         locationField.setBorder(BorderFactory.createEmptyBorder());
         locationField.setHorizontalAlignment(JTextField.CENTER);
 
