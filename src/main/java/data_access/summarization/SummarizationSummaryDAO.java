@@ -18,6 +18,7 @@ import use_case.display_summarization.DisplaySummarizationSummaryDAI;
  */
 public class SummarizationSummaryDAO implements DisplaySummarizationSummaryDAI {
 
+    private static final String API_URL = "https://api.openai.com/v1/chat/completions";
     private final SummarizationFactory summarizationFactory;
     private final Dotenv dotenv = Dotenv.load();
     private final String apikey = dotenv.get("OPENAI_API_KEY");
@@ -36,31 +37,37 @@ public class SummarizationSummaryDAO implements DisplaySummarizationSummaryDAI {
      */
     public Summarization getSummarization(String prompt) throws APICallException {
         final OkHttpClient client = new OkHttpClient();
-        final String apiurl = "https://api.openai.com/v1/chat/completions";
 
         // Create the request body
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("model", "gpt-4o-mini");
+
         final JSONArray messages = new JSONArray();
-        final JSONObject message = new JSONObject();
-        message.put("role", "user");
-        message.put("content", prompt);
-        messages.put(message);
+
+        // add system and user messages
+        final JSONObject systemMessage = new JSONObject();
+        systemMessage.put("role", "user");
+        systemMessage.put("message", prompt);
+        messages.put(systemMessage);
+
         jsonBody.put("messages", messages);
 
-        // build http request
-        final okhttp3.RequestBody body = okhttp3.RequestBody.create(jsonBody.toString(),
-                okhttp3.MediaType.parse("application/json"));
+        // build the HTTP request
+        final okhttp3.RequestBody body = okhttp3.RequestBody.create(
+                jsonBody.toString(),
+                okhttp3.MediaType.parse("application/json")
+        );
         final Request request = new Request.Builder()
-                .url(apiurl)
+                .url(API_URL)
                 .addHeader("Authorization", "Bearer " + apikey)
+                .addHeader("Content-Type", "application/json")
                 .post(body)
                 .build();
 
         // execute request
         try (okhttp3.Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                throw new IOException("API Call Unsuccessful.");
+                throw new IOException("API Call Unsuccessful." + response.code());
             }
             if (response.body() == null) {
                 throw new IOException("API Returned No Response.");
