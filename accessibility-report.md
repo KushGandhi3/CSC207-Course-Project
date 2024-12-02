@@ -43,9 +43,21 @@ a text-to-speech and/or speech-to-text feature, a tutorial or navigation feature
 and to add more images and/or maps.
 
 ## Principle 5: Tolerance for Error
-
+Common input errors, such as entering an invalid or empty location, 
+are handled gracefully with clear error messages, ensuring users understand 
+what went wrong and how to fix it. We implemented 
+fail-safe features by testing edge cases and anticipating potential 
+pitfalls. The design avoids potentially harmful actions 
+by preventing invalid data submission entirely.
 
 ## Principle 6: Low Physical Effort
+Our program’s concise interface ensures smooth navigation 
+with minimal effort. Features like saved locations in the history 
+section allow users to revisit previous searches without retyping. 
+To enhance accessibility, we could add voice commands for weather updates or eye-tracking 
+technology for effortless interaction.
+
+
 ## Principle 7: Size and Space for Approach and Use
 Our program adheres to the principle of Size and Space 
 for Approach and Use by selecting a font style and size that 
