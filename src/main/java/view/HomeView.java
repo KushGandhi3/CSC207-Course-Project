@@ -128,6 +128,7 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         refreshButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 
         locationField.setFont(crimsonTextBold65);
+      
         locationField.setBorder(BorderFactory.createEmptyBorder());
         locationField.setHorizontalAlignment(JTextField.CENTER);
 
@@ -216,6 +217,8 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("update_data")) {
             displayHomeController.execute();
+            DisplayHomeState currentState = displayHomeViewModel.getState();
+            locationField.setText(currentState.getCity());
         } else {
             final DisplayHomeState currentState = (DisplayHomeState) evt.getNewValue();
 

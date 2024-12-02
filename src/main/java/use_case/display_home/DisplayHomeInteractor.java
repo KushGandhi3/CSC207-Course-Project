@@ -41,7 +41,7 @@ public class DisplayHomeInteractor implements DisplayHomeInputBoundary {
             this.displayHomePresenter.prepareSuccessView(displayHomeOutputData);
         } catch(APICallException | RecentCitiesDataException exception) {
             exception.printStackTrace();
-            displayHomePresenter.prepareFailView("No Cities To Display.");
+            displayHomePresenter.prepareFailView("City Not Found.");
         }
     }
 
@@ -57,7 +57,7 @@ public class DisplayHomeInteractor implements DisplayHomeInputBoundary {
             this.displayHomePresenter.prepareSuccessView(displayHomeOutputData);
         } catch(APICallException | RecentCitiesDataException exception) {
             exception.printStackTrace();
-            displayHomePresenter.prepareFailView(exception.getMessage());
+            displayHomePresenter.prepareFailView("City Not Found.");
         }
     }
 

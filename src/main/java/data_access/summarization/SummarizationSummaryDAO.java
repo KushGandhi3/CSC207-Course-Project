@@ -18,6 +18,7 @@ import use_case.display_summarization.DisplaySummarizationSummaryDAI;
  */
 public class SummarizationSummaryDAO implements DisplaySummarizationSummaryDAI {
 
+    private static final String API_URL = "https://api.openai.com/v1/chat/completions";
     private final SummarizationFactory summarizationFactory;
     private final Dotenv dotenv = Dotenv.load();
     private final String apikey = dotenv.get("OPENAI_API_KEY");
@@ -36,7 +37,6 @@ public class SummarizationSummaryDAO implements DisplaySummarizationSummaryDAI {
      */
     public Summarization getSummarization(String prompt) throws APICallException {
         final OkHttpClient client = new OkHttpClient();
-        final String apiurl = "https://api.openai.com/v1/chat/completions";
 
         // Define the JSON schema for the response
         final JSONObject schema = new JSONObject();
@@ -58,6 +58,7 @@ public class SummarizationSummaryDAO implements DisplaySummarizationSummaryDAI {
 
         // Create the request body
         final JSONObject jsonBody = new JSONObject();
+
         jsonBody.put("model", "gpt-4-0613"); // Use a model that supports structured responses
         jsonBody.put("messages", new JSONArray().put(new JSONObject().put("role", "user").put("content", prompt)));
         jsonBody.put("functions", functions);
@@ -66,15 +67,18 @@ public class SummarizationSummaryDAO implements DisplaySummarizationSummaryDAI {
         // Build the HTTP request
         final okhttp3.RequestBody body = okhttp3.RequestBody.create(jsonBody.toString(),
                 okhttp3.MediaType.parse("application/json"));
+      
         final Request request = new Request.Builder()
-                .url(apiurl)
+                .url(API_URL)
                 .addHeader("Authorization", "Bearer " + apikey)
+                .addHeader("Content-Type", "application/json")
                 .post(body)
                 .build();
 
         // Execute the request
         try (okhttp3.Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
+
                 throw new IOException("API Call Unsuccessful. HTTP Code: " + response.code());
             }
             if (response.body() == null) {
