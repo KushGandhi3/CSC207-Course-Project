@@ -1,7 +1,7 @@
 # Forecastly
 
 **Designed, Developed, & Tested By:**
-Kush Gandhi, Daniil Trukhin, Chika Peynisa, Jannate Rahim, and Diana Akhmedova
+Kush Gandhi, Daniil Trukhin, Chika Peynisa, and Diana Akhmedova
 
 ### Modernized Weather Information at Your Fingertips
 Forecastly is a sleek, modernized weather app designed to enhance your daily planning with precision and convenience. By leveraging AI, it delivers personalized weather summaries, outfit suggestions, and travel advice tailored to the current conditions.
@@ -47,19 +47,34 @@ Whether you're deciding what to wear, planning a trip, or simply curious about t
 
 ## Installation Instructions
 To install Forecastly on your device, follow these simple steps:
-- Clone the repository in your preferred IDE (e.g., IntelliJ IDEA, Eclipse, or Visual Studio Code)
+- Clone the repository in your preferred IDE (e.g., IntelliJ IDEA)
 - Make .env file in the root directory and add the API key for OpenWeatherMap API and OpenAI API in the following format:
 `OPEN_WEATHER_MAP_API_KEY=your_api_key`
 `OPEN_AI_API_KEY=your_api_key`
 - Run the `Main` class to launch the application
 
 ## Usage Guide
-
+- **Launch the application**
+    - Run the `Main` class to open Forecastly.
+- **Home Screen**
+    - Input any location to view the current weather conditions.
+    - Click on the interactive buttons to explore detailed weather insights.
+- **Hourly Forecast**
+    - Click on the *Hourly* button to view an hourly breakdown of the weather conditions.
+- **Daily Forecast**
+    - Click on the *Daily* button to access a 7-day forecast with detailed daily insights.
+- **Weather Checker**
+    - Click on the *Checker* button input a location, select a condition (e.g., rain, snow), and specify the 
+  desired time frame to see if it matches.
+- **Location History**
+    - Click on the *History* button to view your recent searches and access the weather for a saved location.
+- **Weather Summary**
+    - Click on the *Summary* button to receive an AI-powered weather summary with outfit suggestions and travel advice.
 
 ## License
 MIT License
 
-Copyright (c) 2024 Kush Gandhi, Daniil Trukhin, Chika Peynisa, Jannate Rahim, and Diana Akhmedova
+Copyright (c) 2024 Kush Gandhi, Daniil Trukhin, Chika Peynisa, and Diana Akhmedova
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -80,8 +95,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ## Feedback
 
-If you have any feedback or suggestions, please reach out to us at //email//. We'd love to hear from you and are always looking to improve Forecastly based on user input.
+If you have any feedback or suggestions, please fill in this [form](https://forms.gle/WpJZ67PVNXLMKfKfA). We'd love to hear from you and are 
+always looking to improve Forecastly based on user input.
 
 ## Contributions
-
+We welcome contributions from the community to enhance Forecastly and make it even more user-friendly and accessible. If you're interested in contributing, please refer to our [Contribution Guidelines](CONTRIBUTING.md) for more information.
 
