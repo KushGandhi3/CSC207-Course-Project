@@ -55,7 +55,7 @@ public class DisplayHomePresenter implements DisplayHomeOutputBoundary {
         // set error state
         DisplayHomeState state = this.displayHomeViewModel.getState();
 
-        state.setCity("");
+        state.setCity(error);
         state.setCondition("-");
         state.setTemperature("-°C");
         state.setLowTemperature("-°C");

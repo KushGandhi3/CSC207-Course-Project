@@ -92,6 +92,7 @@ public class HistoryView extends JPanel implements PropertyChangeListener {
 
             cityButton.addActionListener(evt -> {
                 displayHistoryController.execute(city);
+                displayHistoryController.switchToHomeView();
             });
 
             cityListPanel.add(cityButton);
