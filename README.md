@@ -80,7 +80,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ## Feedback
 
-If you have any feedback or suggestions, please reach out to us at //email//. We'd love to hear from you and are always looking to improve Forecastly based on user input.
+If you have any feedback or suggestions, please fill in this [form](https://forms.gle/WpJZ67PVNXLMKfKfA). We'd love to hear from you and are 
+always looking to improve Forecastly based on user input.
 
 ## Contributions
 
