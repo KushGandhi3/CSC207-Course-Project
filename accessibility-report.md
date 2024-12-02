@@ -67,3 +67,31 @@ sufficient spacing between UI elements to minimize accidental
 clicks and enhance ease of interaction.
 
 
+## Target Audience
+Our weather application would be marketed towards a wide 
+range of users, particularly travelers, outdoor enthusiasts, 
+and commuters, who need accurate and timely weather updates. 
+The program can also be advantageous to specific groups like 
+farmers, event planners, and businesses that heavily rely on weather 
+forecasts in order to perform their jobs. Furthermore, the AI Summary
+and localized forecasting are also useful to the average person, who 
+is looking to go outside prepared for the weather. Essentially, the 
+use cases are vast, ranging from benefitting recreational activities,
+such as by providing real-time weather conditions to bikers and 
+hikers, to curating business models, for example, by assisting 
+farmers’ agricultural production through detailed precipitation 
+and temperature reports. By offering localized and user-specific 
+program features, our weather application caters to all 
+individuals seeking a tailored weather experience.
+
+## Program Accessibility for Demographics
+Our program may be less likely to be used by individuals who 
+are not reliant on precise weather data or do not frequently go 
+outside. For example, those living in climates with stable weather 
+patterns may not find the weather application as valuable. 
+Furthermore, people with mobility impairments that restrict the time 
+they can spend outside may also not use the program as actively. 
+While our weather application is catered to a vast amount of 
+individuals with varying demographics, it is understandable that some 
+groups either may not 
+need or find our services as useful.
