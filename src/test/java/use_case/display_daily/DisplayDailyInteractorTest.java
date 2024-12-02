@@ -1,56 +1,71 @@
-package use_case;
+package use_case.display_daily;
 
+import constants.Constants;
+import data_access.recent_city.RecentCitiesDAO;
 import data_access.weather.InMemoryWeatherDAO;
+import entity.recent_city.ConcreteRecentCityDataFactory;
+import entity.recent_city.RecentCityData;
+import entity.recent_city.RecentCityDataFactory;
 import entity.weather.daily_weather.ConcreteDailyWeatherDataFactory;
 import entity.weather.daily_weather.DailyWeatherDataFactory;
 import entity.weather.day_weather.ConcreteDayWeatherDataFactory;
 import entity.weather.day_weather.DayWeatherDataFactory;
 import entity.weather.hour_weather.ConcreteHourWeatherDataFactory;
 import entity.weather.hour_weather.HourWeatherDataFactory;
-import entity.weather.hourly_weather.ConcreteHourlyWeatherData;
 import entity.weather.hourly_weather.ConcreteHourlyWeatherDataFactory;
 import entity.weather.hourly_weather.HourlyWeatherDataFactory;
 import exception.APICallException;
+import interface_adapter.display_daily.DisplayDailyPresenter;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
-import entity.weather.hour_weather.HourWeatherData;
-import entity.weather.hourly_weather.HourlyWeatherData;
 import use_case.display_checker.DisplayCheckerDAI;
 import use_case.display_checker.DisplayCheckerInputData;
 import use_case.display_checker.DisplayCheckerInteractor;
 import use_case.display_checker.DisplayCheckerOutputBoundary;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class DisplayCheckerInteractorTest {
+class DisplayDailyInteractorTest {
 
     @Test
     void successConditionMetTest() {
-        // input data
-        DisplayCheckerInputData inputData = new DisplayCheckerInputData("Toronto", "Rain", 0, 1);
-
-        // DAI
-        DisplayCheckerDAI displayCheckerDAI = getDisplayCheckerDAI();
+        DisplayDailyWeatherDAI weatherDAO = getDisplayDailyWeatherDAO();
+        DisplayDailyRecentCitiesDAI recentCitiesDAO = getDisplayDailyRecentCitiesDAO();
 
         // Output boundary
-        DisplayCheckerOutputBoundary successPresenter = new DisplayCheckerOutputBoundary() {
+        DisplayDailyOutputBoundary presenter = new DisplayDailyOutputBoundary() {
             @Override
-            public void prepareCondMetView() {assertTrue(true);}
+            public void prepareSuccessView(DisplayDailyOutputData displayDailyOutputData) {
+                assertEquals("Toronto", displayDailyOutputData.getCity());
+
+                List<String> actualWeekdays = displayDailyOutputData.getWeekdays();
+                List<String> expectedWeekdays = new ArrayList<>();
+                ZonedDateTime time = ZonedDateTime.now(ZoneId.of("America/New_York"));
+                for (int i = 0; i < Constants.WEEK_SIZE; i++) {
+                    expectedWeekdays.add(time.plusDays(i).getDayOfWeek().toString());
+                }
+
+                List<String> actualTemperatures = displayDailyOutputData.getTemperatures();
+
+            }
             @Override
-            public void prepareCondNotMetView() {fail("Condition not met view unexpectedly called.");}
+            public void prepareFailView(String errorMessage) {
+
+            }
             @Override
-            public void prepareHomeView() {fail("Home view unexpectedly called.");}
-            @Override
-            public void prepareLocationEmptyView() {fail("Location empty view unexpectedly called.");}
-            @Override
-            public void prepareInvalidLocationView() {fail("Invalid location view unexpectedly called.");}
+            public void switchToHomeView() {
+
+            }
         };
 
         // Interactor
-        DisplayCheckerInteractor interactor = new DisplayCheckerInteractor(displayCheckerDAI, successPresenter);
+        DisplayCheckerInteractor interactor = new DisplayCheckerInteractor(displayCheckerDAI, presenter);
         interactor.execute(inputData);
     }
 
@@ -186,56 +201,25 @@ class DisplayCheckerInteractorTest {
         interactor.execute(inputData);
     }
 
-    private DisplayCheckerDAI getAPIerrorDisplayCheckerDAI() {
-        return location -> {
-            throw new APICallException("API call failed.");
-        };
+    /**
+     * Helper for creating DisplayDailyRecentCitiesDAO's.
+     */
+    private DisplayDailyRecentCitiesDAI getDisplayDailyRecentCitiesDAO() {
+        RecentCityDataFactory recentCityDataFactory = new ConcreteRecentCityDataFactory();
+
+        return new RecentCitiesDAO(recentCityDataFactory);
     }
 
-    // This is a helper method to create a DisplayCheckerDAI object with data.
-    private DisplayCheckerDAI getDisplayCheckerDAI() {
+    /**
+     * Helper for creating DisplayDailyWeatherDAO's.
+     */
+    private DisplayDailyWeatherDAI getDisplayDailyWeatherDAO() {
         DayWeatherDataFactory dayWeatherDataFactory = new ConcreteDayWeatherDataFactory();
         DailyWeatherDataFactory dailyWeatherDataFactory = new ConcreteDailyWeatherDataFactory();
         HourWeatherDataFactory hourWeatherDataFactory = new ConcreteHourWeatherDataFactory();
         HourlyWeatherDataFactory hourlyWeatherDataFactory = new ConcreteHourlyWeatherDataFactory();
 
-        InMemoryWeatherDAO inMemoryWeatherDAO = new InMemoryWeatherDAO(dayWeatherDataFactory,
-                dailyWeatherDataFactory,
-                hourWeatherDataFactory,
+        return new InMemoryWeatherDAO(dayWeatherDataFactory, dailyWeatherDataFactory, hourWeatherDataFactory,
                 hourlyWeatherDataFactory);
-
-
-        return location -> {
-            try {
-                return inMemoryWeatherDAO.getHourlyWeatherData("Toronto");
-            } catch (APICallException e) {
-                return null;
-            }
-        };
-    }
-
-    // This is a helper method to create a DisplayCheckerDAI object with no data.
-    private DisplayCheckerDAI getEmptyDisplayCheckerDAI() {
-        DayWeatherDataFactory dayWeatherDataFactory = new ConcreteDayWeatherDataFactory();
-        DailyWeatherDataFactory dailyWeatherDataFactory = new ConcreteDailyWeatherDataFactory();
-        HourWeatherDataFactory hourWeatherDataFactory = new ConcreteHourWeatherDataFactory();
-        HourlyWeatherDataFactory hourlyWeatherDataFactory = new ConcreteHourlyWeatherDataFactory();
-
-        InMemoryWeatherDAO inMemoryWeatherDAO = new InMemoryWeatherDAO(dayWeatherDataFactory,
-                dailyWeatherDataFactory,
-                hourWeatherDataFactory,
-                hourlyWeatherDataFactory);
-
-
-        return location -> {
-            try {
-                return inMemoryWeatherDAO.getHourlyWeatherData("Torontoww");
-            } catch (APICallException | JSONException e) {
-                return null;
-            }
-        };
-
     }
 }
-
-
