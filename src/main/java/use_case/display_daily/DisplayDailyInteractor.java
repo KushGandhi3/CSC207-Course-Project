@@ -41,6 +41,7 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
             }
             city = recentCityData.getRecentCityList().getFirst();
         } catch(RecentCitiesDataException exception) {
+            exception.printStackTrace();
             displayDailyPresenter.prepareFailView(exception.getMessage());
             return;
         }
@@ -55,6 +56,7 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
 
             displayDailyPresenter.prepareSuccessView(displayDailyOutputData);
         } catch (APICallException exception) {
+            exception.printStackTrace();
             displayDailyPresenter.prepareFailView(exception.getMessage());
         }
     }
@@ -66,11 +68,12 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
         try {
             final RecentCityData recentCityData = this.recentCitiesDAO.getRecentCityData();
             if (recentCityData.getRecentCityList().isEmpty()) {
-                throw new RecentCitiesDataException("No recent cities found");
+                throw new RecentCitiesDataException("No Cities To Display.");
             }
             city = recentCityData.getRecentCityList().getFirst();
         } catch(RecentCitiesDataException exception) {
-            displayDailyPresenter.prepareFailView(exception.getMessage());
+            exception.printStackTrace();
+            displayDailyPresenter.prepareFailView("No Cities To Display.");
             return;
         }
 
@@ -86,7 +89,8 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
 
             displayDailyPresenter.prepareSuccessView(displayDailyOutputData);
         } catch (APICallException exception) {
-            displayDailyPresenter.prepareFailView(exception.getMessage());
+            exception.printStackTrace();
+            displayDailyPresenter.prepareFailView("Weather Data Unavailable.");
         }
     }
 
