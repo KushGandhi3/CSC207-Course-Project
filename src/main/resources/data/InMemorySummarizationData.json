@@ -1,0 +1,38 @@
+{
+  "id": "chatcmpl-AZtOjiqABUwX1xVSCWgjyKDvOQ486",
+  "object": "chat.completion",
+  "created": 1733117793,
+  "model": "gpt-4-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "function_call": {
+          "name": "get_weather_summary",
+          "arguments": "{\n  \"weather_summary\": \"The weather in Toronto is expected to be cloudy throughout the day with temperatures fluctuating between -3 and 1 degree Celsius.\",\n  \"outfit_suggestion\": \"Considering the cold temperatures and cloudy conditions, it is advisable to wear warm clothing, including a thick coat, gloves and a hat.\",\n  \"travel_advice\": \"The roads might be icy due to low temperatures so please exercise caution while commuting. If possible, avoid driving during peak hours to minimize travel delays.\"\n}"
+        },
+        "refusal": null
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 225,
+    "completion_tokens": 103,
+    "total_tokens": 328,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "system_fingerprint": null
+}
