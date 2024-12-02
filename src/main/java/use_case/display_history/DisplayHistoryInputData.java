@@ -9,9 +9,6 @@ public class DisplayHistoryInputData {
     public DisplayHistoryInputData(String city) {
         this.city = city;
     }
-    public DisplayHistoryInputData() {
-        // do nothing
-    }
 
     public String getCity() {
         return city;
