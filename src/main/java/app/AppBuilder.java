@@ -51,40 +51,6 @@ import view.*;
 import javax.swing.*;
 import java.awt.*;
 
-//// Weekly Page
-//import use_case.display_weekly.DisplayWeeklyDataAccessInterface;
-//import use_case.display_weekly.DisplayWeeklyInteractor;
-//import use_case.display_weekly.DisplayWeeklyInputBoundary;
-//import use_case.display_weekly.DisplayWeeklyOutputBoundary;
-//import interface_adapter.display_weekly.DisplayWeeklyController;
-//import interface_adapter.display_weekly.DisplayWeeklyPresenter;
-//import interface_adapter.display_weekly.DisplayWeeklyState;
-//import interface_adapter.display_weekly.DisplayWeeklyViewModel;
-//import view.WeeklyView;
-//
-//// Alerts Page
-//import use_case.set_alerts.SetAlertsDataAccessInterface;
-//import use_case.set_alerts.SetAlertsInteractor;
-//import use_case.set_alerts.SetAlertsInputBoundary;
-//import use_case.set_alerts.SetAlertsOutputBoundary;
-//import interface_adapter.set_alerts.SetAlertController;
-//import interface_adapter.set_alerts.SetAlertPresenter;
-//import interface_adapter.set_alerts.SetAlertState;
-//import interface_adapter.set_alerts.SetAlertViewModel;
-//import view.SetAlertsView;
-//
-//// Outfit Page
-//import use_case.analyze_outfit.AnalyzeOutfitDataAccessInterface;
-//import use_case.analyze_outfit.AnalyzeOutfitInteractor;
-//import use_case.analyze_outfit.AnalyzeOutfitInputBoundary;
-//import use_case.analyze_outfit.AnalyzeOutfitOutputBoundary;
-//import interface_adapter.analyze_outfit.AnalyzeOutfitController;
-//import interface_adapter.analyze_outfit.AnalyzeOutfitPresenter;
-//import interface_adapter.analyze_outfit.AnalyzeOutfitState;
-//import interface_adapter.analyze_outfit.AnaylzeOutfitViewModel;
-//import view.AnalyzeOutfitView;
-//
-
 /**
  * The AppBuilder class is responsible for building the application.
  */
