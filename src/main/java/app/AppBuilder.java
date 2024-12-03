@@ -330,9 +330,8 @@ public class AppBuilder {
 
         application.add(cardPanel);
 
-        // TODO: CHANGE BACK TO HOME
         // set Home View as default view
-        viewManagerModel.setState(hourlyView.getViewName());
+        viewManagerModel.setState(homeView.getViewName());
         viewManagerModel.firePropertyChanged();
 
         return application;

@@ -119,7 +119,6 @@ public class HourlyView extends JPanel implements PropertyChangeListener, Action
                     if (evt.getSource().equals(backButton)) {
                         System.out.println("you pressed the back button");
                         final DisplayHourlyState currentState = this.displayHourlyViewModel.getState();
-                        // TODO: Implement the back button
                         this.displayHourlyController.execute(
                                 currentState.getTime().get(0)
                         );
