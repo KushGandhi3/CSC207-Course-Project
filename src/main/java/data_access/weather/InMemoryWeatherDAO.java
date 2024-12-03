@@ -14,6 +14,8 @@ import org.json.JSONObject;
 import use_case.display_checker.DisplayCheckerDAI;
 import use_case.display_daily.DisplayDailyWeatherDAI;
 import use_case.display_home.DisplayHomeWeatherDAI;
+import use_case.display_hourly.DisplayHourlyWeatherDAI;
+import use_case.display_summarization.DisplaySummarizationWeatherDAI;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,7 +28,8 @@ import java.util.List;
  * In Memory Data Object for simulating the creation of weather data entities. Note that the only available cities are
  * Toronto, Vancouver, and Edmonton with weather data from a past forecast.
  */
-public class InMemoryWeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWeatherDAI, DisplayCheckerDAI {
+public class InMemoryWeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWeatherDAI, DisplayCheckerDAI,
+        DisplayHourlyWeatherDAI, DisplaySummarizationWeatherDAI {
 
     private static final String IN_MEMORY_WEATHER_DATA_PATH = "/data/InMemoryWeatherData.json";
 
