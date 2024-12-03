@@ -15,11 +15,13 @@ public class Main {
                 .addDailyView()
                 .addHistoryView()
                 .addCheckerView()
+                .addHourlyView()
                 .addDisplaySummarizationUseCase()
                 .addDisplayHistoryUseCase()
                 .addDisplayDailyUseCase()
                 .addDisplayCheckerUseCase()
                 .addDisplayHomeUseCase()
+                .addDisplayHourlyUseCase()
                 .build();
 
         application.pack();

@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapter.display_daily.DisplayDailyState;
 import interface_adapter.display_hourly.DisplayHourlyState;
 import interface_adapter.display_hourly.DisplayHourlyController;
 import interface_adapter.display_hourly.DisplayHourlyViewModel;
@@ -29,7 +30,7 @@ public class HourlyView extends JPanel implements PropertyChangeListener, Action
     private static final Font interTextBold18 = FontManager.getCrimsonTextBold(18);
 
     // View Name
-    private final String viewName = "Hourly Forecast";
+    private final String viewName = "Hourly";
 
     // View Model
     private final DisplayHourlyViewModel displayHourlyViewModel;
@@ -314,6 +315,17 @@ public class HourlyView extends JPanel implements PropertyChangeListener, Action
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals("update_data")) {
+            final DisplayHourlyState currentState = (DisplayHourlyState) evt.getNewValue();
+
+            // execute the Display Hourly Weather Use Case on the current hour
+            displayHourlyController.execute(currentState.getTime().getFirst());
+        } else {
+            final DisplayHourlyState currentState = (DisplayHourlyState) evt.getNewValue();
+            setLabels(currentState);
+        }
+
+
         final DisplayHourlyState currentState = (DisplayHourlyState) evt.getNewValue();
         setLabels(currentState);
     }

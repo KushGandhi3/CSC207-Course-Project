@@ -28,6 +28,9 @@ import interface_adapter.display_history.DisplayHistoryViewModel;
 import interface_adapter.display_home.DisplayHomeController;
 import interface_adapter.display_home.DisplayHomePresenter;
 import interface_adapter.display_home.DisplayHomeViewModel;
+import interface_adapter.display_hourly.DisplayHourlyController;
+import interface_adapter.display_hourly.DisplayHourlyPresenter;
+import interface_adapter.display_hourly.DisplayHourlyViewModel;
 import interface_adapter.display_summarization.DisplaySummarizationController;
 import interface_adapter.display_summarization.DisplaySummarizationPresenter;
 import interface_adapter.display_summarization.DisplaySummarizationViewModel;
@@ -41,6 +44,7 @@ import use_case.display_history.DisplayHistoryInputBoundary;
 import use_case.display_history.DisplayHistoryInteractor;
 import use_case.display_history.DisplayHistoryOutputBoundary;
 import use_case.display_home.*;
+import use_case.display_hourly.*;
 import use_case.display_summarization.*;
 import view.*;
 
@@ -120,6 +124,11 @@ public class AppBuilder {
             new SummarizationSummaryDAO(summarizationFactory);
     // history DAI's
     private final DisplayHistoryDAI displayHistoryDAO = new RecentCitiesDAO(recentCityDataFactory);
+    // hourly DAI's
+    private final DisplayHourlyRecentCitiesDAI displayHourlyRecentCitiesDAO =
+            new RecentCitiesDAO(recentCityDataFactory);
+    private final DisplayHourlyWeatherDAI displayHourlyWeatherDAO = new WeatherDAO(dayWeatherDataFactory,
+            dailyWeatherDataFactory, hourWeatherDataFactory, hourlyWeatherDataFactory);
 
     private DailyView dailyView;
     private DisplayDailyViewModel displayDailyViewModel;
@@ -135,6 +144,9 @@ public class AppBuilder {
 
     private HistoryView historyView;
     private DisplayHistoryViewModel displayHistoryViewModel;
+
+    private HourlyView hourlyView;
+    private DisplayHourlyViewModel displayHourlyViewModel;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -192,6 +204,17 @@ public class AppBuilder {
         displayHistoryViewModel = new DisplayHistoryViewModel();
         historyView = new HistoryView(displayHistoryViewModel);
         cardPanel.add(historyView, historyView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the Hourly View to the application
+     * @return this builder
+     */
+    public AppBuilder addHourlyView() {
+        displayHourlyViewModel = new DisplayHourlyViewModel();
+        hourlyView = new HourlyView(displayHourlyViewModel);
+        cardPanel.add(hourlyView, hourlyView.getViewName());
         return this;
     }
 
@@ -279,6 +302,23 @@ public class AppBuilder {
     }
 
     /**
+     * Adds the Display Hourly Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addDisplayHourlyUseCase() {
+        final DisplayHourlyOutputBoundary displayHourlyPresenter =
+                new DisplayHourlyPresenter(displayHourlyViewModel, displayHomeViewModel, viewManagerModel);
+        final DisplayHourlyInputBoundary displayHourlyInteractor =
+                new DisplayHourlyInteractor(displayHourlyRecentCitiesDAO, displayHourlyWeatherDAO,
+                displayHourlyPresenter);
+
+        final DisplayHourlyController displayHourlyController =
+                new DisplayHourlyController(displayHourlyInteractor);
+        hourlyView.setDisplayHourlyController(displayHourlyController);
+        return this;
+    }
+
+    /**
      * Creates the JFrame for the application and initially sets the Home View to be displayed.
      * @return the application
      */
@@ -290,8 +330,9 @@ public class AppBuilder {
 
         application.add(cardPanel);
 
+        // TODO: CHANGE BACK TO HOME
         // set Home View as default view
-        viewManagerModel.setState(homeView.getViewName());
+        viewManagerModel.setState(hourlyView.getViewName());
         viewManagerModel.firePropertyChanged();
 
         return application;
