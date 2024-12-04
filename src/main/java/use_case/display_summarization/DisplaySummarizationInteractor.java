@@ -28,38 +28,68 @@ public class DisplaySummarizationInteractor implements DisplaySummarizationInput
 
     @Override
     public void execute() {
-
-        // Declare variables
         final String city;
         final HourlyWeatherData hourlyWeatherData;
         final Summarization summarization;
 
         try {
+            // Fetch recent city data
             final RecentCityData recentCityData = recentCitiesDAO.getRecentCityData();
-            if (recentCityData.getRecentCityList().isEmpty()) {
-                throw new RecentCitiesDataException("No Cities To Display");
-            }
+
+            // Extract the first city from the list
             city = recentCityData.getRecentCityList().getFirst();
 
-            hourlyWeatherData = weatherDAO.getHourlyWeatherData(city);
-
-            summarization = summaryDAO.getSummarization(promptGenerator(hourlyWeatherData));
-
-            // prepare the success view
-            final DisplaySummarizationOutputData response = new DisplaySummarizationOutputData(summarization
-                    .getWeatherSummary(), summarization.getOutfitSuggestion(), summarization.getTravelAdvice());
-            displaySummarizationPresenter.prepareSuccessView(response);
-        } catch (RecentCitiesDataException exception) {
-            exception.printStackTrace();
-            displaySummarizationPresenter.prepareFailureView("No Cities To Display.");
-        } catch (APICallException exception) {
-            exception.printStackTrace();
-            displaySummarizationPresenter.prepareFailureView("Weather Data Unavailable.");
         }
+        catch (RecentCitiesDataException exception) {
+            // Handle issues retrieving recent city data
+            displaySummarizationPresenter.prepareFailureView("Unable to retrieve recent cities data.");
+            return;
+        }
+
+        try {
+            // Fetch hourly weather data
+            hourlyWeatherData = weatherDAO.getHourlyWeatherData(city);
+        }
+        catch (APICallException weatherException) {
+            displaySummarizationPresenter.prepareFailureView("Weather Data Unavailable.");
+            return;
+        }
+
+        try {
+            // Fetch summarization data
+            summarization = summaryDAO.getSummarization(promptGenerator(hourlyWeatherData));
+        }
+        catch (APICallException summaryException) {
+            displaySummarizationPresenter.prepareFailureView("Summarization Service Unavailable.");
+            return;
+        }
+
+        // Prepare the success view
+        final DisplaySummarizationOutputData response = new DisplaySummarizationOutputData(
+                summarization.getWeatherSummary(),
+                summarization.getOutfitSuggestion(),
+                summarization.getTravelAdvice()
+        );
+        displaySummarizationPresenter.prepareSuccessView(response);
     }
 
-    private String promptGenerator(HourlyWeatherData hourlyWeatherData) {
+    @Override
+    public void switchToHomeView() {
+        displaySummarizationPresenter.switchToHomeView();
+    }
 
+    /**
+     * Generates a prompt string based on given hourly weather data. The prompt
+     * includes instructions for generating a weather summary, outfit suggestion,
+     * and travel advice, and is formatted for JSON output. It also provides
+     * location and weather information.
+     *
+     * @param hourlyWeatherData the hourly weather data containing temperature
+     *                          information and a list of weather conditions
+     *                          by the hour
+     * @return a string containing a structured prompt based on the provided weather data
+     */
+    public String promptGenerator(HourlyWeatherData hourlyWeatherData) {
         final StringBuilder promptBuilder = new StringBuilder();
 
         // Add general instructions
@@ -88,7 +118,7 @@ public class DisplaySummarizationInteractor implements DisplaySummarizationInput
             for (int i = 0; i < Math.min(maxHoursToInclude, hourlyWeatherData.getHourWeatherDataList().size()); i++) {
                 final HourWeatherData hourData = hourlyWeatherData.getHourWeatherDataList().get(i);
                 promptBuilder.append("- Hour ").append(i + 1).append(": ")
-                        .append("Temperature: ").append(hourData.getTemperature()).append("degrees celsius, ")
+                        .append("Temperature: ").append(hourData.getTemperature()).append(" degrees Celsius, ")
                         .append("Conditions: ").append(hourData.getCondition()).append("\n");
             }
         }
@@ -97,10 +127,5 @@ public class DisplaySummarizationInteractor implements DisplaySummarizationInput
         }
 
         return promptBuilder.toString();
-    }
-
-    @Override
-    public void switchToHomeView() {
-        displaySummarizationPresenter.switchToHomeView();
     }
 }
