@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import exception.ApiCallException;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -19,7 +20,6 @@ import entity.weather.hour_weather.HourWeatherData;
 import entity.weather.hour_weather.HourWeatherDataFactory;
 import entity.weather.hourly_weather.HourlyWeatherData;
 import entity.weather.hourly_weather.HourlyWeatherDataFactory;
-import exception.APICallException;
 import use_case.display_checker.DisplayCheckerDAI;
 import use_case.display_daily.DisplayDailyWeatherDAI;
 import use_case.display_home.DisplayHomeWeatherDAI;
@@ -57,10 +57,10 @@ public class InMemoryWeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWe
      * Returns HourlyWeatherData entity with updated weather information from in memory weather data file.
      * @param city the name of the city to get the weather forecast for
      * @return an HourlyWeatherData entity
-     * @throws APICallException if the in memory weather data cannot be accessed
+     * @throws ApiCallException if the in memory weather data cannot be accessed
      */
     @Override
-    public HourlyWeatherData getHourlyWeatherData(String city) throws APICallException {
+    public HourlyWeatherData getHourlyWeatherData(String city) throws ApiCallException {
         final JSONObject weatherData = readInMemoryWeather().getJSONObject(city);
 
         final String timezone = weatherData.getString(TIME_ZONE);
@@ -137,10 +137,10 @@ public class InMemoryWeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWe
      * Returns a DailyWeatherData entity with weather data from the in memory weather data file.
      * @param city the name of the city to get the weather forecast for
      * @return a DailyWeatherData entity
-     * @throws APICallException if the in memory weather data cannot be accessed
+     * @throws ApiCallException if the in memory weather data cannot be accessed
      */
     @Override
-    public DailyWeatherData getDailyWeatherData(String city) throws APICallException {
+    public DailyWeatherData getDailyWeatherData(String city) throws ApiCallException {
         final JSONObject weatherData = readInMemoryWeather().getJSONObject(city);
 
         final String timezone = weatherData.getString(TIME_ZONE);
@@ -212,16 +212,16 @@ public class InMemoryWeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWe
     /**
      * Read the InMemoryWeatherData json file from resource. Return a JSON Object of the weather data in the file.
      * @return JSONObject containing the weather data
-     * @throws APICallException when the InMemoryWeatherData JSON file is not found
+     * @throws ApiCallException when the InMemoryWeatherData JSON file is not found
      */
-    private JSONObject readInMemoryWeather() throws APICallException {
+    private JSONObject readInMemoryWeather() throws ApiCallException {
         try (InputStream inputStream = this.getClass().getResourceAsStream(IN_MEMORY_WEATHER_DATA_PATH)) {
             final StringBuilder jsonString = getStringBuilder(inputStream);
             // convert the weather data file to a JSON object
             return new JSONObject(jsonString.toString());
         }
         catch (IOException exception) {
-            throw new APICallException("Filed To Load In Memory Weather Data. " + exception);
+            throw new ApiCallException("Filed To Load In Memory Weather Data. " + exception);
         }
     }
 

@@ -4,7 +4,7 @@ import entity.recent_city.RecentCityData;
 import entity.summarization.Summarization;
 import entity.weather.hour_weather.HourWeatherData;
 import entity.weather.hourly_weather.HourlyWeatherData;
-import exception.APICallException;
+import exception.ApiCallException;
 import exception.RecentCitiesDataException;
 
 /**
@@ -50,7 +50,7 @@ public class DisplaySummarizationInteractor implements DisplaySummarizationInput
             // Fetch hourly weather data
             hourlyWeatherData = weatherDAO.getHourlyWeatherData(city);
         }
-        catch (APICallException weatherException) {
+        catch (ApiCallException weatherException) {
             displaySummarizationPresenter.prepareFailureView("Weather Data Unavailable.");
             return;
         }
@@ -59,7 +59,7 @@ public class DisplaySummarizationInteractor implements DisplaySummarizationInput
             // Fetch summarization data
             summarization = summaryDAO.getSummarization(promptGenerator(hourlyWeatherData));
         }
-        catch (APICallException summaryException) {
+        catch (ApiCallException summaryException) {
             displaySummarizationPresenter.prepareFailureView("Summarization Service Unavailable.");
             return;
         }

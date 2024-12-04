@@ -7,7 +7,7 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import exception.APICallException;
+import exception.ApiCallException;
 import io.github.cdimascio.dotenv.Dotenv;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -32,9 +32,9 @@ public class OpenWeatherGeocodingDAO {
      * Get the geo-coordinates of a city using the OpenWeather Geocoding API.
      * @param city the name of the city
      * @return coordinates of the city
-     * @throws APICallException if API call fails.
+     * @throws ApiCallException if API call fails.
      */
-    public static Map<String, Double> getCoordinates(String city) throws APICallException {
+    public static Map<String, Double> getCoordinates(String city) throws ApiCallException {
         final String url = buildUrl(city);
 
         // Build http request
@@ -70,7 +70,7 @@ public class OpenWeatherGeocodingDAO {
 
         }
         catch (IOException exception) {
-            throw new APICallException("Failed To Get Geo-Coordinates For " + city + ". " + exception.getMessage(),
+            throw new ApiCallException("Failed To Get Geo-Coordinates For " + city + ". " + exception.getMessage(),
                     exception);
         }
     }

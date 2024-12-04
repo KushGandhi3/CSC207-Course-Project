@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.Test;
 
 import data_access.summarization.InMemorySummarizationDAO;
-import exception.APICallException;
+import exception.ApiCallException;
 
 public class SummarizationDataTest {
 
@@ -33,7 +33,7 @@ public class SummarizationDataTest {
             assertEquals(outfitSuggestions, summarization.getOutfitSuggestion());
             assertEquals(travelAdvice, summarization.getTravelAdvice());
         }
-        catch (APICallException exception) {
+        catch (ApiCallException exception) {
             fail(exception.getMessage());
         }
     }

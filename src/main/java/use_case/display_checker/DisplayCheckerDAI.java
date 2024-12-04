@@ -1,7 +1,7 @@
 package use_case.display_checker;
 
 import entity.weather.hourly_weather.HourlyWeatherData;
-import exception.APICallException;
+import exception.ApiCallException;
 
 /**
  * The interface of the DAO for the weather data used by all use cases.
@@ -13,6 +13,6 @@ public interface DisplayCheckerDAI {
      * @param location the name of the location.
      * @return the weather data.
      */
-    HourlyWeatherData getHourlyWeatherData(String location) throws APICallException;
+    HourlyWeatherData getHourlyWeatherData(String location) throws ApiCallException;
 }
 

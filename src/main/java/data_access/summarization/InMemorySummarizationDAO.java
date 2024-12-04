@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import exception.ApiCallException;
 import org.json.JSONObject;
 
 import entity.summarization.Summarization;
 import entity.summarization.SummarizationFactory;
-import exception.APICallException;
 import use_case.display_summarization.DisplaySummarizationSummaryDAI;
 
 /**
@@ -29,10 +29,10 @@ public class InMemorySummarizationDAO implements DisplaySummarizationSummaryDAI 
      * Returns Summarization entity with updated summary information from in memory summarization data file.
      * @param prompt The prompt to API. Note: not needed for the InMemorySummarizationDAO.
      * @return Summarization a Summarization entity
-     * @throws APICallException if the in memory summarization data cannot be accessed.
+     * @throws ApiCallException if the in memory summarization data cannot be accessed.
      */
     @Override
-    public Summarization getSummarization(String prompt) throws APICallException {
+    public Summarization getSummarization(String prompt) throws ApiCallException {
         try {
             // Read the JSON response from the file
             final String jsonContent = Files.readString(Path.of(IN_MEMORY_SUMMARIZATION_DATA_PATH));
@@ -61,7 +61,7 @@ public class InMemorySummarizationDAO implements DisplaySummarizationSummaryDAI 
             return this.summarizationFactory.createSummarization(weatherSummary, outfitSuggestion, travelAdvice);
         }
         catch (IOException exception) {
-            throw new APICallException("Failed to load in-memory summarization data: " + exception.getMessage(),
+            throw new ApiCallException("Failed to load in-memory summarization data: " + exception.getMessage(),
                     exception);
         }
     }

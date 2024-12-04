@@ -4,7 +4,7 @@ import constants.Constants;
 import entity.recent_city.RecentCityData;
 import entity.weather.daily_weather.DailyWeatherData;
 import entity.weather.day_weather.DayWeatherData;
-import exception.APICallException;
+import exception.ApiCallException;
 import exception.RecentCitiesDataException;
 import org.json.JSONObject;
 
@@ -49,7 +49,7 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
             final DisplayDailyOutputData displayDailyOutputData = new DisplayDailyOutputData(outputDataPackage);
 
             displayDailyPresenter.prepareSuccessView(displayDailyOutputData);
-        } catch (APICallException | RecentCitiesDataException exception) {
+        } catch (ApiCallException | RecentCitiesDataException exception) {
             exception.printStackTrace();
             displayDailyPresenter.prepareFailView("Weather Data Unavailable.");
         }
@@ -76,7 +76,7 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
             final DisplayDailyOutputData displayDailyOutputData = new DisplayDailyOutputData(outputDataPackage);
 
             displayDailyPresenter.prepareSuccessView(displayDailyOutputData);
-        } catch (APICallException | RecentCitiesDataException exception) {
+        } catch (ApiCallException | RecentCitiesDataException exception) {
             exception.printStackTrace();
             displayDailyPresenter.prepareFailView("Weather Data Unavailable.");
         }

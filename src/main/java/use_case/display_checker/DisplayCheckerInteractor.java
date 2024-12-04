@@ -2,7 +2,7 @@ package use_case.display_checker;
 
 import entity.weather.hour_weather.HourWeatherData;
 import entity.weather.hourly_weather.HourlyWeatherData;
-import exception.APICallException;
+import exception.ApiCallException;
 import exception.InvalidLocationException;
 
 import java.util.List;
@@ -82,7 +82,7 @@ public class DisplayCheckerInteractor implements DisplayCheckerInputBoundary {
                     return true;
                 }
             }
-        } catch (APICallException e) {
+        } catch (ApiCallException e) {
             e.printStackTrace();
             // Throw exception for API-related errors
             throw new InvalidLocationException("API error for location: " + location, e);

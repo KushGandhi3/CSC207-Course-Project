@@ -5,7 +5,7 @@ import entity.recent_city.RecentCityData;
 import entity.weather.daily_weather.ConcreteDailyWeatherDataFactory;
 import entity.weather.daily_weather.DailyWeatherData;
 import entity.weather.day_weather.DayWeatherData;
-import exception.APICallException;
+import exception.ApiCallException;
 import exception.RecentCitiesDataException;
 import entity.weather.daily_weather.DailyWeatherDataFactory;
 import entity.weather.day_weather.ConcreteDayWeatherDataFactory;
@@ -43,7 +43,7 @@ class DisplayDailyInteractorTest {
         displayDailyWeatherDAO = new InMemoryWeatherDAO(dayWeatherDataFactory, dailyWeatherDataFactory,
                 hourWeatherDataFactory, hourlyWeatherDataFactory) {
             @Override
-            public DailyWeatherData getDailyWeatherData(String city) throws APICallException {
+            public DailyWeatherData getDailyWeatherData(String city) throws ApiCallException {
                 DailyWeatherData dailyWeatherData = weatherDAO.getDailyWeatherData(city);
                 List<DayWeatherData> dayWeatherDataList = weatherDAO.getDailyWeatherData(city).getDayWeatherDataList();
                 return new DailyWeatherData() {

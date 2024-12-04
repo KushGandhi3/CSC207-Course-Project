@@ -3,7 +3,7 @@ package use_case.display_home;
 import entity.recent_city.RecentCityData;
 import entity.weather.hour_weather.HourWeatherData;
 import entity.weather.hourly_weather.HourlyWeatherData;
-import exception.APICallException;
+import exception.ApiCallException;
 import exception.RecentCitiesDataException;
 
 import java.time.ZoneId;
@@ -32,14 +32,14 @@ public class DisplayHomeInteractor implements DisplayHomeInputBoundary {
         try {
             final String city = displayHomeInputData.getCityName();
             if (city == null) {
-                throw new APICallException("No City Name Provided.");
+                throw new ApiCallException("No City Name Provided.");
             }
 
             recentCitiesDataAccessObject.addCity(city);
 
             DisplayHomeOutputData displayHomeOutputData = getOutputData(city);
             this.displayHomePresenter.prepareSuccessView(displayHomeOutputData);
-        } catch(APICallException | RecentCitiesDataException exception) {
+        } catch(ApiCallException | RecentCitiesDataException exception) {
             exception.printStackTrace();
             displayHomePresenter.prepareFailView("City Not Found.");
         }
@@ -55,13 +55,13 @@ public class DisplayHomeInteractor implements DisplayHomeInputBoundary {
 
             DisplayHomeOutputData displayHomeOutputData = getOutputData(recentCity);
             this.displayHomePresenter.prepareSuccessView(displayHomeOutputData);
-        } catch(APICallException | RecentCitiesDataException exception) {
+        } catch(ApiCallException | RecentCitiesDataException exception) {
             exception.printStackTrace();
             displayHomePresenter.prepareFailView("City Not Found.");
         }
     }
 
-    private DisplayHomeOutputData getOutputData(String city) throws APICallException {
+    private DisplayHomeOutputData getOutputData(String city) throws ApiCallException {
         final HourlyWeatherData hourlyWeatherData = weatherDataAccessObject
                 .getHourlyWeatherData(city);
 

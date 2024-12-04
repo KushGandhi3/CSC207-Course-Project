@@ -1,6 +1,6 @@
 package entity.summarization;
 
-import exception.APICallException;
+import exception.ApiCallException;
 
 /**
  * The factory for summarization entity.
@@ -13,7 +13,7 @@ public interface SummarizationFactory {
      * @param outfit the outfit suggestion of the summarization.
      * @param travel the travel advice of the summarization.
      * @return the new summarization object.
-     * @throws APICallException if the request fails.
+     * @throws ApiCallException if the request fails.
      */
-    Summarization createSummarization(String summary, String outfit, String travel) throws APICallException;
+    Summarization createSummarization(String summary, String outfit, String travel) throws ApiCallException;
 }

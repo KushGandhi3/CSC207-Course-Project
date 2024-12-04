@@ -3,6 +3,7 @@ package data_access.weather;
 import java.util.ArrayList;
 import java.util.List;
 
+import exception.ApiCallException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -15,7 +16,6 @@ import entity.weather.hour_weather.HourWeatherData;
 import entity.weather.hour_weather.HourWeatherDataFactory;
 import entity.weather.hourly_weather.HourlyWeatherData;
 import entity.weather.hourly_weather.HourlyWeatherDataFactory;
-import exception.APICallException;
 import use_case.display_checker.DisplayCheckerDAI;
 import use_case.display_daily.DisplayDailyWeatherDAI;
 import use_case.display_home.DisplayHomeWeatherDAI;
@@ -51,10 +51,10 @@ public class WeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWeatherDAI
      * Returns HourlyWeatherData entity with updated weather information from the OpenWeather API.
      * @param city the name of the city to get the weather forecast for
      * @return an HourlyWeatherData entity
-     * @throws APICallException if the request fails or the API Key is not set
+     * @throws ApiCallException if the request fails or the API Key is not set
      */
     @Override
-    public HourlyWeatherData getHourlyWeatherData(String city) throws APICallException {
+    public HourlyWeatherData getHourlyWeatherData(String city) throws ApiCallException {
         final JSONObject weatherData = OpenWeatherWeatherDAO.apiRequest(city);
 
         final String timezone = weatherData.getString(TIME_ZONE);
@@ -131,10 +131,10 @@ public class WeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWeatherDAI
      * Returns a DailyWeatherData entity with updated weather data from the OpenWeather API.
      * @param city the name of the city to get the weather forecast for
      * @return a DailyWeatherData entity
-     * @throws APICallException if the request fails or the API Key is not set
+     * @throws ApiCallException if the request fails or the API Key is not set
      */
     @Override
-    public DailyWeatherData getDailyWeatherData(String city) throws APICallException {
+    public DailyWeatherData getDailyWeatherData(String city) throws ApiCallException {
         final JSONObject weatherData = OpenWeatherWeatherDAO.apiRequest(city);
 
         final String timezone = weatherData.getString(TIME_ZONE);

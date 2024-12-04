@@ -24,7 +24,7 @@ import entity.weather.hour_weather.HourWeatherDataFactory;
 import entity.weather.hourly_weather.ConcreteHourlyWeatherData;
 import entity.weather.hourly_weather.ConcreteHourlyWeatherDataFactory;
 import entity.weather.hourly_weather.HourlyWeatherDataFactory;
-import exception.APICallException;
+import exception.ApiCallException;
 import exception.RecentCitiesDataException;
 import use_case.display_summarization.DisplaySummarizationInteractor;
 import use_case.display_summarization.DisplaySummarizationOutputBoundary;
@@ -183,11 +183,11 @@ public class DisplaySummarizationInteractorTest {
         final DisplaySummarizationRecentCitiesDAI recentCitiesDAO = () -> (RecentCityData) () -> List.of("Toronto");
 
         final DisplaySummarizationWeatherDAI weatherDAO = city -> {
-            throw new APICallException("Weather data unavailable");
+            throw new ApiCallException("Weather data unavailable");
         };
 
         final DisplaySummarizationInteractor interactor = getSummarizationInteractor("Should not "
-                + "reach success view when APICallException is thrown.",
+                + "reach success view when ApiCallException is thrown.",
                 "Weather Data Unavailable.", recentCitiesDAO, weatherDAO, null);
 
         interactor.execute();
@@ -212,9 +212,9 @@ public class DisplaySummarizationInteractorTest {
             return inMemoryWeatherDAO.getHourlyWeatherData("Toronto");
         };
 
-        // DAO for Summarization throwing an APICallException
+        // DAO for Summarization throwing an ApiCallException
         final DisplaySummarizationSummaryDAI summaryDAO = prompt -> {
-            throw new APICallException("Summarization service unavailable");
+            throw new ApiCallException("Summarization service unavailable");
         };
 
         // Mock Presenter to capture the failure view

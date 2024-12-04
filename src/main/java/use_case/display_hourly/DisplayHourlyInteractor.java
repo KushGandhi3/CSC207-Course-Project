@@ -4,7 +4,7 @@ import constants.Constants;
 import entity.recent_city.RecentCityData;
 import entity.weather.hourly_weather.HourlyWeatherData;
 import entity.weather.hour_weather.HourWeatherData;
-import exception.APICallException;
+import exception.ApiCallException;
 import exception.RecentCitiesDataException;
 import org.json.JSONObject;
 
@@ -52,7 +52,7 @@ public class DisplayHourlyInteractor implements DisplayHourlyInputBoundary {
             final DisplayHourlyOutputData displayHourlyOutputData = new DisplayHourlyOutputData(outputDataPackage);
             displayHourlyPresenter.prepareSuccessView(displayHourlyOutputData);
         }
-        catch (APICallException exception) {
+        catch (ApiCallException exception) {
             displayHourlyPresenter.prepareFailView(exception.getMessage());
         }
     }

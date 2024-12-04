@@ -3,9 +3,9 @@ package data_access.weather.open_weather;
 import java.io.IOException;
 import java.util.Map;
 
+import exception.ApiCallException;
 import org.json.JSONObject;
 
-import exception.APICallException;
 import io.github.cdimascio.dotenv.Dotenv;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -30,14 +30,14 @@ public class OpenWeatherWeatherDAO {
      * Requests the weather data from the API.
      * @param city the city to request the weather data for
      * @return the weather data for the city in a JSONObject
-     * @throws APICallException if the request fails or the API Key is not set
+     * @throws ApiCallException if the request fails or the API Key is not set
      */
-    public static JSONObject apiRequest(String city) throws APICallException {
+    public static JSONObject apiRequest(String city) throws ApiCallException {
         final Map<String, Double> coordinates =
                 OpenWeatherGeocodingDAO.getCoordinates(city);
 
         if (API_KEY == null) {
-            throw new APICallException("API Key Not Set.");
+            throw new ApiCallException("API Key Not Set.");
         }
 
         final String url = buildUrl(coordinates);
@@ -60,7 +60,7 @@ public class OpenWeatherWeatherDAO {
 
         }
         catch (IOException exception) {
-            throw new APICallException("Failed To Get Weather For: " + city + ". " + exception.getMessage(), exception);
+            throw new ApiCallException("Failed To Get Weather For: " + city + ". " + exception.getMessage(), exception);
         }
     }
 

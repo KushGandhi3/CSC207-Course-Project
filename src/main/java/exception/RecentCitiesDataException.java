@@ -5,10 +5,6 @@ package exception;
  */
 public class RecentCitiesDataException extends Exception {
 
-    public RecentCitiesDataException() {
-        super();
-    }
-
     public RecentCitiesDataException(String message) {
         super(message);
     }
