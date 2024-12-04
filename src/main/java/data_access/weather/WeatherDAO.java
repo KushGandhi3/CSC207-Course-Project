@@ -1,5 +1,11 @@
 package data_access.weather;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import data_access.weather.open_weather.OpenWeatherWeatherDAO;
 import entity.weather.daily_weather.DailyWeatherData;
 import entity.weather.daily_weather.DailyWeatherDataFactory;
@@ -10,22 +16,21 @@ import entity.weather.hour_weather.HourWeatherDataFactory;
 import entity.weather.hourly_weather.HourlyWeatherData;
 import entity.weather.hourly_weather.HourlyWeatherDataFactory;
 import exception.APICallException;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import use_case.display_checker.DisplayCheckerDAI;
 import use_case.display_daily.DisplayDailyWeatherDAI;
 import use_case.display_home.DisplayHomeWeatherDAI;
 import use_case.display_hourly.DisplayHourlyWeatherDAI;
 import use_case.display_summarization.DisplaySummarizationWeatherDAI;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * This class parses OpenWeather JSON Objects and creates DailyWeatherData and HourlyWeatherDataObjects.
  */
 public class WeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWeatherDAI, DisplayCheckerDAI,
         DisplaySummarizationWeatherDAI, DisplayHourlyWeatherDAI {
+
+    private static final String TIME_ZONE = "timezone";
+    private static final String TEMP = "temp";
+    private static final String HUMIDITY = "humidity";
 
     private final DayWeatherDataFactory dayWeatherDataFactory;
     private final DailyWeatherDataFactory dailyWeatherDataFactory;
@@ -52,12 +57,12 @@ public class WeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWeatherDAI
     public HourlyWeatherData getHourlyWeatherData(String city) throws APICallException {
         final JSONObject weatherData = OpenWeatherWeatherDAO.apiRequest(city);
 
-        final String timezone = weatherData.getString("timezone");
+        final String timezone = weatherData.getString(TIME_ZONE);
         // get min and max temperature for the day
         // the weather data for today
         final JSONObject todayWeatherData = weatherData.getJSONArray("daily").getJSONObject(0);
         // temperature data from the weather data today
-        final JSONObject temperatureTodayWeatherData = todayWeatherData.getJSONObject("temp");
+        final JSONObject temperatureTodayWeatherData = todayWeatherData.getJSONObject(TEMP);
         final int lowTemperature = (int) temperatureTodayWeatherData.getDouble("min");
         final int highTemperature = (int) temperatureTodayWeatherData.getDouble("max");
 
@@ -81,7 +86,7 @@ public class WeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWeatherDAI
     private void getHourWeatherDataList(String city, String timezone, JSONArray hourlyArray,
                                         List<HourWeatherData> hourWeatherDataList) {
         for (int i = 0; i < hourlyArray.length(); i++) {
-            JSONObject hourObject = hourlyArray.getJSONObject(i);
+            final JSONObject hourObject = hourlyArray.getJSONObject(i);
 
             // note that parsing for DayWeatherData objects and HourWeatherData objects are slightly different
             // unpacking for main weather condition
@@ -90,7 +95,7 @@ public class WeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWeatherDAI
             // main weather condition ("Rain", "Clouds", "Snow")
             final String condition = conditionObject.getString("main");
 
-            final int temperature = (int) hourObject.getDouble("temp");
+            final int temperature = (int) hourObject.getDouble(TEMP);
 
             final int feelsLikeTemperature = (int) hourObject.getDouble("feels_like");
 
@@ -102,12 +107,12 @@ public class WeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWeatherDAI
 
             final int precipitation = (int) (hourObject.getDouble("pop") * 100);
 
-            final int humidity = (int) hourObject.getDouble("humidity");
+            final int humidity = (int) hourObject.getDouble(HUMIDITY);
 
             // package all forecast values
-            JSONObject hourWeatherDataValues = new JSONObject();
+            final JSONObject hourWeatherDataValues = new JSONObject();
             hourWeatherDataValues.put("city", city);
-            hourWeatherDataValues.put("timezone", timezone);
+            hourWeatherDataValues.put(TIME_ZONE, timezone);
             hourWeatherDataValues.put("condition", condition);
             hourWeatherDataValues.put("temperature", temperature);
             hourWeatherDataValues.put("feelsLikeTemperature", feelsLikeTemperature);
@@ -115,13 +120,12 @@ public class WeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWeatherDAI
             hourWeatherDataValues.put("uvIndex", uvIndex);
             hourWeatherDataValues.put("cloudCover", cloudCover);
             hourWeatherDataValues.put("precipitation", precipitation);
-            hourWeatherDataValues.put("humidity", humidity);
+            hourWeatherDataValues.put(HUMIDITY, humidity);
 
-            HourWeatherData hourWeatherData = this.hourWeatherDataFactory.create(hourWeatherDataValues);
+            final HourWeatherData hourWeatherData = this.hourWeatherDataFactory.create(hourWeatherDataValues);
             hourWeatherDataList.add(hourWeatherData);
         }
     }
-
 
     /**
      * Returns a DailyWeatherData entity with updated weather data from the OpenWeather API.
@@ -133,7 +137,7 @@ public class WeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWeatherDAI
     public DailyWeatherData getDailyWeatherData(String city) throws APICallException {
         final JSONObject weatherData = OpenWeatherWeatherDAO.apiRequest(city);
 
-        final String timezone = weatherData.getString("timezone");
+        final String timezone = weatherData.getString(TIME_ZONE);
         final JSONArray dailyArray = weatherData.getJSONArray("daily");
 
         final List<DayWeatherData> dayWeatherDataList = new ArrayList<>(dailyArray.length());
@@ -152,7 +156,7 @@ public class WeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWeatherDAI
     private void getDayWeatherDataList(String city, String timezone, JSONArray dailyArray,
                                        List<DayWeatherData> dayWeatherDataList) {
         for (int i = 0; i < dailyArray.length(); i++) {
-            JSONObject dayObject = dailyArray.getJSONObject(i);
+            final JSONObject dayObject = dailyArray.getJSONObject(i);
 
             // note that parsing for DayWeatherData objects and HourWeatherData objects are slightly different
             // unpacking for main weather condition
@@ -162,7 +166,7 @@ public class WeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWeatherDAI
             final String condition = conditionObject.getString("main");
 
             // unpacking for temperature
-            final JSONObject temperatureObject = dayObject.getJSONObject("temp");
+            final JSONObject temperatureObject = dayObject.getJSONObject(TEMP);
             // "day" means temperature in the middle of the day
             final int temperature = (int) temperatureObject.getDouble("day");
 
@@ -179,12 +183,12 @@ public class WeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWeatherDAI
 
             final int precipitation = (int) (dayObject.getDouble("pop") * 100);
 
-            final int humidity = (int) dayObject.getDouble("humidity");
+            final int humidity = (int) dayObject.getDouble(HUMIDITY);
 
             // package all forecast values
-            JSONObject dayWeatherDataValues = new JSONObject();
+            final JSONObject dayWeatherDataValues = new JSONObject();
             dayWeatherDataValues.put("city", city);
-            dayWeatherDataValues.put("timezone", timezone);
+            dayWeatherDataValues.put(TIME_ZONE, timezone);
             dayWeatherDataValues.put("condition", condition);
             dayWeatherDataValues.put("temperature", temperature);
             dayWeatherDataValues.put("feelsLikeTemperature", feelsLikeTemperature);
@@ -192,15 +196,10 @@ public class WeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWeatherDAI
             dayWeatherDataValues.put("uvIndex", uvIndex);
             dayWeatherDataValues.put("cloudCover", cloudCover);
             dayWeatherDataValues.put("precipitation", precipitation);
-            dayWeatherDataValues.put("humidity", humidity);
+            dayWeatherDataValues.put(HUMIDITY, humidity);
 
-            DayWeatherData dayWeatherData = this.dayWeatherDataFactory.create(dayWeatherDataValues);
+            final DayWeatherData dayWeatherData = this.dayWeatherDataFactory.create(dayWeatherDataValues);
             dayWeatherDataList.add(dayWeatherData);
         }
     }
-
-    public JSONObject getWeatherDataJSONObject(String city) throws APICallException {
-        return OpenWeatherWeatherDAO.apiRequest(city);
-    }
-
 }
