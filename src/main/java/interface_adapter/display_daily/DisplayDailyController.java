@@ -31,6 +31,9 @@ public class DisplayDailyController {
         this.displayDailyInteractor.execute();
     }
 
+    /**
+     * Switches the current view to the home view.
+     */
     public void switchToHomeView() {
         this.displayDailyInteractor.switchToHomeView();
     }

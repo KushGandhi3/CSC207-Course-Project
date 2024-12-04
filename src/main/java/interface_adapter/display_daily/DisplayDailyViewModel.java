@@ -1,10 +1,11 @@
 package interface_adapter.display_daily;
 
-import interface_adapter.ViewModel;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Image;
 import java.util.Objects;
+
+import javax.swing.ImageIcon;
+
+import interface_adapter.ViewModel;
 
 /**
  * The View Model for the Display Daily View.
