@@ -1,8 +1,8 @@
 package entity.weather.daily_weather;
 
-import entity.weather.day_weather.DayWeatherData;
-
 import java.util.List;
+
+import entity.weather.day_weather.DayWeatherData;
 
 /**
  * Factory for creating DailyWeatherData objects.

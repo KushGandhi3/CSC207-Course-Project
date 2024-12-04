@@ -7,7 +7,12 @@ import java.util.List;
  */
 public interface RecentCityDataFactory {
 
-    // front of the recent city list are the most recently viewed cities
+    /**
+     * Creates a new RecentCityData entity from a list of recently accessed city names.
+     *
+     * @param recentCityDataList a list of strings representing the names of recently accessed cities
+     * @return a RecentCityData entity containing the recent city data
+     */
     RecentCityData create(List<String> recentCityDataList);
 
 }

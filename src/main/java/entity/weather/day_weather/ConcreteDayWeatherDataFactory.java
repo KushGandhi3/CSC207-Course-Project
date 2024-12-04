@@ -7,7 +7,6 @@ import org.json.JSONObject;
  */
 public class ConcreteDayWeatherDataFactory implements DayWeatherDataFactory {
 
-
     @Override
     public DayWeatherData create(JSONObject weatherData) {
         return new ConcreteDayWeatherData(weatherData);

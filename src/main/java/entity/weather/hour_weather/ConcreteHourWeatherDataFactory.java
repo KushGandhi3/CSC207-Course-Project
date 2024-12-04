@@ -11,5 +11,4 @@ public class ConcreteHourWeatherDataFactory implements HourWeatherDataFactory {
     public HourWeatherData create(JSONObject weatherData) {
         return new ConcreteHourWeatherData(weatherData);
     }
-
 }

@@ -1,8 +1,8 @@
 package entity.weather.hourly_weather;
 
-import entity.weather.hour_weather.HourWeatherData;
-
 import java.util.List;
+
+import entity.weather.hour_weather.HourWeatherData;
 
 /**
  * Entity for the hourly weather forecasts in the coming day (all forecasts for each hour in the day).
