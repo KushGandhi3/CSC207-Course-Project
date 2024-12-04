@@ -59,7 +59,9 @@ public class DisplayCheckerInteractor implements DisplayCheckerInputBoundary {
         displayCheckerOutputBoundary.prepareHomeView();
     }
 
-    private boolean checkWeatherData(String location, String weatherConditionOptions, int startChecking, int stopChecking) throws InvalidLocationException {
+    // Helper method to check the weather data
+    private boolean checkWeatherData(String location, String weatherConditionOptions, int startChecking,
+                                     int stopChecking) throws InvalidLocationException {
         try {
             HourlyWeatherData hourlyWeatherData = displayCheckerDAI.getHourlyWeatherData(location);
 
@@ -89,11 +91,3 @@ public class DisplayCheckerInteractor implements DisplayCheckerInputBoundary {
         return false;
     }
 }
-
-
-
-
-
-
-
-
