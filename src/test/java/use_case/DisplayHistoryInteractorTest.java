@@ -207,13 +207,18 @@ public class DisplayHistoryInteractorTest {
         // create DAO that unable to get the recent cities
         DisplayHistoryDAI emptyDAO = new DisplayHistoryDAI() {
             @Override
-            public void addCity(String city) {}
+            public void addCity(String city) throws RecentCitiesDataException {
+                throw new RecentCitiesDataException("City History Unavailable.");
+            }
 
             @Override
             public RecentCityData getRecentCityData() throws RecentCitiesDataException {
-                throw new RecentCitiesDataException("No recent cities");
+                throw new RecentCitiesDataException("City History unavailable.");
             }
         };
+
+        // input data
+        DisplayHistoryInputData inputData = new DisplayHistoryInputData("Vancouver");
 
         // output boundary
         DisplayHistoryOutputBoundary failurePresenter = new DisplayHistoryOutputBoundary() {
@@ -224,7 +229,7 @@ public class DisplayHistoryInteractorTest {
 
             @Override
             public void prepareFailureView(String errorMessage) {
-                assertEquals("No recent cities", errorMessage);
+                assertEquals("City History Unavailable.", errorMessage);
             }
 
             @Override
@@ -235,6 +240,6 @@ public class DisplayHistoryInteractorTest {
 
         // interactor
         DisplayHistoryInteractor interactor = new DisplayHistoryInteractor(emptyDAO, failurePresenter);
-        interactor.execute();
+        interactor.execute(inputData);
     }
 }
