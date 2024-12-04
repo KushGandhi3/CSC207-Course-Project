@@ -266,8 +266,7 @@ public class AppBuilder {
      */
     public AppBuilder addDisplayHistoryUseCase() {
         final DisplayHistoryOutputBoundary displayHistoryPresenter =
-                new DisplayHistoryPresenter(displayHistoryViewModel, displayHomeViewModel,
-                        displayDailyViewModel, displaySummarizationViewModel, viewManagerModel);
+                new DisplayHistoryPresenter(displayHistoryViewModel, displayHomeViewModel, viewManagerModel);
         final DisplayHistoryInputBoundary displayHistoryInteractor =
                 new DisplayHistoryInteractor(displayHistoryDAO, displayHistoryPresenter);
 

@@ -1,6 +1,5 @@
 package interface_adapter.display_history;
 
-import exception.RecentCitiesDataException;
 import use_case.display_history.DisplayHistoryInputBoundary;
 import use_case.display_history.DisplayHistoryInputData;
 
@@ -37,5 +36,4 @@ public class DisplayHistoryController {
     public void switchToHomeView() {
         displayHistoryInteractor.switchToHomeView();
     }
-
 }
