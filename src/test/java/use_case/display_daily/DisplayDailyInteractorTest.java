@@ -1,12 +1,12 @@
 package use_case.display_daily;
 
 import constants.Constants;
-import data_access.recent_city.RecentCitiesDAO;
-import data_access.weather.InMemoryWeatherDAO;
-import entity.recent_city.ConcreteRecentCityDataFactory;
 import entity.recent_city.RecentCityData;
-import entity.recent_city.RecentCityDataFactory;
 import entity.weather.daily_weather.ConcreteDailyWeatherDataFactory;
+import entity.weather.daily_weather.DailyWeatherData;
+import entity.weather.day_weather.DayWeatherData;
+import exception.APICallException;
+import exception.RecentCitiesDataException;
 import entity.weather.daily_weather.DailyWeatherDataFactory;
 import entity.weather.day_weather.ConcreteDayWeatherDataFactory;
 import entity.weather.day_weather.DayWeatherDataFactory;
@@ -14,14 +14,9 @@ import entity.weather.hour_weather.ConcreteHourWeatherDataFactory;
 import entity.weather.hour_weather.HourWeatherDataFactory;
 import entity.weather.hourly_weather.ConcreteHourlyWeatherDataFactory;
 import entity.weather.hourly_weather.HourlyWeatherDataFactory;
-import exception.APICallException;
-import interface_adapter.display_daily.DisplayDailyPresenter;
-import org.json.JSONException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import use_case.display_checker.DisplayCheckerDAI;
-import use_case.display_checker.DisplayCheckerInputData;
-import use_case.display_checker.DisplayCheckerInteractor;
-import use_case.display_checker.DisplayCheckerOutputBoundary;
+import data_access.weather.InMemoryWeatherDAO;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -32,194 +27,189 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DisplayDailyInteractorTest {
+    private DisplayDailyRecentCitiesDAI displayDailyRecentCitiesDAO;
+    private DisplayDailyWeatherDAI displayDailyWeatherDAO;
+    private List<String> cities;
 
-    @Test
-    void successConditionMetTest() {
-        DisplayDailyWeatherDAI weatherDAO = getDisplayDailyWeatherDAO();
-        DisplayDailyRecentCitiesDAI recentCitiesDAO = getDisplayDailyRecentCitiesDAO();
-
-        // Output boundary
-        DisplayDailyOutputBoundary presenter = new DisplayDailyOutputBoundary() {
-            @Override
-            public void prepareSuccessView(DisplayDailyOutputData displayDailyOutputData) {
-                assertEquals("Toronto", displayDailyOutputData.getCity());
-
-                List<String> actualWeekdays = displayDailyOutputData.getWeekdays();
-                List<String> expectedWeekdays = new ArrayList<>();
-                ZonedDateTime time = ZonedDateTime.now(ZoneId.of("America/New_York"));
-                for (int i = 0; i < Constants.WEEK_SIZE; i++) {
-                    expectedWeekdays.add(time.plusDays(i).getDayOfWeek().toString());
-                }
-
-                List<String> actualTemperatures = displayDailyOutputData.getTemperatures();
-
-            }
-            @Override
-            public void prepareFailView(String errorMessage) {
-
-            }
-            @Override
-            public void switchToHomeView() {
-
-            }
-        };
-
-        // Interactor
-        DisplayCheckerInteractor interactor = new DisplayCheckerInteractor(displayCheckerDAI, presenter);
-        interactor.execute(inputData);
-    }
-
-    @Test
-    void failureConditionNotMetTest() {
-        // input data
-        DisplayCheckerInputData inputData = new DisplayCheckerInputData("Toronto", "Clouds", 0, 1);
-
-        // DAI
-        DisplayCheckerDAI displayCheckerDAI = getDisplayCheckerDAI();
-
-        // Output boundary
-        DisplayCheckerOutputBoundary successPresenter = new DisplayCheckerOutputBoundary() {
-            @Override
-            public void prepareCondMetView() {fail("Condition met view unexpectedly called.");}
-            @Override
-            public void prepareCondNotMetView() {assertTrue(true);}
-            @Override
-            public void prepareHomeView() {fail("Home view unexpectedly called.");}
-            @Override
-            public void prepareLocationEmptyView() {fail("Location empty view unexpectedly called.");}
-            @Override
-            public void prepareInvalidLocationView() {fail("Invalid location view unexpectedly called.");}
-        };
-
-        // Interactor
-        DisplayCheckerInteractor interactor = new DisplayCheckerInteractor(displayCheckerDAI, successPresenter);
-        interactor.execute(inputData);
-    }
-
-    @Test
-    void switchToHomeViewTest() {
-        // DAI
-        DisplayCheckerDAI displayCheckerDAI = getDisplayCheckerDAI();
-
-        // Output boundary
-        DisplayCheckerOutputBoundary successPresenter = new DisplayCheckerOutputBoundary() {
-            @Override
-            public void prepareCondMetView() {fail("Condition met view unexpectedly called.");}
-            @Override
-            public void prepareCondNotMetView() {fail("Condition not met view unexpectedly called.");}
-            @Override
-            public void prepareHomeView() {assertTrue(true);}
-            @Override
-            public void prepareLocationEmptyView() {fail("Location empty view unexpectedly called.");}
-            @Override
-            public void prepareInvalidLocationView() {fail("Invalid location view unexpectedly called.");}
-        };
-
-        // Interactor
-        DisplayCheckerInteractor interactor = new DisplayCheckerInteractor(displayCheckerDAI, successPresenter);
-        interactor.switchToHomeView();
-    }
-
-    @Test
-    void emptyLocationTest() {
-        // input data
-        DisplayCheckerInputData inputData = new DisplayCheckerInputData("", "Clear", 0, 1);
-
-        // DAI
-        DisplayCheckerDAI displayCheckerDAI = getDisplayCheckerDAI();
-
-        // Output boundary
-        DisplayCheckerOutputBoundary successPresenter = new DisplayCheckerOutputBoundary() {
-            @Override
-            public void prepareCondMetView() {fail("Condition met view unexpectedly called.");}
-            @Override
-            public void prepareCondNotMetView() {fail("Condition not met view unexpectedly called.");}
-            @Override
-            public void prepareHomeView() {fail("Home view unexpectedly called.");}
-            @Override
-            public void prepareLocationEmptyView() {assertTrue(true);}
-            @Override
-            public void prepareInvalidLocationView() {fail("Invalid location view unexpectedly called.");}
-        };
-
-        // Interactor
-        DisplayCheckerInteractor interactor = new DisplayCheckerInteractor(displayCheckerDAI, successPresenter);
-        interactor.execute(inputData);
-    }
-
-    @Test
-    void invalidLocationTest() {
-        // input data
-        DisplayCheckerInputData inputData = new DisplayCheckerInputData("Torontowww", "Clear", 0, 1);
-
-        // DAI
-        DisplayCheckerDAI displayCheckerDAI = getEmptyDisplayCheckerDAI();
-
-        // Output boundary
-        DisplayCheckerOutputBoundary successPresenter = new DisplayCheckerOutputBoundary() {
-            @Override
-            public void prepareCondMetView() {fail("Condition met view unexpectedly called.");}
-            @Override
-            public void prepareCondNotMetView() {fail("Condition not met view unexpectedly called.");}
-            @Override
-            public void prepareHomeView() {fail("Home view unexpectedly called.");}
-            @Override
-            public void prepareLocationEmptyView() {fail("Location empty view unexpectedly called.");}
-            @Override
-            public void prepareInvalidLocationView() {assertTrue(true);}
-        };
-
-        // Interactor
-        DisplayCheckerInteractor interactor = new DisplayCheckerInteractor(displayCheckerDAI, successPresenter);
-        interactor.execute(inputData);
-    }
-
-    @Test
-    void apiCallExceptionTest() {
-        // input data
-        DisplayCheckerInputData inputData = new DisplayCheckerInputData("Toronto", "Clear", 0, 1);
-
-        // DAI (simulate API call exception)
-        DisplayCheckerDAI displayCheckerDAI = getAPIerrorDisplayCheckerDAI();
-
-        // Output boundary
-        DisplayCheckerOutputBoundary successPresenter = new DisplayCheckerOutputBoundary() {
-            @Override
-            public void prepareCondMetView() {fail("Condition met view unexpectedly called.");}
-            @Override
-            public void prepareCondNotMetView() {fail("Condition not met view unexpectedly called.");}
-            @Override
-            public void prepareHomeView() {fail("Home view unexpectedly called.");}
-            @Override
-            public void prepareLocationEmptyView() {fail("Location empty view unexpectedly called.");}
-            @Override
-            public void prepareInvalidLocationView() {assertTrue(true);}
-        };
-
-        // Interactor
-        DisplayCheckerInteractor interactor = new DisplayCheckerInteractor(displayCheckerDAI, successPresenter);
-        interactor.execute(inputData);
-    }
-
-    /**
-     * Helper for creating DisplayDailyRecentCitiesDAO's.
-     */
-    private DisplayDailyRecentCitiesDAI getDisplayDailyRecentCitiesDAO() {
-        RecentCityDataFactory recentCityDataFactory = new ConcreteRecentCityDataFactory();
-
-        return new RecentCitiesDAO(recentCityDataFactory);
-    }
-
-    /**
-     * Helper for creating DisplayDailyWeatherDAO's.
-     */
-    private DisplayDailyWeatherDAI getDisplayDailyWeatherDAO() {
+    @BeforeEach
+    void setUpWeatherData() {
         DayWeatherDataFactory dayWeatherDataFactory = new ConcreteDayWeatherDataFactory();
         DailyWeatherDataFactory dailyWeatherDataFactory = new ConcreteDailyWeatherDataFactory();
         HourWeatherDataFactory hourWeatherDataFactory = new ConcreteHourWeatherDataFactory();
         HourlyWeatherDataFactory hourlyWeatherDataFactory = new ConcreteHourlyWeatherDataFactory();
 
-        return new InMemoryWeatherDAO(dayWeatherDataFactory, dailyWeatherDataFactory, hourWeatherDataFactory,
-                hourlyWeatherDataFactory);
+        InMemoryWeatherDAO weatherDAO = new InMemoryWeatherDAO(dayWeatherDataFactory, dailyWeatherDataFactory,
+                hourWeatherDataFactory, hourlyWeatherDataFactory);
+        displayDailyWeatherDAO = new InMemoryWeatherDAO(dayWeatherDataFactory, dailyWeatherDataFactory,
+                hourWeatherDataFactory, hourlyWeatherDataFactory) {
+            @Override
+            public DailyWeatherData getDailyWeatherData(String city) throws APICallException {
+                DailyWeatherData dailyWeatherData = weatherDAO.getDailyWeatherData(city);
+                List<DayWeatherData> dayWeatherDataList = weatherDAO.getDailyWeatherData(city).getDayWeatherDataList();
+                return new DailyWeatherData() {
+                    @Override
+                    public List<DayWeatherData> getDayWeatherDataList() {
+                        return dayWeatherDataList;
+                    }
+
+                    @Override
+                    public String getCity() {
+                        return city;
+                    }
+
+                    @Override
+                    public String getTimezone() {
+                        return dailyWeatherData.getTimezone();
+                    }
+                };
+            }
+        };
+    }
+
+    @BeforeEach
+    void setUpRecentCitiesData() {
+        cities = new ArrayList<>();
+        displayDailyRecentCitiesDAO = new DisplayDailyRecentCitiesDAI() {
+            @Override
+            public void addCity(String city) throws RecentCitiesDataException {
+                // Remove if already exists to avoid duplicates
+                cities.remove(city);
+                // Add to the beginning of the list
+                cities.addFirst(city);
+            }
+
+            @Override
+            public RecentCityData getRecentCityData() throws RecentCitiesDataException {
+                if (cities.isEmpty()) {
+                    throw new RecentCitiesDataException("No Cities To Display.");
+                }
+                // Instead of instantiating, return a list directly
+                return new RecentCityData() {
+                    @Override
+                    public List<String> getRecentCityList() {
+                        return new ArrayList<>(cities);
+                    }
+                };
+            }
+        };
+    }
+
+    @Test
+    void displayDailyTest() {
+        try {
+            // add "Toronto" to the RecentCitiesData
+            displayDailyRecentCitiesDAO.addCity("Toronto");
+
+            // Output boundary
+            DisplayDailyOutputBoundary presenter = new DisplayDailyOutputBoundary() {
+                @Override
+                public void prepareSuccessView(DisplayDailyOutputData displayDailyOutputData) {
+                    assertEquals("Toronto", displayDailyOutputData.getCity());
+
+                    List<String> expectedWeekdays = new ArrayList<>();
+                    ZonedDateTime time = ZonedDateTime.now(ZoneId.of("America/New_York"));
+                    for (int i = 0; i < Constants.WEEK_SIZE; i++) {
+                        expectedWeekdays.add(time.plusDays(i).getDayOfWeek().toString());
+                    }
+                    List<String> actualWeekdays = displayDailyOutputData.getWeekdays();
+
+                    List<String> expectedTemperatures = List.of("7°C", "4°C", "4°C", "5°C", "3°C", "1°C", "1°C");
+                    List<String> actualTemperatures = displayDailyOutputData.getTemperatures();
+
+                    List<String> expectedConditions = List.of("Rain", "Rain", "Clouds", "Clouds", "Clouds", "Clouds", "Snow");
+                    List<String> actualConditions = displayDailyOutputData.getConditions();
+
+                    // test all list objects
+                    for (int i = 0; i < Constants.WEEK_SIZE; i++) {
+                        assertEquals(expectedWeekdays.get(i), actualWeekdays.get(i));
+                        assertEquals(expectedTemperatures.get(i), actualTemperatures.get(i));
+                        assertEquals(expectedConditions.get(i), actualConditions.get(i));
+                    }
+
+                    assertEquals("5°C", displayDailyOutputData.getFeelsLikeTemperature());
+                    assertEquals("1", displayDailyOutputData.getUvIndex());
+                    assertEquals("3 m/s", displayDailyOutputData.getWindSpeed());
+                    assertEquals("100%", displayDailyOutputData.getCloudCover());
+                    assertEquals("100%", displayDailyOutputData.getPrecipitation());
+                    assertEquals("57%", displayDailyOutputData.getHumidity());
+                }
+
+                @Override
+                public void prepareFailView(String errorMessage) {
+                    fail();
+                }
+
+                @Override
+                public void switchToHomeView() {
+                    fail();
+                }
+            };
+
+            // Interactor
+            DisplayDailyInteractor interactor = new DisplayDailyInteractor(displayDailyRecentCitiesDAO,
+                    displayDailyWeatherDAO, presenter);
+            final ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("America/New_York"));
+            final String selectedWeekday = zonedDateTime.getDayOfWeek().toString();
+
+            DisplayDailyInputData inputData = new DisplayDailyInputData(selectedWeekday);
+
+            interactor.execute(inputData);
+            interactor.execute();
+        } catch(RecentCitiesDataException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void displayDailyRecentCitiesFailureTest() {
+        // Output boundary
+        DisplayDailyOutputBoundary presenter = new DisplayDailyOutputBoundary() {
+            @Override
+            public void prepareSuccessView(DisplayDailyOutputData displayDailyOutputData) {
+                fail();
+            }
+
+            @Override
+            public void prepareFailView(String errorMessage) {
+                assertEquals("Weather Data Unavailable.", errorMessage);
+            }
+
+            @Override
+            public void switchToHomeView() {
+                fail();
+            }
+        };
+        DisplayDailyInteractor interactor = new DisplayDailyInteractor(displayDailyRecentCitiesDAO,
+                displayDailyWeatherDAO, presenter);
+        final ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("America/New_York"));
+        final String selectedWeekday = zonedDateTime.getDayOfWeek().toString();
+
+        DisplayDailyInputData inputData = new DisplayDailyInputData(selectedWeekday);
+        interactor.execute(inputData);
+        interactor.execute();
+    }
+
+    @Test
+    void displayDailySwitchToHomeViewTest() {
+        // Output boundary
+        DisplayDailyOutputBoundary presenter = new DisplayDailyOutputBoundary() {
+            @Override
+            public void prepareSuccessView(DisplayDailyOutputData displayDailyOutputData) {
+                fail();
+            }
+
+            @Override
+            public void prepareFailView(String errorMessage) {
+                fail();
+            }
+
+            @Override
+            public void switchToHomeView() {
+                assertTrue(true);
+            }
+        };
+        DisplayDailyInteractor interactor = new DisplayDailyInteractor(displayDailyRecentCitiesDAO,
+                displayDailyWeatherDAO, presenter);
+        interactor.switchToHomeView();
     }
 }
