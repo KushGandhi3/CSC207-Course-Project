@@ -114,7 +114,7 @@ public class SummarizationView extends JPanel implements PropertyChangeListener,
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("update_data")) {
             displaySummarizationController.execute();
-        }else {
+        } else {
             final DisplaySummarizationState currentState = (DisplaySummarizationState) evt.getNewValue();
             setTextLabels(currentState);
         }

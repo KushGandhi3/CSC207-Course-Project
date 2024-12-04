@@ -37,16 +37,10 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
         try {
             final RecentCityData recentCityData = this.recentCitiesDAO.getRecentCityData();
             if (recentCityData.getRecentCityList().isEmpty()) {
-                throw new RecentCitiesDataException("No recent cities found");
+                throw new RecentCitiesDataException("No Cities To Display.");
             }
             city = recentCityData.getRecentCityList().getFirst();
-        } catch(RecentCitiesDataException exception) {
-            exception.printStackTrace();
-            displayDailyPresenter.prepareFailView(exception.getMessage());
-            return;
-        }
 
-        try {
             final DailyWeatherData dailyWeatherData = this.weatherDataAccessObject.getDailyWeatherData(city);
             final DayOfWeek selectedWeekday = DayOfWeek.valueOf(displayDailyInputData.getWeekday().toUpperCase());
             // package data for DisplayDailyOutputData constructor
@@ -55,9 +49,9 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
             final DisplayDailyOutputData displayDailyOutputData = new DisplayDailyOutputData(outputDataPackage);
 
             displayDailyPresenter.prepareSuccessView(displayDailyOutputData);
-        } catch (APICallException exception) {
+        } catch (APICallException | RecentCitiesDataException exception) {
             exception.printStackTrace();
-            displayDailyPresenter.prepareFailView(exception.getMessage());
+            displayDailyPresenter.prepareFailView("Weather Data Unavailable.");
         }
     }
 
@@ -71,13 +65,7 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
                 throw new RecentCitiesDataException("No Cities To Display.");
             }
             city = recentCityData.getRecentCityList().getFirst();
-        } catch(RecentCitiesDataException exception) {
-            exception.printStackTrace();
-            displayDailyPresenter.prepareFailView("No Cities To Display.");
-            return;
-        }
 
-        try {
             final DailyWeatherData dailyWeatherData = this.weatherDataAccessObject.getDailyWeatherData(city);
             // choose the current day of the week
             final ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of(dailyWeatherData.getTimezone()));
@@ -88,7 +76,7 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
             final DisplayDailyOutputData displayDailyOutputData = new DisplayDailyOutputData(outputDataPackage);
 
             displayDailyPresenter.prepareSuccessView(displayDailyOutputData);
-        } catch (APICallException exception) {
+        } catch (APICallException | RecentCitiesDataException exception) {
             exception.printStackTrace();
             displayDailyPresenter.prepareFailView("Weather Data Unavailable.");
         }

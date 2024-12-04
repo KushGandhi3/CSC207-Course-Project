@@ -19,7 +19,6 @@ import java.util.concurrent.ScheduledExecutorService;
 /**
  * The View for the Display Home Use Case.
  */
-
 public class HomeView extends JPanel implements ActionListener, PropertyChangeListener {
     private static final Font crimsonTextBold65 = FontManager.getCrimsonTextBold(65);
     private static final Font crimsonTextBold75 = FontManager.getCrimsonTextBold(75);
@@ -128,7 +127,7 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         refreshButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 
         locationField.setFont(crimsonTextBold65);
-      
+        locationField.setText("Enter Location");
         locationField.setBorder(BorderFactory.createEmptyBorder());
         locationField.setHorizontalAlignment(JTextField.CENTER);
 

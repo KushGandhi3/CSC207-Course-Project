@@ -1,4 +1,4 @@
-package use_case;
+package use_case.display_checker;
 
 import data_access.weather.InMemoryWeatherDAO;
 import entity.weather.daily_weather.ConcreteDailyWeatherDataFactory;
@@ -7,21 +7,11 @@ import entity.weather.day_weather.ConcreteDayWeatherDataFactory;
 import entity.weather.day_weather.DayWeatherDataFactory;
 import entity.weather.hour_weather.ConcreteHourWeatherDataFactory;
 import entity.weather.hour_weather.HourWeatherDataFactory;
-import entity.weather.hourly_weather.ConcreteHourlyWeatherData;
 import entity.weather.hourly_weather.ConcreteHourlyWeatherDataFactory;
 import entity.weather.hourly_weather.HourlyWeatherDataFactory;
 import exception.APICallException;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
-import entity.weather.hour_weather.HourWeatherData;
-import entity.weather.hourly_weather.HourlyWeatherData;
-import use_case.display_checker.DisplayCheckerDAI;
-import use_case.display_checker.DisplayCheckerInputData;
-import use_case.display_checker.DisplayCheckerInteractor;
-import use_case.display_checker.DisplayCheckerOutputBoundary;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
