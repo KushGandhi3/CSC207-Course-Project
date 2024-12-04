@@ -1,6 +1,6 @@
 package app;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
 public class Main {
     /**
@@ -15,10 +15,12 @@ public class Main {
                 .addDailyView()
                 .addHistoryView()
                 .addCheckerView()
+                .addHourlyView()
                 .addDisplaySummarizationUseCase()
                 .addDisplayHistoryUseCase()
                 .addDisplayDailyUseCase()
                 .addDisplayCheckerUseCase()
+                .addDisplayHourlyUseCase()
                 .addDisplayHomeUseCase()
                 .build();
 

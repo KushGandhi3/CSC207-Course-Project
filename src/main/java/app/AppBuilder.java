@@ -1,5 +1,11 @@
 package app;
 
+import java.awt.CardLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
+
 import data_access.recent_city.RecentCitiesDAO;
 import data_access.summarization.SummarizationSummaryDAO;
 import data_access.weather.WeatherDAO;
@@ -38,28 +44,47 @@ import use_case.display_checker.DisplayCheckerDAI;
 import use_case.display_checker.DisplayCheckerInputBoundary;
 import use_case.display_checker.DisplayCheckerInteractor;
 import use_case.display_checker.DisplayCheckerOutputBoundary;
-import use_case.display_daily.*;
+import use_case.display_daily.DisplayDailyInputBoundary;
+import use_case.display_daily.DisplayDailyInteractor;
+import use_case.display_daily.DisplayDailyOutputBoundary;
+import use_case.display_daily.DisplayDailyRecentCitiesDAI;
+import use_case.display_daily.DisplayDailyWeatherDAI;
 import use_case.display_history.DisplayHistoryDAI;
 import use_case.display_history.DisplayHistoryInputBoundary;
 import use_case.display_history.DisplayHistoryInteractor;
 import use_case.display_history.DisplayHistoryOutputBoundary;
-import use_case.display_home.*;
-import use_case.display_hourly.*;
-import use_case.display_summarization.*;
-import view.*;
-
-import javax.swing.*;
-import java.awt.*;
+import use_case.display_home.DisplayHomeInputBoundary;
+import use_case.display_home.DisplayHomeInteractor;
+import use_case.display_home.DisplayHomeOutputBoundary;
+import use_case.display_home.DisplayHomeRecentCitiesDAI;
+import use_case.display_home.DisplayHomeWeatherDAI;
+import use_case.display_hourly.DisplayHourlyInputBoundary;
+import use_case.display_hourly.DisplayHourlyInteractor;
+import use_case.display_hourly.DisplayHourlyOutputBoundary;
+import use_case.display_hourly.DisplayHourlyRecentCitiesDAI;
+import use_case.display_hourly.DisplayHourlyWeatherDAI;
+import use_case.display_summarization.DisplaySummarizationInputBoundary;
+import use_case.display_summarization.DisplaySummarizationInteractor;
+import use_case.display_summarization.DisplaySummarizationOutputBoundary;
+import use_case.display_summarization.DisplaySummarizationRecentCitiesDAI;
+import use_case.display_summarization.DisplaySummarizationSummaryDAI;
+import use_case.display_summarization.DisplaySummarizationWeatherDAI;
+import view.CheckerView;
+import view.DailyView;
+import view.HistoryView;
+import view.HomeView;
+import view.HourlyView;
+import view.SummarizationView;
 
 /**
  * The AppBuilder class is responsible for building the application.
  */
 public class AppBuilder {
-    // the default city to display information for
-    private final String DEFAULT_CITY = "Toronto";
+
+    private static final int WIDTH = 1200;
+    private static final int HEIGHT = 800;
 
     private final JPanel cardPanel = new JPanel();
-    private final CardLayout cardLayout = new CardLayout();
 
     private final RecentCityDataFactory recentCityDataFactory = new ConcreteRecentCityDataFactory();
     private final DailyWeatherDataFactory dailyWeatherDataFactory = new ConcreteDailyWeatherDataFactory();
@@ -69,7 +94,6 @@ public class AppBuilder {
     private final SummarizationFactory summarizationFactory = new ConcreteSummarizationFactory();
 
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
-    private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     // daily DAI's
     private final DisplayDailyRecentCitiesDAI displayDailyRecentCitiesDAO = new RecentCitiesDAO(recentCityDataFactory);
@@ -83,7 +107,8 @@ public class AppBuilder {
     private final DisplayHomeWeatherDAI displayHomeWeatherDAO = new WeatherDAO(dayWeatherDataFactory,
             dailyWeatherDataFactory, hourWeatherDataFactory, hourlyWeatherDataFactory);
     // summarization DAI's
-    private final DisplaySummarizationRecentCitiesDAI displaySummarizationRecentCitiesDAO = new RecentCitiesDAO(recentCityDataFactory);
+    private final DisplaySummarizationRecentCitiesDAI displaySummarizationRecentCitiesDAO = new
+            RecentCitiesDAO(recentCityDataFactory);
     private final DisplaySummarizationWeatherDAI displaySummarizationWeatherDAO = new WeatherDAO(dayWeatherDataFactory,
             dailyWeatherDataFactory, hourWeatherDataFactory, hourlyWeatherDataFactory);
     private final DisplaySummarizationSummaryDAI displaySummarizationSummaryDAO =
@@ -115,11 +140,12 @@ public class AppBuilder {
     private DisplayHourlyViewModel displayHourlyViewModel;
 
     public AppBuilder() {
+        final CardLayout cardLayout = new CardLayout();
         cardPanel.setLayout(cardLayout);
     }
 
     /**
-     * Adds the Daily View to the application
+     * Adds the Daily View to the application.
      * @return this builder
      */
     public AppBuilder addDailyView() {
@@ -130,7 +156,7 @@ public class AppBuilder {
     }
 
     /**
-     * Adds the Checker View to the application
+     * Adds the Checker View to the application.
      * @return this builder
      */
     public AppBuilder addCheckerView() {
@@ -141,7 +167,7 @@ public class AppBuilder {
     }
 
     /**
-     * Adds the Home View to the application
+     * Adds the Home View to the application.
      * @return this builder
      */
     public AppBuilder addHomeView() {
@@ -152,7 +178,7 @@ public class AppBuilder {
     }
 
     /**
-     * Adds the Summarization View to the application
+     * Adds the Summarization View to the application.
      * @return this builder
      */
     public AppBuilder addSummarizationView() {
@@ -163,7 +189,7 @@ public class AppBuilder {
     }
 
     /**
-     * Adds the History View to the application
+     * Adds the History View to the application.
      * @return this builder
      */
     public AppBuilder addHistoryView() {
@@ -174,7 +200,7 @@ public class AppBuilder {
     }
 
     /**
-     * Adds the Hourly View to the application
+     * Adds the Hourly View to the application.
      * @return this builder
      */
     public AppBuilder addHourlyView() {
@@ -210,7 +236,8 @@ public class AppBuilder {
         final DisplayCheckerInputBoundary displayCheckerInteractor = new DisplayCheckerInteractor(
                 displayCheckerWeatherDAO, displayCheckerPresenter);
 
-        final DisplayCheckerController displayCheckerController = new DisplayCheckerController(displayCheckerInteractor);
+        final DisplayCheckerController displayCheckerController = new
+                DisplayCheckerController(displayCheckerInteractor);
         checkerView.setCheckerController(displayCheckerController);
         return this;
     }
@@ -291,7 +318,7 @@ public class AppBuilder {
     public JFrame build() {
         final JFrame application = new JFrame("Wisely Wear");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        application.setSize(1200, 800);
+        application.setSize(WIDTH, HEIGHT);
         application.setResizable(false);
 
         application.add(cardPanel);
