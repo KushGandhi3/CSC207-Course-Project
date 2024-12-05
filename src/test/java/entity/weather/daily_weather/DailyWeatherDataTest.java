@@ -8,7 +8,7 @@ import entity.weather.hour_weather.ConcreteHourWeatherDataFactory;
 import entity.weather.hour_weather.HourWeatherDataFactory;
 import entity.weather.hourly_weather.ConcreteHourlyWeatherDataFactory;
 import entity.weather.hourly_weather.HourlyWeatherDataFactory;
-import exception.APICallException;
+import exception.ApiCallException;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -66,7 +66,7 @@ class DailyWeatherDataTest {
             assertEquals("America/New_York", dailyWeatherData.getTimezone());
             assertEquals("Toronto", dailyWeatherData.getCity());
 
-        } catch(APICallException exception) {
+        } catch(ApiCallException exception) {
             fail(exception.getMessage());
         }
     }

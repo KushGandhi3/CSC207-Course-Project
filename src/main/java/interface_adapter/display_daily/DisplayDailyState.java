@@ -1,10 +1,10 @@
 package interface_adapter.display_daily;
 
-import constants.Constants;
-
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
+
+import constants.Constants;
 
 /**
  * The state for the Display Daily View Model.

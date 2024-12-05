@@ -1,23 +1,27 @@
 package use_case.display_daily;
 
-import constants.Constants;
-import entity.recent_city.RecentCityData;
-import entity.weather.daily_weather.DailyWeatherData;
-import entity.weather.day_weather.DayWeatherData;
-import exception.APICallException;
-import exception.RecentCitiesDataException;
-import org.json.JSONObject;
-
 import java.time.DayOfWeek;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
+import constants.Constants;
+import entity.recent_city.RecentCityData;
+import entity.weather.daily_weather.DailyWeatherData;
+import entity.weather.day_weather.DayWeatherData;
+import exception.ApiCallException;
+import exception.RecentCitiesDataException;
+
 /**
  * The interactor for the Display Daily use-case.
  */
 public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
+
+    private static final String PERCENT = "%";
+
     private final DisplayDailyRecentCitiesDAI recentCitiesDAO;
     private final DisplayDailyWeatherDAI weatherDataAccessObject;
     private final DisplayDailyOutputBoundary displayDailyPresenter;
@@ -49,7 +53,8 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
             final DisplayDailyOutputData displayDailyOutputData = new DisplayDailyOutputData(outputDataPackage);
 
             displayDailyPresenter.prepareSuccessView(displayDailyOutputData);
-        } catch (APICallException | RecentCitiesDataException exception) {
+        }
+        catch (ApiCallException | RecentCitiesDataException exception) {
             exception.printStackTrace();
             displayDailyPresenter.prepareFailView("Weather Data Unavailable.");
         }
@@ -76,7 +81,8 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
             final DisplayDailyOutputData displayDailyOutputData = new DisplayDailyOutputData(outputDataPackage);
 
             displayDailyPresenter.prepareSuccessView(displayDailyOutputData);
-        } catch (APICallException | RecentCitiesDataException exception) {
+        }
+        catch (ApiCallException | RecentCitiesDataException exception) {
             exception.printStackTrace();
             displayDailyPresenter.prepareFailView("Weather Data Unavailable.");
         }
@@ -101,7 +107,7 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
             final ZonedDateTime dateTime = zonedDateTime.plusDays(i);
             weekdays.add(dateTime.getDayOfWeek().toString());
 
-            DayWeatherData dayWeatherData = dayWeatherDataList.get(i);
+            final DayWeatherData dayWeatherData = dayWeatherDataList.get(i);
 
             temperatures.add(dayWeatherData.getTemperature() + "°C");
             conditions.add(dayWeatherData.getCondition());
@@ -110,7 +116,8 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
         final int selectedWeekdayIndex;
         if (selectedWeekday.ordinal() >= currentWeekday.ordinal()) {
             selectedWeekdayIndex = selectedWeekday.ordinal() - currentWeekday.ordinal();
-        } else {
+        }
+        else {
             selectedWeekdayIndex =
                     Constants.WEEK_SIZE + selectedWeekday.ordinal() - currentWeekday.ordinal();
         }
@@ -119,9 +126,9 @@ public class DisplayDailyInteractor implements DisplayDailyInputBoundary {
         final String feelsLikeTemperature = selectedDayWeatherData.getFeelsLikeTemperature() + "°C";
         final String uvIndex = String.valueOf(selectedDayWeatherData.getUvIndex());
         final String windSpeed = selectedDayWeatherData.getWindSpeed() + " m/s";
-        final String cloudCover = selectedDayWeatherData.getCloudCover() + "%";
-        final String precipitation = selectedDayWeatherData.getPrecipitation() + "%";
-        final String humidity = selectedDayWeatherData.getHumidity() + "%";
+        final String cloudCover = selectedDayWeatherData.getCloudCover() + PERCENT;
+        final String precipitation = selectedDayWeatherData.getPrecipitation() + PERCENT;
+        final String humidity = selectedDayWeatherData.getHumidity() + PERCENT;
 
         // package data for DisplayDailyOutputData constructor
         final JSONObject outputDataPackage = new JSONObject();

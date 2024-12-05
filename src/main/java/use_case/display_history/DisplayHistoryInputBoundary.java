@@ -1,7 +1,5 @@
 package use_case.display_history;
 
-import exception.RecentCitiesDataException;
-
 /**
  * Interface for handling display history input actions.
  */

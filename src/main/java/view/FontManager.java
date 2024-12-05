@@ -7,102 +7,56 @@ import java.io.InputStream;
 
 public class FontManager {
     private static Font crimsonTextRegular;
-    private static Font interTextRegular;
     private static Font crimsonTextBold;
-    private static Font interTextBold;
-    private static Font crimsonTextItalic;
-    private static Font interTextItalic;
+    private static final float FONT_SIZE = 24f;
+    private static final int FONT_SIZE2 = 24;
 
     static {
         try {
             // load Crimson Text Regular font
-            InputStream crimsonTextRegularStream =
+            final InputStream crimsonTextRegularStream =
                     FontManager.class.getClassLoader().getResourceAsStream(
                             "fonts/crimson_text/CrimsonText-Regular.ttf");
             if (crimsonTextRegularStream == null) {
                 throw new IOException("Font file not found!");
             }
-            crimsonTextRegular = Font.createFont(Font.TRUETYPE_FONT, crimsonTextRegularStream).deriveFont(24f);
-
-            // load Inter Text Regular font
-            InputStream interTextRegularStream =
-                    FontManager.class.getClassLoader().getResourceAsStream(
-                            "fonts/inter/static/Inter_24pt-Black.ttf");
-            if (interTextRegularStream == null) {
-                throw new IOException("Font file not found!");
-            }
-            interTextRegular = Font.createFont(Font.TRUETYPE_FONT, interTextRegularStream).deriveFont(24f);
+            crimsonTextRegular = Font.createFont(Font.TRUETYPE_FONT, crimsonTextRegularStream).deriveFont(FONT_SIZE);
 
             // load Crimson Text Bold font
-            InputStream crimsonTextBoldStream =
+            final InputStream crimsonTextBoldStream =
                     FontManager.class.getClassLoader().getResourceAsStream(
                             "fonts/crimson_text/CrimsonText-Bold.ttf");
             if (crimsonTextBoldStream == null) {
                 throw new IOException("Font file not found!");
             }
-            crimsonTextBold = Font.createFont(Font.TRUETYPE_FONT, crimsonTextBoldStream).deriveFont(24f);
+            crimsonTextBold = Font.createFont(Font.TRUETYPE_FONT, crimsonTextBoldStream).deriveFont(FONT_SIZE);
 
-            // load Inter Text Bold font
-            InputStream interTextBoldStream =
-                    FontManager.class.getClassLoader().getResourceAsStream(
-                            "fonts/inter/static/Inter_24pt-Bold.ttf");
-            if (interTextBoldStream == null) {
-                throw new IOException("Font file not found!");
-            }
-            interTextBold = Font.createFont(Font.TRUETYPE_FONT, interTextBoldStream).deriveFont(24f);
-
-            // load Crimson Text Italic font
-            InputStream crimsonTextItalicStream =
-                    FontManager.class.getClassLoader().getResourceAsStream(
-                            "fonts/crimson_text/CrimsonText-Italic.ttf");
-            if (crimsonTextItalicStream == null) {
-                throw new IOException("Font file not found!");
-            }
-            crimsonTextItalic = Font.createFont(Font.TRUETYPE_FONT, crimsonTextItalicStream).deriveFont(24f);
-
-            // load Inter Text Italic font
-            InputStream interTextItalicStream =
-                    FontManager.class.getClassLoader().getResourceAsStream(
-                            "fonts/inter/static/Inter_24pt-Italic.ttf");
-            if (interTextItalicStream == null) {
-                throw new IOException("Font file not found!");
-            }
-            interTextItalic = Font.createFont(Font.TRUETYPE_FONT, interTextItalicStream).deriveFont(24f);
-
-        } catch (FontFormatException | IOException exception) {
+        }
+        catch (FontFormatException | IOException exception) {
             exception.printStackTrace();
             // fallback to default fonts
-            crimsonTextRegular = new Font("Serif", Font.PLAIN, 24);
-            interTextRegular = new Font("SansSerif", Font.PLAIN, 24);
-            crimsonTextBold = new Font("Serif", Font.BOLD, 24);
-            interTextBold = new Font("SansSerif", Font.BOLD, 24);
-            crimsonTextItalic = new Font("Serif", Font.ITALIC, 24);
-            interTextItalic = new Font("SansSerif", Font.ITALIC, 24);
+            crimsonTextRegular = new Font("Serif", Font.PLAIN, FONT_SIZE2);
+            crimsonTextBold = new Font("Serif", Font.BOLD, FONT_SIZE2);
         }
     }
 
+    /**
+     * Returns a Font object derived from the Crimson Text Regular font
+     * with the specified size.
+     * @param size the desired font size
+     * @return a Font object with the Crimson Text Regular style and the specified size
+     */
     public static Font getCrimsonTextRegular(float size) {
         return crimsonTextRegular.deriveFont(size);
     }
 
-    public static Font getInterTextRegular(float size) {
-        return interTextRegular.deriveFont(size);
-    }
-
+    /**
+     * Returns a Font object derived from the Crimson Text Bold font
+     * with the specified size.
+     * @param size the desired font size
+     * @return a Font object with the Crimson Text Bold style and the specified size
+     */
     public static Font getCrimsonTextBold(float size) {
         return crimsonTextBold.deriveFont(size);
     }
-
-    public static Font getInterTextBold(float size) {
-        return interTextBold.deriveFont(size);
-    }
-
-    public static Font getCrimsonTextItalic(float size) {
-        return crimsonTextItalic.deriveFont(size);
-    }
-
-    public static Font getInterTextItalic(float size) {
-        return interTextItalic.deriveFont(size);
-    }
-
 }

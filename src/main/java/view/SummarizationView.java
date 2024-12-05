@@ -15,7 +15,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import interface_adapter.display_daily.DisplayDailyState;
 import interface_adapter.display_summarization.DisplaySummarizationController;
 import interface_adapter.display_summarization.DisplaySummarizationState;
 import interface_adapter.display_summarization.DisplaySummarizationViewModel;
@@ -27,6 +26,10 @@ public class SummarizationView extends JPanel implements PropertyChangeListener,
 
     private static final Font CRIMSONTITLE = FontManager.getCrimsonTextBold(80);
     private static final Font CRIMSONSUBTITLE = FontManager.getCrimsonTextBold(24);
+    private static final int NUM_20 = 20;
+    private static final int NUM_10 = 10;
+    private static final String HTML_OPEN_TAG = "<html>";
+    private static final String HTML_CLOSE_TAG = "</html>";
 
     private final String viewName = "Summarization View";
     private final DisplaySummarizationViewModel viewModel;
@@ -64,13 +67,13 @@ public class SummarizationView extends JPanel implements PropertyChangeListener,
         // Main content panel
         final JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
-        contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(NUM_20, NUM_20, NUM_20, NUM_20));
 
         // Add the cards to the content panel
         contentPanel.add(createCard(summarySubtitle, summaryLabel));
-        contentPanel.add(Box.createHorizontalStrut(20));
+        contentPanel.add(Box.createHorizontalStrut(NUM_20));
         contentPanel.add(createCard(outfitSubtitle, outfitLabel));
-        contentPanel.add(Box.createHorizontalStrut(20));
+        contentPanel.add(Box.createHorizontalStrut(NUM_20));
         contentPanel.add(createCard(travelSubtitle, travelLabel));
 
         this.add(contentPanel, BorderLayout.CENTER);
@@ -90,12 +93,12 @@ public class SummarizationView extends JPanel implements PropertyChangeListener,
 
     private JPanel createCard(JLabel subtitle, JLabel body) {
         // Create the card panel
-        JPanel card = new JPanel();
+        final JPanel card = new JPanel();
         card.setLayout(new BorderLayout());
         card.setBackground(Color.WHITE);
         card.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.BLACK, 1, true),
-                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+                BorderFactory.createEmptyBorder(NUM_10, NUM_10, NUM_10, NUM_10)));
 
         // Add subtitle and body to the card
         card.add(subtitle, BorderLayout.NORTH);
@@ -105,16 +108,17 @@ public class SummarizationView extends JPanel implements PropertyChangeListener,
     }
 
     private void setTextLabels(DisplaySummarizationState state) {
-        summaryLabel.setText("<html>" + state.getWeatherSummary() + "</html>");
-        outfitLabel.setText("<html>" + state.getOutfitSuggestion() + "</html>");
-        travelLabel.setText("<html>" + state.getTravelAdvice() + "</html>");
+        summaryLabel.setText(HTML_OPEN_TAG + state.getWeatherSummary() + HTML_CLOSE_TAG);
+        outfitLabel.setText(HTML_OPEN_TAG + state.getOutfitSuggestion() + HTML_CLOSE_TAG);
+        travelLabel.setText(HTML_OPEN_TAG + state.getTravelAdvice() + HTML_CLOSE_TAG);
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("update_data")) {
             displaySummarizationController.execute();
-        } else {
+        }
+        else {
             final DisplaySummarizationState currentState = (DisplaySummarizationState) evt.getNewValue();
             setTextLabels(currentState);
         }

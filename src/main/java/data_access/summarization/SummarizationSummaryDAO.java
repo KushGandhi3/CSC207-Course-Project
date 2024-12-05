@@ -2,13 +2,13 @@ package data_access.summarization;
 
 import java.io.IOException;
 
+import exception.ApiCallException;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import entity.summarization.Summarization;
 import entity.summarization.SummarizationFactory;
-import exception.APICallException;
 import io.github.cdimascio.dotenv.Dotenv;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -41,10 +41,10 @@ public class SummarizationSummaryDAO implements DisplaySummarizationSummaryDAI {
      *
      * @param prompt the prompt to use for the summarization which includes weather data.
      * @return a Summarization entity
-     * @throws APICallException if the request fails or the API Key is not set
+     * @throws ApiCallException if the request fails or the API Key is not set
      * @throws RuntimeException if the request fails
      */
-    public Summarization getSummarization(String prompt) throws APICallException {
+    public Summarization getSummarization(String prompt) throws ApiCallException {
         final OkHttpClient client = new OkHttpClient();
 
         // Define the JSON schema for the response
@@ -107,7 +107,7 @@ public class SummarizationSummaryDAO implements DisplaySummarizationSummaryDAI {
             return this.summarizationFactory.createSummarization(weatherSummary, outfitSuggestion, travelAdvice);
         }
         catch (IOException exception) {
-            throw new APICallException("Failed To Get Summarization. " + exception.getMessage(), exception);
+            throw new ApiCallException("Failed To Get Summarization. " + exception.getMessage(), exception);
         }
     }
 

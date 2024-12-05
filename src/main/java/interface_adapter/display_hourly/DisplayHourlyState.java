@@ -1,15 +1,17 @@
 package interface_adapter.display_hourly;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import constants.Constants;
 
-import java.time.LocalTime;
+import constants.Constants;
 
 /**
  * State model for representing hourly weather data in the view.
  */
 public class DisplayHourlyState {
+
+    private static final String ZERO_PERCENT = "0%";
 
     // City Variables
     private String city;
@@ -44,10 +46,10 @@ public class DisplayHourlyState {
 
         this.feelsLike = "0°C";
         this.windSpeed = "0 m/s";
-        this.precipitation = "0%";
+        this.precipitation = ZERO_PERCENT;
         this.uvIndex = "0";
-        this.cloudCover = "0%";
-        this.humidity = "0%";
+        this.cloudCover = ZERO_PERCENT;
+        this.humidity = ZERO_PERCENT;
     }
 
     // Getters

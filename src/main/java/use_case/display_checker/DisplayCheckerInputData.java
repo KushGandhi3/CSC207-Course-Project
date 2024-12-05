@@ -10,18 +10,27 @@ public class DisplayCheckerInputData {
     private final int startChecking;
     private final int stopChecking;
 
-    public DisplayCheckerInputData(String location, String weatherConditionOptions, int startChecking, int stopChecking) {
+    public DisplayCheckerInputData(String location, String weatherConditionOptions,
+                                   int startChecking, int stopChecking) {
         this.location = location;
         this.weatherConditionOptions = weatherConditionOptions;
         this.startChecking = startChecking;
         this.stopChecking = stopChecking;
     }
 
-    String getLocation() {return location;}
+    public String getLocation() {
+        return location;
+    }
 
-    String getWeatherConditionOptions() {return weatherConditionOptions;}
+    public String getWeatherConditionOptions() {
+        return weatherConditionOptions;
+    }
 
-    int getStartChecking() {return startChecking;}
+    public int getStartChecking() {
+        return startChecking;
+    }
 
-    int getStopChecking() {return stopChecking;}
+    public int getStopChecking() {
+        return stopChecking;
+    }
 }

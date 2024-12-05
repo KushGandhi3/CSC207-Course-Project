@@ -24,6 +24,7 @@ public class DisplayHomeController {
 
         displayHomeInteractor.execute(displayHomeInputData);
     }
+
     /**
      * Executes the Display Home Use Case.
      */
@@ -31,18 +32,30 @@ public class DisplayHomeController {
         displayHomeInteractor.execute();
     }
 
+    /**
+     * Switches the current view to the Daily View within the Display Home Use Case.
+     */
     public void switchToDailyView() {
         this.displayHomeInteractor.switchToDailyView();
     }
 
+    /**
+     * Switches the current view to the Checker View within the Display Home Use Case.
+     */
     public void switchToCheckerView() {
         this.displayHomeInteractor.switchToCheckerView();
     }
 
+    /**
+     * Switches the current view to the Summary View within the Display Home Use Case.
+     */
     public void switchToSummaryView() {
         this.displayHomeInteractor.switchToSummaryView();
     }
 
+    /**
+     * Switches the current view to the History View within the Display Home Use Case.
+     */
     public void switchToHistoryView() {
         this.displayHomeInteractor.switchToHistoryView();
     }

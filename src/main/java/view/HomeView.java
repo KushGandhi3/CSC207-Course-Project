@@ -1,31 +1,38 @@
 package view;
 
-import interface_adapter.display_home.DisplayHomeController;
-import interface_adapter.display_home.DisplayHomeState;
-import interface_adapter.display_home.DisplayHomeViewModel;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import org.jetbrains.annotations.NotNull;
+
+import interface_adapter.display_home.DisplayHomeController;
+import interface_adapter.display_home.DisplayHomeState;
+import interface_adapter.display_home.DisplayHomeViewModel;
 
 /**
  * The View for the Display Home Use Case.
  */
 public class HomeView extends JPanel implements ActionListener, PropertyChangeListener {
-    private static final Font crimsonTextBold65 = FontManager.getCrimsonTextBold(65);
-    private static final Font crimsonTextBold75 = FontManager.getCrimsonTextBold(75);
-    private static final Font interTextBold12 = FontManager.getCrimsonTextBold(12);
-    private static final Font interTextBold15 = FontManager.getCrimsonTextBold(15);
-    private static final Font interTextBold35 = FontManager.getCrimsonTextBold(35);
-    private static final Font interTextBold50 = FontManager.getCrimsonTextBold(50);
+    private static final Font CRIMSONTEXTBOLD65 = FontManager.getCrimsonTextBold(65);
+    private static final Font CRIMSONTEXTBOLD35 = FontManager.getCrimsonTextBold(35);
+    private static final int NUM_10 = 10;
+    private static final int NUM_5 = 5;
+    private static final int NUM_50 = 50;
 
     private final String viewName = "Home";
 
@@ -46,37 +53,34 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
     private final JButton historyButton = new JButton();
     private final JButton refreshButton = new JButton();
 
-    // scheduler used to update the clock
-    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
     public HomeView(DisplayHomeViewModel displayHomeViewModel) {
         this.displayHomeViewModel = displayHomeViewModel;
         this.displayHomeViewModel.addPropertyChangeListener(this);
 
         componentStyling();
 
-        JPanel buttonPanel = getButtonPanel();
+        final JPanel buttonPanel = getButtonPanel();
 
         addActionListeners();
 
         // set the layout and border of the main panel
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        this.setBorder(BorderFactory.createEmptyBorder(NUM_10, NUM_10, NUM_10, NUM_10));
 
-        Box box = Box.createVerticalBox();
+        final Box box = Box.createVerticalBox();
         box.add(locationField);
         box.add(dateLabel);
         box.add(temperatureLabel);
         box.add(infoLabel);
-        box.add(Box.createVerticalStrut(50));
+        box.add(Box.createVerticalStrut(NUM_50));
         box.add(buttonPanel);
-        box.add(Box.createVerticalStrut(50));
+        box.add(Box.createVerticalStrut(NUM_50));
         box.add(refreshButton);
-        box.add(Box.createVerticalStrut(50));
+        box.add(Box.createVerticalStrut(NUM_50));
         this.add(box);
 
         // set default values
-        DisplayHomeState currentState = displayHomeViewModel.getState();
+        final DisplayHomeState currentState = displayHomeViewModel.getState();
         setLabels(currentState);
     }
 
@@ -86,8 +90,8 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
      */
     @NotNull
     private JPanel getButtonPanel() {
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(1, 5, 0, 0));
+        final JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridLayout(1, NUM_5, 0, 0));
         buttonPanel.add(hourlyButton);
         buttonPanel.add(dailyButton);
         buttonPanel.add(checkerButton);
@@ -126,18 +130,18 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         refreshButton.setContentAreaFilled(false);
         refreshButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 
-        locationField.setFont(crimsonTextBold65);
+        locationField.setFont(CRIMSONTEXTBOLD65);
         locationField.setText("Enter Location");
         locationField.setBorder(BorderFactory.createEmptyBorder());
         locationField.setHorizontalAlignment(JTextField.CENTER);
 
-        dateLabel.setFont(interTextBold35);
+        dateLabel.setFont(CRIMSONTEXTBOLD35);
         dateLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        temperatureLabel.setFont(interTextBold35);
+        temperatureLabel.setFont(CRIMSONTEXTBOLD35);
         temperatureLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        infoLabel.setFont(interTextBold35);
+        infoLabel.setFont(CRIMSONTEXTBOLD35);
         infoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
 
@@ -177,7 +181,7 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         refreshButton.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(refreshButton)) {
-                        DisplayHomeState displayHomeState = this.displayHomeViewModel.getState();
+                        final DisplayHomeState displayHomeState = this.displayHomeViewModel.getState();
                         this.displayHomeController.execute(displayHomeState.getCity());
                     }
                 }
@@ -216,9 +220,10 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("update_data")) {
             displayHomeController.execute();
-            DisplayHomeState currentState = displayHomeViewModel.getState();
+            final DisplayHomeState currentState = displayHomeViewModel.getState();
             locationField.setText(currentState.getCity());
-        } else {
+        }
+        else {
             final DisplayHomeState currentState = (DisplayHomeState) evt.getNewValue();
 
             setLabels(currentState);
@@ -228,9 +233,9 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
     private void setLabels(DisplayHomeState currentState) {
         temperatureLabel.setText(currentState.getTemperature());
         // set the info label
-        final String infoLabelString = (getWeatherString(currentState.getCondition()) + " "
-                + DisplayHomeViewModel.highLabel + currentState.getHighTemperature() + DisplayHomeViewModel.divider
-                + DisplayHomeViewModel.lowLabel + currentState.getLowTemperature());
+        final String infoLabelString = getWeatherString(currentState.getCondition() + " "
+                + DisplayHomeViewModel.HIGHLABEL + currentState.getHighTemperature() + DisplayHomeViewModel.DIVIDER
+                + DisplayHomeViewModel.LOWLABEL + currentState.getLowTemperature());
         infoLabel.setText(infoLabelString);
         dateLabel.setText(currentState.getDate());
     }
@@ -255,7 +260,6 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
      */
     private String getWeatherString(String condition) {
         return switch (condition) {
-            case DisplayHomeViewModel.CLOUDS -> "Cloudy";
             case DisplayHomeViewModel.CLEAR -> "Sunny";
             case DisplayHomeViewModel.DRIZZLE, DisplayHomeViewModel.THUNDERSTORM, DisplayHomeViewModel.RAIN,
                  DisplayHomeViewModel.MIST -> "Rainy";
@@ -263,5 +267,4 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
             default -> "Cloudy";
         };
     }
-
 }

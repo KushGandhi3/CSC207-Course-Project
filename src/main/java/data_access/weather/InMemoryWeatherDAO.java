@@ -1,5 +1,17 @@
 package data_access.weather;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
+import exception.ApiCallException;
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import entity.weather.daily_weather.DailyWeatherData;
 import entity.weather.daily_weather.DailyWeatherDataFactory;
 import entity.weather.day_weather.DayWeatherData;
@@ -8,21 +20,11 @@ import entity.weather.hour_weather.HourWeatherData;
 import entity.weather.hour_weather.HourWeatherDataFactory;
 import entity.weather.hourly_weather.HourlyWeatherData;
 import entity.weather.hourly_weather.HourlyWeatherDataFactory;
-import exception.APICallException;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import use_case.display_checker.DisplayCheckerDAI;
 import use_case.display_daily.DisplayDailyWeatherDAI;
 import use_case.display_home.DisplayHomeWeatherDAI;
 import use_case.display_hourly.DisplayHourlyWeatherDAI;
 import use_case.display_summarization.DisplaySummarizationWeatherDAI;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * In Memory Data Object for simulating the creation of weather data entities. Note that the only available cities are
@@ -32,6 +34,9 @@ public class InMemoryWeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWe
         DisplayHourlyWeatherDAI, DisplaySummarizationWeatherDAI {
 
     private static final String IN_MEMORY_WEATHER_DATA_PATH = "/data/InMemoryWeatherData.json";
+    private static final String TIME_ZONE = "timezone";
+    private static final String TEMP = "temp";
+    private static final String HUMIDITY = "humidity";
 
     private final DayWeatherDataFactory dayWeatherDataFactory;
     private final DailyWeatherDataFactory dailyWeatherDataFactory;
@@ -52,18 +57,18 @@ public class InMemoryWeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWe
      * Returns HourlyWeatherData entity with updated weather information from in memory weather data file.
      * @param city the name of the city to get the weather forecast for
      * @return an HourlyWeatherData entity
-     * @throws APICallException if the in memory weather data cannot be accessed
+     * @throws ApiCallException if the in memory weather data cannot be accessed
      */
     @Override
-    public HourlyWeatherData getHourlyWeatherData(String city) throws APICallException {
+    public HourlyWeatherData getHourlyWeatherData(String city) throws ApiCallException {
         final JSONObject weatherData = readInMemoryWeather().getJSONObject(city);
 
-        final String timezone = weatherData.getString("timezone");
+        final String timezone = weatherData.getString(TIME_ZONE);
         // get min and max temperature for the day
         // the weather data for today
         final JSONObject todayWeatherData = weatherData.getJSONArray("daily").getJSONObject(0);
         // temperature data from the weather data today
-        final JSONObject temperatureTodayWeatherData = todayWeatherData.getJSONObject("temp");
+        final JSONObject temperatureTodayWeatherData = todayWeatherData.getJSONObject(TEMP);
         final int lowTemperature = (int) temperatureTodayWeatherData.getDouble("min");
         final int highTemperature = (int) temperatureTodayWeatherData.getDouble("max");
 
@@ -87,7 +92,7 @@ public class InMemoryWeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWe
     private void getHourWeatherDataList(String city, String timezone, JSONArray hourlyArray,
                                         List<HourWeatherData> hourWeatherDataList) {
         for (int i = 0; i < hourlyArray.length(); i++) {
-            JSONObject hourObject = hourlyArray.getJSONObject(i);
+            final JSONObject hourObject = hourlyArray.getJSONObject(i);
 
             // note that parsing for DayWeatherData objects and HourWeatherData objects are slightly different
             // unpacking for main weather condition
@@ -96,7 +101,7 @@ public class InMemoryWeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWe
             // main weather condition ("Rain", "Clouds", "Snow")
             final String condition = conditionObject.getString("main");
 
-            final int temperature = (int) hourObject.getDouble("temp");
+            final int temperature = (int) hourObject.getDouble(TEMP);
 
             final int feelsLikeTemperature = (int) hourObject.getDouble("feels_like");
 
@@ -108,12 +113,12 @@ public class InMemoryWeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWe
 
             final int precipitation = (int) (hourObject.getDouble("pop") * 100);
 
-            final int humidity = (int) hourObject.getDouble("humidity");
+            final int humidity = (int) hourObject.getDouble(HUMIDITY);
 
             // package all forecast values
-            JSONObject hourWeatherDataValues = new JSONObject();
+            final JSONObject hourWeatherDataValues = new JSONObject();
             hourWeatherDataValues.put("city", city);
-            hourWeatherDataValues.put("timezone", timezone);
+            hourWeatherDataValues.put(TIME_ZONE, timezone);
             hourWeatherDataValues.put("condition", condition);
             hourWeatherDataValues.put("temperature", temperature);
             hourWeatherDataValues.put("feelsLikeTemperature", feelsLikeTemperature);
@@ -121,25 +126,24 @@ public class InMemoryWeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWe
             hourWeatherDataValues.put("uvIndex", uvIndex);
             hourWeatherDataValues.put("cloudCover", cloudCover);
             hourWeatherDataValues.put("precipitation", precipitation);
-            hourWeatherDataValues.put("humidity", humidity);
+            hourWeatherDataValues.put(HUMIDITY, humidity);
 
-            HourWeatherData hourWeatherData = this.hourWeatherDataFactory.create(hourWeatherDataValues);
+            final HourWeatherData hourWeatherData = this.hourWeatherDataFactory.create(hourWeatherDataValues);
             hourWeatherDataList.add(hourWeatherData);
         }
     }
-
 
     /**
      * Returns a DailyWeatherData entity with weather data from the in memory weather data file.
      * @param city the name of the city to get the weather forecast for
      * @return a DailyWeatherData entity
-     * @throws APICallException if the in memory weather data cannot be accessed
+     * @throws ApiCallException if the in memory weather data cannot be accessed
      */
     @Override
-    public DailyWeatherData getDailyWeatherData(String city) throws APICallException {
+    public DailyWeatherData getDailyWeatherData(String city) throws ApiCallException {
         final JSONObject weatherData = readInMemoryWeather().getJSONObject(city);
 
-        final String timezone = weatherData.getString("timezone");
+        final String timezone = weatherData.getString(TIME_ZONE);
         final JSONArray dailyArray = weatherData.getJSONArray("daily");
 
         final List<DayWeatherData> dayWeatherDataList = new ArrayList<>(dailyArray.length());
@@ -158,7 +162,7 @@ public class InMemoryWeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWe
     private void getDayWeatherDataList(String city, String timezone, JSONArray dailyArray,
                                        List<DayWeatherData> dayWeatherDataList) {
         for (int i = 0; i < dailyArray.length(); i++) {
-            JSONObject dayObject = dailyArray.getJSONObject(i);
+            final JSONObject dayObject = dailyArray.getJSONObject(i);
 
             // note that parsing for DayWeatherData objects and HourWeatherData objects are slightly different
             // unpacking for main weather condition
@@ -168,7 +172,7 @@ public class InMemoryWeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWe
             final String condition = conditionObject.getString("main");
 
             // unpacking for temperature
-            final JSONObject temperatureObject = dayObject.getJSONObject("temp");
+            final JSONObject temperatureObject = dayObject.getJSONObject(TEMP);
             // "day" means temperature in the middle of the day
             final int temperature = (int) temperatureObject.getDouble("day");
 
@@ -185,12 +189,12 @@ public class InMemoryWeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWe
 
             final int precipitation = (int) (dayObject.getDouble("pop") * 100);
 
-            final int humidity = (int) dayObject.getDouble("humidity");
+            final int humidity = (int) dayObject.getDouble(HUMIDITY);
 
             // package all forecast values
-            JSONObject dayWeatherDataValues = new JSONObject();
+            final JSONObject dayWeatherDataValues = new JSONObject();
             dayWeatherDataValues.put("city", city);
-            dayWeatherDataValues.put("timezone", timezone);
+            dayWeatherDataValues.put(TIME_ZONE, timezone);
             dayWeatherDataValues.put("condition", condition);
             dayWeatherDataValues.put("temperature", temperature);
             dayWeatherDataValues.put("feelsLikeTemperature", feelsLikeTemperature);
@@ -198,9 +202,9 @@ public class InMemoryWeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWe
             dayWeatherDataValues.put("uvIndex", uvIndex);
             dayWeatherDataValues.put("cloudCover", cloudCover);
             dayWeatherDataValues.put("precipitation", precipitation);
-            dayWeatherDataValues.put("humidity", humidity);
+            dayWeatherDataValues.put(HUMIDITY, humidity);
 
-            DayWeatherData dayWeatherData = this.dayWeatherDataFactory.create(dayWeatherDataValues);
+            final DayWeatherData dayWeatherData = this.dayWeatherDataFactory.create(dayWeatherDataValues);
             dayWeatherDataList.add(dayWeatherData);
         }
     }
@@ -208,26 +212,32 @@ public class InMemoryWeatherDAO implements DisplayHomeWeatherDAI, DisplayDailyWe
     /**
      * Read the InMemoryWeatherData json file from resource. Return a JSON Object of the weather data in the file.
      * @return JSONObject containing the weather data
-     * @throws APICallException when the InMemoryWeatherData JSON file is not found
+     * @throws ApiCallException when the InMemoryWeatherData JSON file is not found
      */
-    private JSONObject readInMemoryWeather() throws APICallException {
+    private JSONObject readInMemoryWeather() throws ApiCallException {
         try (InputStream inputStream = this.getClass().getResourceAsStream(IN_MEMORY_WEATHER_DATA_PATH)) {
-            if (inputStream == null) {
-                throw new IOException("Resource not found: " + IN_MEMORY_WEATHER_DATA_PATH + ".");
-            }
-            // read file data
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            StringBuilder jsonString = new StringBuilder();
-            BufferedReader reader = new BufferedReader(inputStreamReader);
-            String line;
-            while ((line = reader.readLine()) != null) {
-                jsonString.append(line);
-            }
+            final StringBuilder jsonString = getStringBuilder(inputStream);
             // convert the weather data file to a JSON object
             return new JSONObject(jsonString.toString());
-        } catch(IOException exception) {
-            throw new APICallException("Filed To Load In Memory Weather Data. " + exception);
+        }
+        catch (IOException exception) {
+            throw new ApiCallException("Filed To Load In Memory Weather Data. " + exception);
         }
     }
 
+    @NotNull
+    private static StringBuilder getStringBuilder(InputStream inputStream) throws IOException {
+        if (inputStream == null) {
+            throw new IOException("Resource not found: " + IN_MEMORY_WEATHER_DATA_PATH + ".");
+        }
+        // read file data
+        final InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        final StringBuilder jsonString = new StringBuilder();
+        final BufferedReader reader = new BufferedReader(inputStreamReader);
+        String line;
+        while ((line = reader.readLine()) != null) {
+            jsonString.append(line);
+        }
+        return jsonString;
+    }
 }

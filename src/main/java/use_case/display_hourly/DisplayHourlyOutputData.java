@@ -1,10 +1,10 @@
 package use_case.display_hourly;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * Data object representing the output data for the hourly forecast use case.
@@ -37,13 +37,13 @@ public class DisplayHourlyOutputData {
         this.lowTemperature = outputDataPackage.getInt("lowTemperature");
         this.highTemperature = outputDataPackage.getInt("highTemperature");
 
-        JSONArray timeArray = outputDataPackage.getJSONArray("time");
+        final JSONArray timeArray = outputDataPackage.getJSONArray("time");
         this.time = parseJSONArray(timeArray, String.class);
 
-        JSONArray conditionArray = outputDataPackage.getJSONArray("condition");
+        final JSONArray conditionArray = outputDataPackage.getJSONArray("condition");
         this.condition = parseJSONArray(conditionArray, String.class);
 
-        JSONArray temperatureArray = outputDataPackage.getJSONArray("temperature");
+        final JSONArray temperatureArray = outputDataPackage.getJSONArray("temperature");
         this.temperature = parseJSONArray(temperatureArray, String.class);
 
         this.feelsLike = outputDataPackage.getString("feelsLike");
@@ -55,20 +55,23 @@ public class DisplayHourlyOutputData {
     }
 
     /**
-     * Parses a JSONArray that contains elements of generic type. Returns a list containing the parsed data in order.
-     * @param jsonArray the JSONArray to parse
-     * @param type the type of the data being parsed
-     * @param <T> the type class of the data being parsed
-     * @throws IllegalArgumentException when data to be parsed is not of type <T>
+     * Parses a JSONArray and converts it into a list of objects of the specified type.
+     * @param <T> the type of elements in the list
+     * @param jsonArray the JSONArray to be parsed
+     * @param type the Class object of type T, representing the type of elements expected in the JSONArray
+     * @return a list containing the elements of the JSONArray cast to the specified type
+     * @throws IllegalArgumentException if any element of the JSONArray cannot be cast to the specified type
      */
     private <T> List<T> parseJSONArray(JSONArray jsonArray, Class<T> type) throws IllegalArgumentException {
-        List<T> dataValues = new ArrayList<>();
+        final List<T> dataValues = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
-            Object value = jsonArray.get(i);
+            final Object value = jsonArray.get(i);
             if (type.isInstance(value)) {
                 dataValues.add(type.cast(value));
-            } else {
-                throw new IllegalArgumentException("Element at index " + i + " is not of type " + type.getSimpleName() + ".");
+            }
+            else {
+                throw new IllegalArgumentException("Element at index " + i + " is not of type "
+                        + type.getSimpleName() + ".");
             }
         }
         return dataValues;

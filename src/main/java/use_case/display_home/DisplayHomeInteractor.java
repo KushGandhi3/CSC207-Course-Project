@@ -1,19 +1,21 @@
 package use_case.display_home;
 
-import entity.recent_city.RecentCityData;
-import entity.weather.hour_weather.HourWeatherData;
-import entity.weather.hourly_weather.HourlyWeatherData;
-import exception.APICallException;
-import exception.RecentCitiesDataException;
-
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+
+import entity.recent_city.RecentCityData;
+import entity.weather.hour_weather.HourWeatherData;
+import entity.weather.hourly_weather.HourlyWeatherData;
+import exception.ApiCallException;
+import exception.RecentCitiesDataException;
 
 /**
  * The Interactor for the Display Home Use Case.
  */
 public class DisplayHomeInteractor implements DisplayHomeInputBoundary {
+
+    private static final String DEGREES_CELSIUS = "°C";
 
     private final DisplayHomeWeatherDAI weatherDataAccessObject;
     private final DisplayHomeRecentCitiesDAI recentCitiesDataAccessObject;
@@ -32,53 +34,58 @@ public class DisplayHomeInteractor implements DisplayHomeInputBoundary {
         try {
             final String city = displayHomeInputData.getCityName();
             if (city == null) {
-                throw new APICallException("No City Name Provided.");
+                throw new ApiCallException("No City Name Provided.");
             }
 
             recentCitiesDataAccessObject.addCity(city);
 
-            DisplayHomeOutputData displayHomeOutputData = getOutputData(city);
+            final DisplayHomeOutputData displayHomeOutputData = getOutputData(city);
             this.displayHomePresenter.prepareSuccessView(displayHomeOutputData);
-        } catch(APICallException | RecentCitiesDataException exception) {
+        }
+        catch (ApiCallException | RecentCitiesDataException exception) {
             exception.printStackTrace();
             displayHomePresenter.prepareFailView("City Not Found.");
         }
     }
 
+    /**
+     * Executes the DisplayHome use case to show weather information for the most recently accessed city.
+     */
     public void execute() {
         try {
-            RecentCityData recentCityData = recentCitiesDataAccessObject.getRecentCityData();
+            final RecentCityData recentCityData = recentCitiesDataAccessObject.getRecentCityData();
             if (recentCityData.getRecentCityList().isEmpty()) {
                 throw new RecentCitiesDataException("Recent cities not found");
             }
-            String recentCity = recentCityData.getRecentCityList().getFirst();
+            final String recentCity = recentCityData.getRecentCityList().getFirst();
 
-            DisplayHomeOutputData displayHomeOutputData = getOutputData(recentCity);
+            final DisplayHomeOutputData displayHomeOutputData = getOutputData(recentCity);
             this.displayHomePresenter.prepareSuccessView(displayHomeOutputData);
-        } catch(APICallException | RecentCitiesDataException exception) {
+        }
+        catch (ApiCallException | RecentCitiesDataException exception) {
             exception.printStackTrace();
             displayHomePresenter.prepareFailView("City Not Found.");
         }
     }
 
-    private DisplayHomeOutputData getOutputData(String city) throws APICallException {
+    private DisplayHomeOutputData getOutputData(String city) throws ApiCallException {
         final HourlyWeatherData hourlyWeatherData = weatherDataAccessObject
                 .getHourlyWeatherData(city);
 
         final String timezone = hourlyWeatherData.getTimezone();
-        final String lowTemperature = hourlyWeatherData.getLowTemperature() + "°C";
-        final String highTemperature = hourlyWeatherData.getHighTemperature() + "°C";
+        final String lowTemperature = hourlyWeatherData.getLowTemperature() + DEGREES_CELSIUS;
+        final String highTemperature = hourlyWeatherData.getHighTemperature() + DEGREES_CELSIUS;
 
         // weather data for the most recent hour
         final HourWeatherData hourWeatherData = hourlyWeatherData.getHourWeatherDataList().getFirst();
-        final String temperature = hourWeatherData.getTemperature() + "°C";
+        final String temperature = hourWeatherData.getTemperature() + DEGREES_CELSIUS;
         final String condition = hourWeatherData.getCondition();
 
         // get the date
-        ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of(timezone));
+        final ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of(timezone));
         // formatter for the date pattern
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM d");
-        String date = zonedDateTime.format(formatter);
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM d");
+        final String date = zonedDateTime.format(formatter);
 
         return new DisplayHomeOutputData(city, lowTemperature, highTemperature,
                 temperature, condition, date);
@@ -102,5 +109,10 @@ public class DisplayHomeInteractor implements DisplayHomeInputBoundary {
     @Override
     public void switchToHistoryView() {
         displayHomePresenter.switchToHistoryView();
+    }
+
+    @Override
+    public void switchToHourlyView() {
+        displayHomePresenter.switchToHourlyView();
     }
 }

@@ -1,19 +1,20 @@
 package use_case.display_hourly;
 
-import constants.Constants;
-import entity.recent_city.RecentCityData;
-import entity.weather.hourly_weather.HourlyWeatherData;
-import entity.weather.hour_weather.HourWeatherData;
-import exception.APICallException;
-import exception.RecentCitiesDataException;
-import org.json.JSONObject;
-
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONObject;
+
+import constants.Constants;
+import entity.recent_city.RecentCityData;
+import entity.weather.hour_weather.HourWeatherData;
+import entity.weather.hourly_weather.HourlyWeatherData;
+import exception.ApiCallException;
+import exception.RecentCitiesDataException;
 
 /**
  * Interactor for the hourly forecast use case.
@@ -52,7 +53,7 @@ public class DisplayHourlyInteractor implements DisplayHourlyInputBoundary {
             final DisplayHourlyOutputData displayHourlyOutputData = new DisplayHourlyOutputData(outputDataPackage);
             displayHourlyPresenter.prepareSuccessView(displayHourlyOutputData);
         }
-        catch (APICallException exception) {
+        catch (ApiCallException exception) {
             displayHourlyPresenter.prepareFailView(exception.getMessage());
         }
     }
@@ -75,13 +76,14 @@ public class DisplayHourlyInteractor implements DisplayHourlyInputBoundary {
         for (int i = 0; i < Constants.TIME_SIZE; i++) {
             final ZonedDateTime dateTime = zonedDateTime.plusHours(i);
             times.add(dateTime.getHour());
-            HourWeatherData hourWeatherData = hourWeatherDataList.get(i);
+            final HourWeatherData hourWeatherData = hourWeatherDataList.get(i);
             temperatures.add(hourWeatherData.getTemperature());
             conditions.add(hourWeatherData.getCondition());
         }
 
         final int totalSteps = Constants.TIME_SIZE;
-        final int selectedTimeIndex = (int) ((ChronoUnit.HOURS.between(currentTime, selectedTime) + totalSteps) % totalSteps);
+        final int selectedTimeIndex = (int) ((ChronoUnit.HOURS.between(currentTime, selectedTime) + totalSteps)
+                % totalSteps);
 
         final HourWeatherData selectedHourWeatherData = hourWeatherDataList.get(selectedTimeIndex);
         final int feelsLikeTemperature = selectedHourWeatherData.getFeelsLikeTemperature();

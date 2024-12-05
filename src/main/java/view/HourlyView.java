@@ -1,22 +1,31 @@
 package view;
 
-import interface_adapter.display_daily.DisplayDailyState;
-import interface_adapter.display_hourly.DisplayHourlyState;
-import interface_adapter.display_hourly.DisplayHourlyController;
-import interface_adapter.display_hourly.DisplayHourlyViewModel;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import org.jetbrains.annotations.NotNull;
+
 import constants.Constants;
+import interface_adapter.display_hourly.DisplayHourlyController;
+import interface_adapter.display_hourly.DisplayHourlyState;
+import interface_adapter.display_hourly.DisplayHourlyViewModel;
 
 /**
  * View for displaying hourly weather data.
@@ -24,10 +33,18 @@ import constants.Constants;
  */
 public class HourlyView extends JPanel implements PropertyChangeListener, ActionListener {
     // Fonts
-    private static final Font crimsonText70 = FontManager.getCrimsonTextRegular(70);
-    private static final Font interTextBold12 = FontManager.getCrimsonTextBold(12);
-    private static final Font interTextBold15 = FontManager.getCrimsonTextBold(15);
-    private static final Font interTextBold18 = FontManager.getCrimsonTextBold(18);
+    private static final Font CRIMSOMTEXTBOLD12 = FontManager.getCrimsonTextBold(12);
+    private static final Font CRIMSOMTEXTBOLD15 = FontManager.getCrimsonTextBold(15);
+    private static final Font CRIMSOMTEXTBOLD18 = FontManager.getCrimsonTextBold(18);
+    private static final Font CRIMSOMTEXTBOLD70 = FontManager.getCrimsonTextBold(70);
+    private static final int NUM_3 = 3;
+    private static final int NUM_10 = 10;
+    private static final int NUM_15 = 15;
+    private static final int NUM_55 = 55;
+    private static final int NUM_135 = 135;
+    private static final int NUM_150 = 150;
+    private static final int NUM_195 = 195;
+    private static final int NUM_220 = 220;
 
     // View Name
     private final String viewName = "Hourly";
@@ -38,8 +55,6 @@ public class HourlyView extends JPanel implements PropertyChangeListener, Action
 
     // City Labels
     private final JLabel city = new JLabel();
-    private final JLabel lowTemperature = new JLabel();
-    private final JLabel highTemperature = new JLabel();
 
     // Weather Labels
     private final List<JButton> condition = new ArrayList<>(Constants.TIME_SIZE);
@@ -68,12 +83,12 @@ public class HourlyView extends JPanel implements PropertyChangeListener, Action
         setCityLabel();
 
         // Hourly Forecast Xox
-        JPanel forecastBox = getForecastBox();
+        final JPanel forecastBox = getForecastBox();
 
         // Hour Details Box
-        JPanel detailsBox = getDetailsBox();
+        final JPanel detailsBox = getDetailsBox();
 
-        JPanel backButtonPanel = getBackButton();
+        final JPanel backButtonPanel = getBackButton();
 
         for (int i = 0; i < Constants.TIME_SIZE; i++) {
             final int index = i;
@@ -120,16 +135,16 @@ public class HourlyView extends JPanel implements PropertyChangeListener, Action
                         System.out.println("you pressed the back button");
                         final DisplayHourlyState currentState = this.displayHourlyViewModel.getState();
                         this.displayHourlyController.execute(
-                                currentState.getTime().get(0)
+                                currentState.getTime().getFirst()
                         );
                     }
                 }
         );
 
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        this.setBorder(BorderFactory.createEmptyBorder(NUM_10, NUM_10, NUM_10, NUM_10));
 
-        Box box = Box.createVerticalBox();
+        final Box box = Box.createVerticalBox();
         box.add(backButtonPanel);
         box.add(city);
         box.add(forecastBox);
@@ -137,7 +152,7 @@ public class HourlyView extends JPanel implements PropertyChangeListener, Action
         this.add(box);
 
         // Set Default State
-        DisplayHourlyState state = displayHourlyViewModel.getState();
+        final DisplayHourlyState state = displayHourlyViewModel.getState();
         setLabels(state);
     }
 
@@ -148,15 +163,15 @@ public class HourlyView extends JPanel implements PropertyChangeListener, Action
     @NotNull
     private JPanel getDetailsBox() {
         // Set Fonts
-        feelsLike.setFont(interTextBold18);
-        windSpeed.setFont(interTextBold18);
-        precipitation.setFont(interTextBold18);
-        uvIndex.setFont(interTextBold18);
-        cloudCover.setFont(interTextBold18);
-        humidity.setFont(interTextBold18);
+        feelsLike.setFont(CRIMSOMTEXTBOLD18);
+        windSpeed.setFont(CRIMSOMTEXTBOLD18);
+        precipitation.setFont(CRIMSOMTEXTBOLD18);
+        uvIndex.setFont(CRIMSOMTEXTBOLD18);
+        cloudCover.setFont(CRIMSOMTEXTBOLD18);
+        humidity.setFont(CRIMSOMTEXTBOLD18);
 
         // Hourly Details Box
-        JPanel detailsBox = new JPanel() {
+        final JPanel detailsBox = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -169,32 +184,32 @@ public class HourlyView extends JPanel implements PropertyChangeListener, Action
         };
 
         // Details Panel Shifted
-        JPanel shiftedDetailsPanel = new JPanel();
+        final JPanel shiftedDetailsPanel = new JPanel();
         shiftedDetailsPanel.setLayout(new BoxLayout(shiftedDetailsPanel, BoxLayout.X_AXIS));
         shiftedDetailsPanel.setOpaque(false);
 
         // Details Panel
-        JPanel detailsPanel = new JPanel();
-        detailsPanel.setLayout(new GridLayout(1, 3, 195, 0));
+        final JPanel detailsPanel = new JPanel();
+        detailsPanel.setLayout(new GridLayout(1, NUM_3, NUM_195, 0));
         detailsPanel.setOpaque(false);
 
         // Column 1
-        JPanel detailsPanel1 = new JPanel();
-        detailsPanel1.setLayout(new GridLayout(2, 1, 0, 55));
+        final JPanel detailsPanel1 = new JPanel();
+        detailsPanel1.setLayout(new GridLayout(2, 1, 0, NUM_55));
         detailsPanel1.setOpaque(false);
         detailsPanel1.add(feelsLike);
         detailsPanel1.add(uvIndex);
 
         // Column 2
-        JPanel detailsPanel2 = new JPanel();
-        detailsPanel2.setLayout(new GridLayout(2, 1, 0, 55));
+        final JPanel detailsPanel2 = new JPanel();
+        detailsPanel2.setLayout(new GridLayout(2, 1, 0, NUM_55));
         detailsPanel2.setOpaque(false);
         detailsPanel2.add(windSpeed);
         detailsPanel2.add(cloudCover);
 
         // Column 3
-        JPanel detailsPanel3 = new JPanel();
-        detailsPanel3.setLayout(new GridLayout(2, 1, 0, 55));
+        final JPanel detailsPanel3 = new JPanel();
+        detailsPanel3.setLayout(new GridLayout(2, 1, 0, NUM_55));
         detailsPanel3.setOpaque(false);
         detailsPanel3.add(precipitation);
         detailsPanel3.add(humidity);
@@ -206,10 +221,10 @@ public class HourlyView extends JPanel implements PropertyChangeListener, Action
 
         // Shift Shifted Details Panel
         shiftedDetailsPanel.add(detailsPanel);
-        shiftedDetailsPanel.add(Box.createHorizontalStrut(135));
+        shiftedDetailsPanel.add(Box.createHorizontalStrut(NUM_135));
 
         // Padding
-        detailsBox.add(Box.createVerticalStrut(220));
+        detailsBox.add(Box.createVerticalStrut(NUM_220));
 
         // Add Details Panel
         detailsBox.add(shiftedDetailsPanel);
@@ -218,7 +233,7 @@ public class HourlyView extends JPanel implements PropertyChangeListener, Action
     }
 
     /**
-     * Gets the back button JPanel and styles it
+     * Gets the back button JPanel and styles it.
      * @return a back button JPanel
      */
     @NotNull
@@ -226,7 +241,7 @@ public class HourlyView extends JPanel implements PropertyChangeListener, Action
         backButton.setIcon(DisplayHourlyViewModel.BACK_BUTTON_IMAGE);
         backButton.setBorder(BorderFactory.createEmptyBorder());
         backButton.setContentAreaFilled(false);
-        JPanel backButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        final JPanel backButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         backButtonPanel.add(backButton);
         return backButtonPanel;
     }
@@ -235,7 +250,7 @@ public class HourlyView extends JPanel implements PropertyChangeListener, Action
      * Styles the current instance of the city label.
      */
     private void setCityLabel() {
-        city.setFont(crimsonText70);
+        city.setFont(CRIMSOMTEXTBOLD70);
         city.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
 
@@ -251,14 +266,14 @@ public class HourlyView extends JPanel implements PropertyChangeListener, Action
             times.add(new JButton());
 
             // Style Time Buttons
-            times.get(i).setFont(interTextBold12);
+            times.get(i).setFont(CRIMSOMTEXTBOLD12);
 
             // Style Temperature Buttons
-            times.get(i).setFont(interTextBold15);
+            times.get(i).setFont(CRIMSOMTEXTBOLD15);
         }
 
         // Place Hourly Forecast Box Image
-        JPanel forecastBox = new JPanel() {
+        final JPanel forecastBox = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -271,19 +286,19 @@ public class HourlyView extends JPanel implements PropertyChangeListener, Action
         };
 
         // Hourly Content Panel
-        JPanel hourlyPanel = new JPanel();
-        hourlyPanel.setLayout(new GridLayout(1, Constants.TIME_SIZE, 15, 0));
+        final JPanel hourlyPanel = new JPanel();
+        hourlyPanel.setLayout(new GridLayout(1, Constants.TIME_SIZE, NUM_15, 0));
 
         // Padding
-        hourlyPanel.add(Box.createHorizontalStrut(15));
+        hourlyPanel.add(Box.createHorizontalStrut(NUM_15));
 
         // Make Hourly Panel Invisible
         hourlyPanel.setOpaque(false);
 
-        for(int i = 0; i < Constants.TIME_SIZE; i++) {
+        for (int i = 0; i < Constants.TIME_SIZE; i++) {
             // Panel For Each Hour
             final JPanel hourPanel = new JPanel();
-            hourPanel.setLayout(new GridLayout(3, 1, 0, 0));
+            hourPanel.setLayout(new GridLayout(NUM_3, 1, 0, 0));
             hourPanel.setOpaque(false);
 
             // Remove Button Border
@@ -303,10 +318,10 @@ public class HourlyView extends JPanel implements PropertyChangeListener, Action
         }
 
         // Add Padding
-        hourlyPanel.add(Box.createHorizontalStrut(15));
+        hourlyPanel.add(Box.createHorizontalStrut(NUM_15));
 
         // Vertical Spacing
-        forecastBox.add(Box.createVerticalStrut(150));
+        forecastBox.add(Box.createVerticalStrut(NUM_150));
         forecastBox.add(hourlyPanel);
 
         return forecastBox;
@@ -319,11 +334,11 @@ public class HourlyView extends JPanel implements PropertyChangeListener, Action
 
             // execute the Display Hourly Weather Use Case on the current hour
             displayHourlyController.execute(currentState.getTime().getFirst());
-        } else {
+        }
+        else {
             final DisplayHourlyState currentState = (DisplayHourlyState) evt.getNewValue();
             setLabels(currentState);
         }
-
 
         final DisplayHourlyState currentState = (DisplayHourlyState) evt.getNewValue();
         setLabels(currentState);
@@ -354,13 +369,12 @@ public class HourlyView extends JPanel implements PropertyChangeListener, Action
 
     /**
      * Chooses the corresponding weather icon based on the String code.
-     * @param condition the weather condition
+     * @param cond the weather condition
      * @return the corresponding weather image icon
      */
-    private ImageIcon chooseWeatherIcon(String condition) {
-        return switch (condition) {
+    private ImageIcon chooseWeatherIcon(String cond) {
+        return switch (cond) {
             case DisplayHourlyViewModel.CLOUDS -> DisplayHourlyViewModel.CLOUDS_IMAGE;
-            case DisplayHourlyViewModel.CLEAR -> DisplayHourlyViewModel.CLEAR_IMAGE;
             case DisplayHourlyViewModel.DRIZZLE, DisplayHourlyViewModel.THUNDERSTORM, DisplayHourlyViewModel.RAIN,
                  DisplayHourlyViewModel.MIST -> DisplayHourlyViewModel.RAIN_IMAGE;
             case DisplayHourlyViewModel.SNOW -> DisplayHourlyViewModel.SNOW_IMAGE;
@@ -376,7 +390,7 @@ public class HourlyView extends JPanel implements PropertyChangeListener, Action
     public void actionPerformed(ActionEvent event) {
         System.out.println("Action command: " + event.getActionCommand());
         System.out.println("Action source: " + event.getSource());
-        DisplayHourlyState currentState = this.displayHourlyViewModel.getState();
-        this.displayHourlyController.execute(currentState.getTime().get(0));
+        final DisplayHourlyState currentState = this.displayHourlyViewModel.getState();
+        this.displayHourlyController.execute(currentState.getTime().getFirst());
     }
 }

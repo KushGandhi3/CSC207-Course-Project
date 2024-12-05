@@ -1,6 +1,6 @@
 package app;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
 public class Main {
     /**
@@ -10,19 +10,20 @@ public class Main {
     public static void main(String[] args) {
         final AppBuilder appBuilder = new AppBuilder();
         final JFrame application = appBuilder
-                .addSummarizationView()
                 .addHomeView()
+                .addHourlyView()
                 .addDailyView()
                 .addHistoryView()
                 .addCheckerView()
-                .addDisplaySummarizationUseCase()
-                .addDisplayHistoryUseCase()
-                .addDisplayDailyUseCase()
-                .addDisplayCheckerUseCase()
+                .addSummarizationView()
                 .addDisplayHomeUseCase()
+                .addDisplayHourlyUseCase()
+                .addDisplayDailyUseCase()
+                .addDisplayHistoryUseCase()
+                .addDisplayCheckerUseCase()
+                .addDisplaySummarizationUseCase()
                 .build();
 
-        application.pack();
         application.setVisible(true);
     }
 }

@@ -1,13 +1,10 @@
 package view;
 
-import constants.Constants;
-import interface_adapter.display_daily.DisplayDailyController;
-import interface_adapter.display_daily.DisplayDailyState;
-import interface_adapter.display_daily.DisplayDailyViewModel;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -15,16 +12,40 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import org.jetbrains.annotations.NotNull;
+
+import constants.Constants;
+import interface_adapter.display_daily.DisplayDailyController;
+import interface_adapter.display_daily.DisplayDailyState;
+import interface_adapter.display_daily.DisplayDailyViewModel;
+
 /**
  * The view for the daily weather use-case.
  */
 public class DailyView extends JPanel implements PropertyChangeListener, ActionListener {
-    private static final Font crimsonText70 = FontManager.getCrimsonTextRegular(70);
-    private static final Font interTextBold12 = FontManager.getCrimsonTextBold(12);
-    private static final Font interTextBold15 = FontManager.getCrimsonTextBold(15);
-    private static final Font interTextBold18 = FontManager.getCrimsonTextBold(18);
+    private static final Font CRIMSON_TEXT_70 = FontManager.getCrimsonTextRegular(70);
+    private static final Font INTER_TEXT_BOLD_12 = FontManager.getCrimsonTextBold(12);
+    private static final Font INTER_TEXT_BOLD_15 = FontManager.getCrimsonTextBold(15);
+    private static final Font INTER_TEXT_BOLD_18 = FontManager.getCrimsonTextBold(18);
 
-    private final String viewName = "Daily Forecast";
+    private static final String VIEW_NAME = "Daily Forecast";
+    private static final int GRID_LAYOUT_HGAP = 195;
+    private static final int DETAILS_VGAP = 55;
+    private static final int SHIFTED_HORIZONTAL_PADDING = 135;
+    private static final int DETAILS_BOX_VERTICAL_PADDING = 220;
+    private static final int DAILY_PANEL_HGAP = 15;
+    private static final int HORIZONTAL_PADDING = 15;
+    private static final int FORECAST_BOX_VERTICAL_PADDING = 150;
+    private static final int BORDER_PADDING = 10;
+    private static final int NUM_3 = 3;
 
     private final DisplayDailyViewModel displayDailyViewModel;
     private DisplayDailyController displayDailyController;
@@ -52,12 +73,12 @@ public class DailyView extends JPanel implements PropertyChangeListener, ActionL
         setCityLabel();
 
         // daily forecast box
-        JPanel forecastBox = getForecastBox();
+        final JPanel forecastBox = getForecastBox();
 
         // day details box
-        JPanel detailsBox = getDetailsBox();
+        final JPanel detailsBox = getDetailsBox();
 
-        JPanel backButtonPanel = getBackButton();
+        final JPanel backButtonPanel = getBackButton();
 
         for (int i = 0; i < Constants.WEEK_SIZE; i++) {
             final int index = i;
@@ -109,15 +130,15 @@ public class DailyView extends JPanel implements PropertyChangeListener, ActionL
         );
 
         // set the layout and border of the main panel
-        this.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        setBorder(BorderFactory.createEmptyBorder(BORDER_PADDING, BORDER_PADDING, BORDER_PADDING, BORDER_PADDING));
 
-        Box box = Box.createVerticalBox();
+        final Box box = Box.createVerticalBox();
         box.add(backButtonPanel);
         box.add(city);
         box.add(forecastBox);
         box.add(detailsBox);
-        this.add(box);
+        add(box);
     }
 
     /**
@@ -127,15 +148,15 @@ public class DailyView extends JPanel implements PropertyChangeListener, ActionL
     @NotNull
     private JPanel getDetailsBox() {
         // set fonts
-        feelsLikeTemperature.setFont(interTextBold18);
-        uvIndex.setFont(interTextBold18);
-        windSpeed.setFont(interTextBold18);
-        cloudCover.setFont(interTextBold18);
-        precipitation.setFont(interTextBold18);
-        humidity.setFont(interTextBold18);
+        feelsLikeTemperature.setFont(INTER_TEXT_BOLD_18);
+        uvIndex.setFont(INTER_TEXT_BOLD_18);
+        windSpeed.setFont(INTER_TEXT_BOLD_18);
+        cloudCover.setFont(INTER_TEXT_BOLD_18);
+        precipitation.setFont(INTER_TEXT_BOLD_18);
+        humidity.setFont(INTER_TEXT_BOLD_18);
 
         // place the Daily Details Box on the screen
-        JPanel detailsBox = new JPanel() {
+        final JPanel detailsBox = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -149,28 +170,28 @@ public class DailyView extends JPanel implements PropertyChangeListener, ActionL
         };
 
         // details panel with horizontal shift applied
-        JPanel shiftedDetailsPanel = new JPanel();
+        final JPanel shiftedDetailsPanel = new JPanel();
         shiftedDetailsPanel.setLayout(new BoxLayout(shiftedDetailsPanel, BoxLayout.X_AXIS));
         shiftedDetailsPanel.setOpaque(false);
         // details panel
-        JPanel detailsPanel = new JPanel();
-        detailsPanel.setLayout(new GridLayout(1, 3, 195, 0));
+        final JPanel detailsPanel = new JPanel();
+        detailsPanel.setLayout(new GridLayout(1, NUM_3, GRID_LAYOUT_HGAP, 0));
         detailsPanel.setOpaque(false);
         // column 1
-        JPanel detailsPanel1 = new JPanel();
-        detailsPanel1.setLayout(new GridLayout(2, 1, 0, 55));
+        final JPanel detailsPanel1 = new JPanel();
+        detailsPanel1.setLayout(new GridLayout(2, 1, 0, DETAILS_VGAP));
         detailsPanel1.setOpaque(false);
         detailsPanel1.add(feelsLikeTemperature);
         detailsPanel1.add(uvIndex);
         // column 2
-        JPanel detailsPanel2 = new JPanel();
-        detailsPanel2.setLayout(new GridLayout(2, 1, 0, 55));
+        final JPanel detailsPanel2 = new JPanel();
+        detailsPanel2.setLayout(new GridLayout(2, 1, 0, DETAILS_VGAP));
         detailsPanel2.setOpaque(false);
         detailsPanel2.add(windSpeed);
         detailsPanel2.add(cloudCover);
         // column 3
-        JPanel detailsPanel3 = new JPanel();
-        detailsPanel3.setLayout(new GridLayout(2, 1, 0, 55));
+        final JPanel detailsPanel3 = new JPanel();
+        detailsPanel3.setLayout(new GridLayout(2, 1, 0, DETAILS_VGAP));
         detailsPanel3.setOpaque(false);
         detailsPanel3.add(precipitation);
         detailsPanel3.add(humidity);
@@ -181,9 +202,9 @@ public class DailyView extends JPanel implements PropertyChangeListener, ActionL
 
         // shift the shiftedDetailsPanel horizontally
         shiftedDetailsPanel.add(detailsPanel);
-        shiftedDetailsPanel.add(Box.createHorizontalStrut(135));
+        shiftedDetailsPanel.add(Box.createHorizontalStrut(SHIFTED_HORIZONTAL_PADDING));
         // padding
-        detailsBox.add(Box.createVerticalStrut(220));
+        detailsBox.add(Box.createVerticalStrut(DETAILS_BOX_VERTICAL_PADDING));
         // add detailsPanel to detailsBox
         detailsBox.add(shiftedDetailsPanel);
 
@@ -191,7 +212,7 @@ public class DailyView extends JPanel implements PropertyChangeListener, ActionL
     }
 
     /**
-     * Gets the back button JPanel and styles it
+     * Gets the back button JPanel and styles it.
      * @return a back button JPanel
      */
     @NotNull
@@ -201,7 +222,7 @@ public class DailyView extends JPanel implements PropertyChangeListener, ActionL
         backButton.setBorder(BorderFactory.createEmptyBorder());
         backButton.setContentAreaFilled(false);
         // back button panel
-        JPanel backButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        final JPanel backButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         backButtonPanel.add(backButton);
 
@@ -212,7 +233,7 @@ public class DailyView extends JPanel implements PropertyChangeListener, ActionL
      * Styles the current instance of the city label.
      */
     private void setCityLabel() {
-        city.setFont(crimsonText70);
+        city.setFont(CRIMSON_TEXT_70);
         city.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
 
@@ -228,13 +249,13 @@ public class DailyView extends JPanel implements PropertyChangeListener, ActionL
             weekdays.add(new JButton());
 
             // style the weekday buttons
-            weekdays.get(i).setFont(interTextBold12);
+            weekdays.get(i).setFont(INTER_TEXT_BOLD_12);
             // style the temperature buttons
-            temperatures.get(i).setFont(interTextBold15);
+            temperatures.get(i).setFont(INTER_TEXT_BOLD_15);
         }
 
         // place the Daily Forecast Box Image on the screen
-        JPanel forecastBox = new JPanel() {
+        final JPanel forecastBox = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -248,16 +269,16 @@ public class DailyView extends JPanel implements PropertyChangeListener, ActionL
         };
 
         // daily content panel
-        JPanel dailyPanel = new JPanel();
-        dailyPanel.setLayout(new GridLayout(1, Constants.WEEK_SIZE, 15, 0));
+        final JPanel dailyPanel = new JPanel();
+        dailyPanel.setLayout(new GridLayout(1, Constants.WEEK_SIZE, DAILY_PANEL_HGAP, 0));
         // add padding
-        dailyPanel.add(Box.createHorizontalStrut(15));
+        dailyPanel.add(Box.createHorizontalStrut(HORIZONTAL_PADDING));
         // make the daily panel invisible
         dailyPanel.setOpaque(false);
-        for(int i = 0; i < Constants.WEEK_SIZE; i++) {
+        for (int i = 0; i < Constants.WEEK_SIZE; i++) {
             // individual panel for each day
             final JPanel dayPanel = new JPanel();
-            dayPanel.setLayout(new GridLayout(3, 1, 0, 0));
+            dayPanel.setLayout(new GridLayout(NUM_3, 1, 0, 0));
             dayPanel.setOpaque(false);
 
             // remove the border of the button
@@ -276,9 +297,9 @@ public class DailyView extends JPanel implements PropertyChangeListener, ActionL
             dailyPanel.add(dayPanel);
         }
         // add padding
-        dailyPanel.add(Box.createHorizontalStrut(15));
+        dailyPanel.add(Box.createHorizontalStrut(HORIZONTAL_PADDING));
         // vertical spacing for the dailyPanel
-        forecastBox.add(Box.createVerticalStrut(150));
+        forecastBox.add(Box.createVerticalStrut(FORECAST_BOX_VERTICAL_PADDING));
         forecastBox.add(dailyPanel);
 
         return forecastBox;
@@ -289,7 +310,8 @@ public class DailyView extends JPanel implements PropertyChangeListener, ActionL
         if (evt.getPropertyName().equals("update_data")) {
             // execute the Display Daily Weather Use Case on the current weekday
             displayDailyController.execute();
-        } else {
+        }
+        else {
             final DisplayDailyState currentState = (DisplayDailyState) evt.getNewValue();
             setLabels(currentState);
         }
@@ -311,7 +333,7 @@ public class DailyView extends JPanel implements PropertyChangeListener, ActionL
     }
 
     public String getViewName() {
-        return viewName;
+        return VIEW_NAME;
     }
 
     public void setDisplayDailyController(DisplayDailyController displayDailyController) {

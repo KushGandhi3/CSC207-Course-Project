@@ -1,13 +1,14 @@
 package interface_adapter.display_home;
 
-import interface_adapter.ViewModel;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Image;
 import java.util.Objects;
 
+import javax.swing.ImageIcon;
+
+import interface_adapter.ViewModel;
+
 /**
- * The ViewModel for the HomeView
+ * The ViewModel for the HomeView.
  */
 public class DisplayHomeViewModel extends ViewModel<DisplayHomeState> {
 
@@ -19,10 +20,10 @@ public class DisplayHomeViewModel extends ViewModel<DisplayHomeState> {
     public static final String SNOW = "Snow";
     public static final String MIST = "Mist";
 
-    public static final String highLabel = "H: ";
-    public static final String lowLabel = "L: ";
+    public static final String HIGHLABEL = "H: ";
+    public static final String LOWLABEL = "L: ";
     // infoLabelSplitter splits the displayed low and high temperatures
-    public static final String divider = " | ";
+    public static final String DIVIDER = " | ";
 
     // use case button demensions
     public static final int USE_CASE_WIDTH = 131;

@@ -1,9 +1,9 @@
 package interface_adapter.display_hourly;
 
+import interface_adapter.ViewManagerModel;
+import interface_adapter.display_home.DisplayHomeViewModel;
 import use_case.display_hourly.DisplayHourlyOutputBoundary;
 import use_case.display_hourly.DisplayHourlyOutputData;
-import interface_adapter.display_home.DisplayHomeViewModel;
-import interface_adapter.ViewManagerModel;
 
 /**
  * Presenter for preparing data to be displayed on the hourly weather view.

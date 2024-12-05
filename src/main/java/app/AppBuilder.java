@@ -1,5 +1,11 @@
 package app;
 
+import java.awt.CardLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
+
 import data_access.recent_city.RecentCitiesDAO;
 import data_access.summarization.SummarizationSummaryDAO;
 import data_access.weather.WeatherDAO;
@@ -38,25 +44,45 @@ import use_case.display_checker.DisplayCheckerDAI;
 import use_case.display_checker.DisplayCheckerInputBoundary;
 import use_case.display_checker.DisplayCheckerInteractor;
 import use_case.display_checker.DisplayCheckerOutputBoundary;
-import use_case.display_daily.*;
+import use_case.display_daily.DisplayDailyInputBoundary;
+import use_case.display_daily.DisplayDailyInteractor;
+import use_case.display_daily.DisplayDailyOutputBoundary;
+import use_case.display_daily.DisplayDailyRecentCitiesDAI;
+import use_case.display_daily.DisplayDailyWeatherDAI;
 import use_case.display_history.DisplayHistoryDAI;
 import use_case.display_history.DisplayHistoryInputBoundary;
 import use_case.display_history.DisplayHistoryInteractor;
 import use_case.display_history.DisplayHistoryOutputBoundary;
-import use_case.display_home.*;
-import use_case.display_hourly.*;
-import use_case.display_summarization.*;
-import view.*;
-
-import javax.swing.*;
-import java.awt.*;
+import use_case.display_home.DisplayHomeInputBoundary;
+import use_case.display_home.DisplayHomeInteractor;
+import use_case.display_home.DisplayHomeOutputBoundary;
+import use_case.display_home.DisplayHomeRecentCitiesDAI;
+import use_case.display_home.DisplayHomeWeatherDAI;
+import use_case.display_hourly.DisplayHourlyInputBoundary;
+import use_case.display_hourly.DisplayHourlyInteractor;
+import use_case.display_hourly.DisplayHourlyOutputBoundary;
+import use_case.display_hourly.DisplayHourlyRecentCitiesDAI;
+import use_case.display_hourly.DisplayHourlyWeatherDAI;
+import use_case.display_summarization.DisplaySummarizationInputBoundary;
+import use_case.display_summarization.DisplaySummarizationInteractor;
+import use_case.display_summarization.DisplaySummarizationOutputBoundary;
+import use_case.display_summarization.DisplaySummarizationRecentCitiesDAI;
+import use_case.display_summarization.DisplaySummarizationSummaryDAI;
+import use_case.display_summarization.DisplaySummarizationWeatherDAI;
+import view.CheckerView;
+import view.DailyView;
+import view.HistoryView;
+import view.HomeView;
+import view.HourlyView;
+import view.SummarizationView;
+import view.ViewManager;
 
 /**
  * The AppBuilder class is responsible for building the application.
  */
 public class AppBuilder {
-    // the default city to display information for
-    private final String DEFAULT_CITY = "Toronto";
+    private static final int WIDTH = 1200;
+    private static final int HEIGHT = 800;
 
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
@@ -83,7 +109,8 @@ public class AppBuilder {
     private final DisplayHomeWeatherDAI displayHomeWeatherDAO = new WeatherDAO(dayWeatherDataFactory,
             dailyWeatherDataFactory, hourWeatherDataFactory, hourlyWeatherDataFactory);
     // summarization DAI's
-    private final DisplaySummarizationRecentCitiesDAI displaySummarizationRecentCitiesDAO = new RecentCitiesDAO(recentCityDataFactory);
+    private final DisplaySummarizationRecentCitiesDAI displaySummarizationRecentCitiesDAO = new
+            RecentCitiesDAO(recentCityDataFactory);
     private final DisplaySummarizationWeatherDAI displaySummarizationWeatherDAO = new WeatherDAO(dayWeatherDataFactory,
             dailyWeatherDataFactory, hourWeatherDataFactory, hourlyWeatherDataFactory);
     private final DisplaySummarizationSummaryDAI displaySummarizationSummaryDAO =
@@ -119,8 +146,10 @@ public class AppBuilder {
     }
 
     /**
-     * Adds the Daily View to the application
-     * @return this builder
+     * Adds the Daily View to the application. Creates a new instance of
+     * DisplayDailyViewModel and DailyView and adds the DailyView to
+     * the card panel with its specific view name.
+     * @return the current instance of AppBuilder for method chaining
      */
     public AppBuilder addDailyView() {
         displayDailyViewModel = new DisplayDailyViewModel();
@@ -130,8 +159,10 @@ public class AppBuilder {
     }
 
     /**
-     * Adds the Checker View to the application
-     * @return this builder
+     * Adds the Checker View to the application. This method initializes
+     * a new instance of DisplayCheckerViewModel and CheckerView, then
+     * attaches the CheckerView to the card panel with its specific view name.
+     * @return the current instance of AppBuilder for method chaining
      */
     public AppBuilder addCheckerView() {
         displayCheckerViewModel = new DisplayCheckerViewModel();
@@ -141,8 +172,10 @@ public class AppBuilder {
     }
 
     /**
-     * Adds the Home View to the application
-     * @return this builder
+     * Adds the Home View to the application by creating a new instance of
+     * DisplayHomeViewModel and HomeView, and then adds the HomeView to
+     * the card panel with its specific view name.
+     * @return the current instance of AppBuilder for method chaining
      */
     public AppBuilder addHomeView() {
         displayHomeViewModel = new DisplayHomeViewModel();
@@ -152,8 +185,10 @@ public class AppBuilder {
     }
 
     /**
-     * Adds the Summarization View to the application
-     * @return this builder
+     * Adds the Summarization View to the application. This method initializes a new instance
+     * of DisplaySummarizationViewModel and SummarizationView, then adds the SummarizationView
+     * to the card panel with its specific view name.
+     * @return the current instance of AppBuilder for method chaining
      */
     public AppBuilder addSummarizationView() {
         displaySummarizationViewModel = new DisplaySummarizationViewModel();
@@ -163,8 +198,10 @@ public class AppBuilder {
     }
 
     /**
-     * Adds the History View to the application
-     * @return this builder
+     * Adds the History View to the application. This method initializes a new instance of
+     * DisplayHistoryViewModel and HistoryView, then adds the HistoryView to the card panel
+     * with its specific view name.
+     * @return the current instance of AppBuilder for method chaining
      */
     public AppBuilder addHistoryView() {
         displayHistoryViewModel = new DisplayHistoryViewModel();
@@ -174,8 +211,10 @@ public class AppBuilder {
     }
 
     /**
-     * Adds the Hourly View to the application
-     * @return this builder
+     * Adds the Hourly View to the application. This method initializes a new instance
+     * of DisplayHourlyViewModel and HourlyView, then adds the HourlyView to the card panel
+     * with its specific view name.
+     * @return the current instance of AppBuilder for method chaining
      */
     public AppBuilder addHourlyView() {
         displayHourlyViewModel = new DisplayHourlyViewModel();
@@ -185,8 +224,12 @@ public class AppBuilder {
     }
 
     /**
-     * Adds the Display Daily Use Case to the application.
-     * @return this builder
+     * Adds the Display Daily Use Case to the application. It sets up the necessary
+     * components for displaying daily weather information, including the presenter
+     * and interactor, and configures the controller to facilitate interaction between
+     * the view and the application logic.
+     *
+     * @return the current instance of AppBuilder for method chaining
      */
     public AppBuilder addDisplayDailyUseCase() {
         final DisplayDailyOutputBoundary displayDailyPresenter =
@@ -201,8 +244,13 @@ public class AppBuilder {
     }
 
     /**
-     * Adds the Display Daily Use Case to the application.
-     * @return this builder
+     * Adds the Display Checker Use Case to the application. This method sets up
+     * the necessary components for the Checker use case, including the presenter,
+     * interactor, and controller. It configures the checker view with its specific
+     * controller, enabling interactions between the view and the application logic
+     * for checking weather conditions.
+     *
+     * @return the current instance of AppBuilder for method chaining
      */
     public AppBuilder addDisplayCheckerUseCase() {
         final DisplayCheckerOutputBoundary displayCheckerPresenter = new DisplayCheckerPresenter(
@@ -210,14 +258,17 @@ public class AppBuilder {
         final DisplayCheckerInputBoundary displayCheckerInteractor = new DisplayCheckerInteractor(
                 displayCheckerWeatherDAO, displayCheckerPresenter);
 
-        final DisplayCheckerController displayCheckerController = new DisplayCheckerController(displayCheckerInteractor);
+        final DisplayCheckerController displayCheckerController = new
+                DisplayCheckerController(displayCheckerInteractor);
         checkerView.setCheckerController(displayCheckerController);
         return this;
     }
 
     /**
-     * Adds the Display Summarization Use Case to the application.
-     * @return this builder
+     * Adds the Display Summarization Use Case to the application. This method sets up the
+     * necessary components, including the presenter and interactor, and configures the
+     * controller to manage interactions between the view and the application logic.
+     * @return the current instance of AppBuilder for method chaining
      */
     public AppBuilder addDisplaySummarizationUseCase() {
         final DisplaySummarizationOutputBoundary displaySummarizationPresenter =
@@ -234,13 +285,15 @@ public class AppBuilder {
     }
 
     /**
-     * Adds the Display History Use Case to the application.
-     * @return this builder
+     * Adds the Display History Use Case to the application. This method sets up the necessary
+     * components, including the presenter and interactor, and configures the controller to
+     * manage interactions between the view and the application logic.
+     * @return the current instance of AppBuilder for method chaining
      */
     public AppBuilder addDisplayHistoryUseCase() {
         final DisplayHistoryOutputBoundary displayHistoryPresenter =
                 new DisplayHistoryPresenter(displayHistoryViewModel, displayHomeViewModel,
-                        displayDailyViewModel, displaySummarizationViewModel, viewManagerModel);
+                        viewManagerModel);
         final DisplayHistoryInputBoundary displayHistoryInteractor =
                 new DisplayHistoryInteractor(displayHistoryDAO, displayHistoryPresenter);
 
@@ -251,13 +304,17 @@ public class AppBuilder {
     }
 
     /**
-     * Adds the Display Home Use Case to the application.
-     * @return this builder
+     * Adds the Display Home Use Case to the application. This method sets up the
+     * necessary components, including the presenter, interactor, and controller, and
+     * configures the controller to manage interactions between the view and the
+     * application logic, specifically for the Home view.
+     * @return the current instance of AppBuilder for method chaining
      */
     public AppBuilder addDisplayHomeUseCase() {
         final DisplayHomeOutputBoundary displayHomePresenter =
                 new DisplayHomePresenter(viewManagerModel, displayHomeViewModel, displaySummarizationViewModel,
-                        displayHistoryViewModel, displayDailyViewModel, displayCheckerViewModel);
+                        displayHistoryViewModel, displayDailyViewModel, displayCheckerViewModel,
+                        displayHourlyViewModel);
         final DisplayHomeInputBoundary displayHomeInteractor = new DisplayHomeInteractor(displayHomeWeatherDAO,
                 displayHomePresenter, displayHomeRecentCitiesDAO);
 
@@ -268,15 +325,18 @@ public class AppBuilder {
     }
 
     /**
-     * Adds the Display Hourly Use Case to the application.
-     * @return this builder
+     * Adds the Display Hourly Use Case to the application. This method sets up the necessary
+     * components, including the presenter and interactor, and configures the controller to
+     * manage interactions between the view and the application logic specifically for displaying
+     * hourly weather information.
+     * @return the current instance of AppBuilder for method chaining
      */
     public AppBuilder addDisplayHourlyUseCase() {
         final DisplayHourlyOutputBoundary displayHourlyPresenter =
                 new DisplayHourlyPresenter(displayHourlyViewModel, displayHomeViewModel, viewManagerModel);
         final DisplayHourlyInputBoundary displayHourlyInteractor =
                 new DisplayHourlyInteractor(displayHourlyRecentCitiesDAO, displayHourlyWeatherDAO,
-                displayHourlyPresenter);
+                        displayHourlyPresenter);
 
         final DisplayHourlyController displayHourlyController =
                 new DisplayHourlyController(displayHourlyInteractor);
@@ -289,9 +349,9 @@ public class AppBuilder {
      * @return the application
      */
     public JFrame build() {
-        final JFrame application = new JFrame("Wisely Wear");
+        final JFrame application = new JFrame("Forecastly");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        application.setSize(1200, 800);
+        application.setSize(WIDTH, HEIGHT);
         application.setResizable(false);
 
         application.add(cardPanel);

@@ -7,6 +7,7 @@ package use_case.display_home;
 public class DisplayHomeInputData {
 
     private final String cityName;
+
     /**
      * Constructor to initialize DisplayHomeInputData with all necessary fields.
      * @param cityName The city name for the weather display.

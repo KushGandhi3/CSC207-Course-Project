@@ -9,7 +9,7 @@ import entity.weather.hour_weather.ConcreteHourWeatherDataFactory;
 import entity.weather.hour_weather.HourWeatherDataFactory;
 import entity.weather.hourly_weather.ConcreteHourlyWeatherDataFactory;
 import entity.weather.hourly_weather.HourlyWeatherDataFactory;
-import exception.APICallException;
+import exception.ApiCallException;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 
@@ -178,7 +178,7 @@ class DisplayCheckerInteractorTest {
 
     private DisplayCheckerDAI getAPIerrorDisplayCheckerDAI() {
         return location -> {
-            throw new APICallException("API call failed.");
+            throw new ApiCallException("API call failed.");
         };
     }
 
@@ -198,7 +198,7 @@ class DisplayCheckerInteractorTest {
         return location -> {
             try {
                 return inMemoryWeatherDAO.getHourlyWeatherData("Toronto");
-            } catch (APICallException e) {
+            } catch (ApiCallException e) {
                 return null;
             }
         };
@@ -220,7 +220,7 @@ class DisplayCheckerInteractorTest {
         return location -> {
             try {
                 return inMemoryWeatherDAO.getHourlyWeatherData("Torontoww");
-            } catch (APICallException | JSONException e) {
+            } catch (ApiCallException | JSONException e) {
                 return null;
             }
         };

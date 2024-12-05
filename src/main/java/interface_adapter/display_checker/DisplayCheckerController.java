@@ -15,10 +15,16 @@ public class DisplayCheckerController {
     }
 
     /**
-     * Executes the checker Use Cases.
+     * Executes the checker use case with the given input parameters.
+     *
+     * @param location the location to be checked
+     * @param weatherConditionOptions the weather conditions to be considered
+     * @param startChecking the start time in hours from now for checking the weather
+     * @param stopChecking the stop time in hours from the start time for checking the weather
      */
     public void execute(String location, String weatherConditionOptions, int startChecking, int stopChecking) {
-        DisplayCheckerInputData displayCheckerInputData = new DisplayCheckerInputData(location, weatherConditionOptions, startChecking, stopChecking);
+        final DisplayCheckerInputData displayCheckerInputData = new DisplayCheckerInputData(location,
+                weatherConditionOptions, startChecking, stopChecking);
 
         checkerInteractor.execute(displayCheckerInputData);
     }

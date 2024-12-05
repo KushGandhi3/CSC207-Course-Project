@@ -20,10 +20,10 @@ public interface DisplayHomeInputBoundary {
      */
     void switchToDailyView();
 
-//    /**
-//     * Switches the view to the Hourly View.
-//     */
-//    void switchToHourlyView();
+    /**
+     * Switches the view to the Hourly View.
+     */
+    void switchToHourlyView();
 
     /**
      * Switches the view to the Checker View.

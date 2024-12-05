@@ -1,14 +1,14 @@
 package interface_adapter.display_daily;
 
+import java.time.DayOfWeek;
+import java.util.ArrayList;
+import java.util.List;
+
 import constants.Constants;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.display_home.DisplayHomeViewModel;
 import use_case.display_daily.DisplayDailyOutputBoundary;
 import use_case.display_daily.DisplayDailyOutputData;
-
-import java.time.DayOfWeek;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The Presenter for the Display Daily Use Case.
@@ -83,5 +83,4 @@ public class DisplayDailyPresenter implements DisplayDailyOutputBoundary {
         viewManagerModel.setState(displayHomeViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }
-
 }

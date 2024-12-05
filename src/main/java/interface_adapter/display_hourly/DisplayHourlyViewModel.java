@@ -1,11 +1,11 @@
 package interface_adapter.display_hourly;
 
-import interface_adapter.ViewModel;
-import interface_adapter.display_checker.DisplayCheckerViewModel;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Image;
 import java.util.Objects;
+
+import javax.swing.ImageIcon;
+
+import interface_adapter.ViewModel;
 
 /**
  * ViewModel for the hourly forecast feature.
