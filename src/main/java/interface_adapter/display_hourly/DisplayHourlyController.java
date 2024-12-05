@@ -12,7 +12,6 @@ public class DisplayHourlyController {
 
     /**
      * Constructs a DisplayHourlyController with a specific interactor.
-     *
      * @param displayHourlyInputBoundary the interactor to handle use case logic
      */
     public DisplayHourlyController(DisplayHourlyInputBoundary displayHourlyInputBoundary) {
@@ -21,7 +20,6 @@ public class DisplayHourlyController {
 
     /**
      * Executes the use case for displaying hourly weather based on a selected time.
-     *
      * @param selectTime the selected time for hourly weather
      */
     public void execute(String selectTime) {
@@ -29,6 +27,9 @@ public class DisplayHourlyController {
         this.displayHourlyInputBoundary.execute(displayHourlyInputData);
     }
 
+    /**
+     * Switches the current view to the home view.
+     */
     public void switchToHomeView() {
         this.displayHourlyInputBoundary.switchToHomeView();
     }
