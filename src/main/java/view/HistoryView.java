@@ -19,7 +19,6 @@ import javax.swing.border.EmptyBorder;
 import interface_adapter.display_history.DisplayHistoryController;
 import interface_adapter.display_history.DisplayHistoryState;
 import interface_adapter.display_history.DisplayHistoryViewModel;
-import interface_adapter.display_summarization.DisplaySummarizationState;
 
 /**
  * The View for when the user wants to see previous cities.
@@ -28,6 +27,8 @@ public class HistoryView extends JPanel implements PropertyChangeListener {
 
     private static final Font CRIMSONTITLE = FontManager.getCrimsonTextBold(80);
     private static final Font CRIMSONSUBTITLE = FontManager.getCrimsonTextBold(40);
+    private static final int NUM_10 = 10;
+    private static final int NUM_20 = 10;
 
     private final String viewName = "History View";
     private final DisplayHistoryViewModel viewModel;
@@ -50,7 +51,7 @@ public class HistoryView extends JPanel implements PropertyChangeListener {
         backButton.setBorder(null);
         final JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBackground(Color.WHITE);
-        topPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        topPanel.setBorder(new EmptyBorder(NUM_10, NUM_10, NUM_10, NUM_10));
         topPanel.add(backButton, BorderLayout.WEST);
         topPanel.add(title, BorderLayout.CENTER);
         this.add(topPanel, BorderLayout.NORTH);
@@ -60,7 +61,7 @@ public class HistoryView extends JPanel implements PropertyChangeListener {
 
         // City List Panel
         cityListPanel.setLayout(new BoxLayout(cityListPanel, BoxLayout.Y_AXIS));
-        cityListPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        cityListPanel.setBorder(BorderFactory.createEmptyBorder(NUM_20, NUM_20, NUM_20, NUM_20));
         cityListPanel.setBackground(Color.WHITE);
 
         this.add(cityListPanel, BorderLayout.CENTER);
@@ -81,7 +82,7 @@ public class HistoryView extends JPanel implements PropertyChangeListener {
 
         // Get the city history and limit it to 10
         final List<String> limitedCityHistory = state.getCities().stream()
-                .limit(10)
+                .limit(NUM_10)
                 .toList();
 
         // Add city buttons
@@ -96,7 +97,7 @@ public class HistoryView extends JPanel implements PropertyChangeListener {
             });
 
             cityListPanel.add(cityButton);
-            cityListPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+            cityListPanel.add(Box.createRigidArea(new Dimension(0, NUM_10)));
         }
 
         cityListPanel.revalidate();
