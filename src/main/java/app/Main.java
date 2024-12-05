@@ -10,21 +10,20 @@ public class Main {
     public static void main(String[] args) {
         final AppBuilder appBuilder = new AppBuilder();
         final JFrame application = appBuilder
-                .addSummarizationView()
                 .addHomeView()
+                .addHourlyView()
                 .addDailyView()
                 .addHistoryView()
                 .addCheckerView()
-                .addHourlyView()
-                .addDisplaySummarizationUseCase()
-                .addDisplayHistoryUseCase()
-                .addDisplayDailyUseCase()
-                .addDisplayCheckerUseCase()
-                .addDisplayHourlyUseCase()
+                .addSummarizationView()
                 .addDisplayHomeUseCase()
+                .addDisplayHourlyUseCase()
+                .addDisplayDailyUseCase()
+                .addDisplayHistoryUseCase()
+                .addDisplayCheckerUseCase()
+                .addDisplaySummarizationUseCase()
                 .build();
 
-        application.pack();
         application.setVisible(true);
     }
 }
