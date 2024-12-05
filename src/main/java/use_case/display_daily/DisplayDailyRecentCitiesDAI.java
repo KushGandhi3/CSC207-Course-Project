@@ -9,8 +9,10 @@ import exception.RecentCitiesDataException;
 public interface DisplayDailyRecentCitiesDAI {
 
     /**
-     * Adds a city to the recent cities data
-     * @throws RecentCitiesDataException when there is an issue reading/writing data
+     * Adds a city to the list of recent cities.
+     *
+     * @param city the name of the city to be added
+     * @throws RecentCitiesDataException if there is an error accessing or updating the recent cities data
      */
     void addCity(String city) throws RecentCitiesDataException;
 
